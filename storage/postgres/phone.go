@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v4/pgxpool"
 
 	"app/api/models"
@@ -20,18 +21,20 @@ func NewPhoneRepo(db *pgxpool.Pool) *phoneRepo {
 	}
 }
 
-func (r *phoneRepo) Create(ctx context.Context, req *models.CreatePhone) (bool, error) {
+func (r *phoneRepo) Create(ctx context.Context, req *models.CreatePhone) (string, error) {
 
 	var (
+		id    = uuid.New().String()
 		query string
 	)
 
 	query = `
-		INSERT INTO phones(user_id, phone, descriprion, is_fax)
-		VALUES ($1, $2, $3, $4)
+		INSERT INTO phones(id,user_id, phone, descriprion, is_fax)
+		VALUES ($1, $2, $3, $4, $5)
 	`
 
 	_, err := r.db.Exec(ctx, query,
+		id,
 		req.UserId,
 		req.Phone,
 		req.Description,
@@ -39,10 +42,10 @@ func (r *phoneRepo) Create(ctx context.Context, req *models.CreatePhone) (bool, 
 	)
 
 	if err != nil {
-		return false, err
+		return "", err
 	}
 
-	return true, nil
+	return id, nil
 }
 
 func (r *phoneRepo) GetByID(ctx context.Context, req *models.PhonePrimaryKey) (*models.Phone, error) {
@@ -60,13 +63,13 @@ func (r *phoneRepo) GetByID(ctx context.Context, req *models.PhonePrimaryKey) (*
 		SELECT
 			user_id,
 			phone,
-			description,
+			descriprion,
 			is_fax
 		FROM phones
-		WHERE user_id = $1
+		WHERE id = $1
 	`
 
-	err := r.db.QueryRow(ctx, query, req.UserId).Scan(
+	err := r.db.QueryRow(ctx, query, req.Id).Scan(
 		&user_id,
 		&phone,
 		&descriprion,
@@ -78,6 +81,7 @@ func (r *phoneRepo) GetByID(ctx context.Context, req *models.PhonePrimaryKey) (*
 	}
 
 	return &models.Phone{
+		Id:          req.Id,
 		UserId:      user_id.String,
 		Phone:       phone.String,
 		Description: descriprion.String,
@@ -91,7 +95,6 @@ func (r *phoneRepo) GetList(ctx context.Context, req *models.GetListPhoneRequest
 		resp   = &models.GetListPhoneResponse{}
 		query  string
 		where  = " WHERE TRUE"
-		order  = "ORDER BY DESC"
 		offset = " OFFSET 0"
 		limit  = " LIMIT 10"
 	)
@@ -99,9 +102,10 @@ func (r *phoneRepo) GetList(ctx context.Context, req *models.GetListPhoneRequest
 	query = `
 		SELECT
 			COUNT(*) OVER(),
+			id,
 			user_id,
 			phone,
-			description,
+			descriprion,
 			is_fax
 		FROM phones
 	`
@@ -114,7 +118,7 @@ func (r *phoneRepo) GetList(ctx context.Context, req *models.GetListPhoneRequest
 		limit = fmt.Sprintf(" LIMIT %d", req.Limit)
 	}
 
-	query += where + order + offset + limit
+	query += where + offset + limit
 
 	rows, err := r.db.Query(ctx, query)
 	if err != nil {
@@ -123,6 +127,7 @@ func (r *phoneRepo) GetList(ctx context.Context, req *models.GetListPhoneRequest
 
 	for rows.Next() {
 		var (
+			id          sql.NullString
 			user_id     sql.NullString
 			phone       sql.NullString
 			descriprion sql.NullString
@@ -131,6 +136,7 @@ func (r *phoneRepo) GetList(ctx context.Context, req *models.GetListPhoneRequest
 
 		err := rows.Scan(
 			&resp.Count,
+			&id,
 			&user_id,
 			&phone,
 			&descriprion,
@@ -142,6 +148,7 @@ func (r *phoneRepo) GetList(ctx context.Context, req *models.GetListPhoneRequest
 		}
 
 		resp.Phones = append(resp.Phones, &models.Phone{
+			Id:          id.String,
 			UserId:      user_id.String,
 			Phone:       phone.String,
 			Description: descriprion.String,
@@ -163,15 +170,16 @@ func (r *phoneRepo) Update(ctx context.Context, req *models.UpdatePhone) (int64,
 			phones
 		SET
 			phone = $1,
-			description = $2,
+			descriprion = $2,
 			is_fax = $3
-		WHERE user_id = $4
+		WHERE id = $4
 	`
 
 	result, err := r.db.Exec(ctx, query,
 		req.Phone,
 		req.Description,
 		req.IsFax,
+		req.Id,
 	)
 	if err != nil {
 		return 0, err
@@ -182,7 +190,7 @@ func (r *phoneRepo) Update(ctx context.Context, req *models.UpdatePhone) (int64,
 
 func (r *phoneRepo) Delete(ctx context.Context, req *models.PhonePrimaryKey) error {
 
-	_, err := r.db.Exec(ctx, "DELETE FROM phones WHERE id = $1", req.UserId)
+	_, err := r.db.Exec(ctx, "DELETE FROM phones WHERE id = $1", req.Id)
 	if err != nil {
 		return err
 	}

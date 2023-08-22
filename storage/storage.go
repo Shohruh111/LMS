@@ -18,7 +18,7 @@ type UserRepoI interface {
 	Delete(context.Context, *models.UserPrimaryKey) error
 }
 type PhoneRepoI interface {
-	Create(context.Context, *models.CreatePhone) (bool, error)
+	Create(context.Context, *models.CreatePhone) (string, error)
 	GetByID(context.Context, *models.PhonePrimaryKey) (*models.Phone, error)
 	GetList(context.Context, *models.GetListPhoneRequest) (*models.GetListPhoneResponse, error)
 	Update(context.Context, *models.UpdatePhone) (int64, error)

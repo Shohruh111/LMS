@@ -3,12 +3,13 @@ CREATE TABLE "users" (
     "login" VARCHAR NOT NULL,
     "password" VARCHAR NOT NULL,
     "name" VARCHAR NOT NULL,
-    "age" INT NOT NULL, 
+    "age" INT NOT NULL
 );
 
 CREATE TABLE "phones" (
-    "user_id" UUID NOT NULL REFERENCES "user"("id"),
+    "id" UUID PRIMARY KEY,
+    "user_id" UUID NOT NULL REFERENCES "users"("id"),
     "phone" VARCHAR(12) NOT NULL,
     "descriprion" VARCHAR,
-    "is_fax" BOOLEAN,
+    "is_fax" BOOLEAN
 );

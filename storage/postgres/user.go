@@ -51,14 +51,18 @@ func (r *userRepo) Create(ctx context.Context, req *models.CreateUser) (string, 
 func (r *userRepo) GetByID(ctx context.Context, req *models.UserPrimaryKey) (*models.User, error) {
 
 	var (
-		query string
-
-		id       sql.NullString
-		login    sql.NullString
-		password sql.NullString
-		name     sql.NullString
-		age      int
+		query      string
+		whereField = "id"
+		id         sql.NullString
+		login      sql.NullString
+		password   sql.NullString
+		name       sql.NullString
+		age        int
 	)
+	if len(req.Name) > 0 {
+		whereField = "name"
+		req.Id = req.Name
+	}
 
 	query = `
 		SELECT
@@ -68,7 +72,7 @@ func (r *userRepo) GetByID(ctx context.Context, req *models.UserPrimaryKey) (*mo
 			name,
 			age
 		FROM users
-		WHERE id = $1
+		WHERE ` + whereField + ` = $1
 	`
 
 	err := r.db.QueryRow(ctx, query, req.Id).Scan(
@@ -98,7 +102,6 @@ func (r *userRepo) GetList(ctx context.Context, req *models.GetListUserRequest) 
 		resp   = &models.GetListUserResponse{}
 		query  string
 		where  = " WHERE TRUE"
-		order  = "ORDER BY DESC"
 		offset = " OFFSET 0"
 		limit  = " LIMIT 10"
 	)
@@ -122,7 +125,7 @@ func (r *userRepo) GetList(ctx context.Context, req *models.GetListUserRequest) 
 		limit = fmt.Sprintf(" LIMIT %d", req.Limit)
 	}
 
-	query += where + order + offset + limit
+	query += where + offset + limit
 
 	rows, err := r.db.Query(ctx, query)
 	if err != nil {
@@ -179,9 +182,9 @@ func (r *userRepo) Update(ctx context.Context, req *models.UpdateUser) (int64, e
 	`
 
 	result, err := r.db.Exec(ctx, query,
-		req.Id,
 		req.Login,
 		req.Password,
+		req.Id,
 	)
 	if err != nil {
 		return 0, err
