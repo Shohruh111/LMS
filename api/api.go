@@ -43,7 +43,7 @@ func NewApi(r *gin.Engine, cfg *config.Config, storage storage.StorageI, logger 
 	v1.PUT("/phone/:id", handler.UpdatePhone)
 	v1.DELETE("/phone/:id", handler.DeletePhone)
 
-	url := ginSwagger.URL("swagger/doc.json") // The url pointing to API definition
+	url := ginSwagger.URL("swagger/doc.json")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 }
 

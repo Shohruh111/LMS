@@ -9,7 +9,7 @@ definitions:
     type: object
   models.CreatePhone:
     properties:
-      description:
+      descriprion:
         type: string
       is_fax:
         type: boolean
@@ -31,7 +31,7 @@ definitions:
     type: object
   models.UpdatePhone:
     properties:
-      description:
+      descriprion:
         type: string
       id:
         type: string
@@ -54,6 +54,94 @@ definitions:
 info:
   contact: {}
 paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      operationId: login
+      parameters:
+      - description: LoginRequest
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateUser'
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Login
+      tags:
+      - Login
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register
+      operationId: register
+      parameters:
+      - description: CreateUserRequest
+        in: body
+        name: register
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateUser'
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Register
+      tags:
+      - Register
   /user:
     get:
       consumes:
@@ -140,6 +228,8 @@ paths:
                 data:
                   type: string
               type: object
+      security:
+      - ApiKeyAuth: []
       summary: Create User
       tags:
       - User
@@ -183,6 +273,8 @@ paths:
                 data:
                   type: string
               type: object
+      security:
+      - ApiKeyAuth: []
       summary: Delete User
       tags:
       - User
@@ -224,6 +316,8 @@ paths:
                 data:
                   type: string
               type: object
+      security:
+      - ApiKeyAuth: []
       summary: Get By ID User
       tags:
       - User
@@ -272,6 +366,8 @@ paths:
                 data:
                   type: string
               type: object
+      security:
+      - ApiKeyAuth: []
       summary: Update User
       tags:
       - User
@@ -496,4 +592,9 @@ paths:
       summary: Update Phone
       tags:
       - Phone
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

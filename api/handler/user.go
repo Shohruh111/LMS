@@ -9,6 +9,7 @@ import (
 	"app/pkg/helper"
 )
 
+// @Security ApiKeyAuth
 // Create user godoc
 // @ID create_user
 // @Router /user [POST]
@@ -45,6 +46,7 @@ func (h *handler) CreateUser(c *gin.Context) {
 	h.handlerResponse(c, "create user resposne", http.StatusCreated, resp)
 }
 
+// @Security ApiKeyAuth
 // GetByID user godoc
 // @ID get_by_id_user
 // @Router /user/{id} [GET]
@@ -59,6 +61,19 @@ func (h *handler) CreateUser(c *gin.Context) {
 // @Failure 500 {object} Response{data=string} "Server error"
 func (h *handler) GetByIdUser(c *gin.Context) {
 	var id string
+
+	val, exist := c.Get("Auth")
+	if !exist {
+		h.handlerResponse(c, "Here", http.StatusInternalServerError, nil)
+		return
+	}
+
+	userData := val.(helper.TokenInfo)
+	if len(userData.UserID) > 0 {
+		id = userData.UserID
+	} else {
+		id = c.Param("id")
+	}
 
 	if !helper.IsValidUUID(id) {
 		h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
@@ -113,6 +128,7 @@ func (h *handler) GetListUser(c *gin.Context) {
 	h.handlerResponse(c, "get list user resposne", http.StatusOK, resp)
 }
 
+// @Security ApiKeyAuth
 // Update user godoc
 // @ID update_user
 // @Router /user/{id} [PUT]
@@ -165,6 +181,7 @@ func (h *handler) UpdateUser(c *gin.Context) {
 	h.handlerResponse(c, "create user resposne", http.StatusAccepted, resp)
 }
 
+// @Security ApiKeyAuth
 // Delete user godoc
 // @ID delete_user
 // @Router /user/{id} [DELETE]
