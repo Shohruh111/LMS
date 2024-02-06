@@ -7,48 +7,28 @@ definitions:
       status:
         type: integer
     type: object
-  models.CreatePhone:
+  models.UserCreate:
     properties:
-      descriprion:
+      email:
         type: string
-      is_fax:
-        type: boolean
-      phone:
+      first_name:
         type: string
-      user_id:
+      last_name:
+        type: string
+      phone_number:
         type: string
     type: object
-  models.CreateUser:
+  models.UserUpdate:
     properties:
-      age:
-        type: integer
-      login:
+      email:
         type: string
-      name:
-        type: string
-      password:
-        type: string
-    type: object
-  models.UpdatePhone:
-    properties:
-      descriprion:
+      first_name:
         type: string
       id:
         type: string
-      is_fax:
-        type: boolean
-      phone:
+      last_name:
         type: string
-      user_id:
-        type: string
-    type: object
-  models.UpdateUser:
-    properties:
-      id:
-        type: string
-      login:
-        type: string
-      password:
+      phone_number:
         type: string
     type: object
 info:
@@ -66,7 +46,7 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/models.CreateUser'
+          $ref: '#/definitions/models.UserCreate'
       responses:
         "200":
           description: Success Request
@@ -110,7 +90,7 @@ paths:
         name: register
         required: true
         schema:
-          $ref: '#/definitions/models.CreateUser'
+          $ref: '#/definitions/models.UserCreate'
       responses:
         "200":
           description: Success Request
@@ -199,7 +179,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/models.CreateUser'
+          $ref: '#/definitions/models.UserCreate'
       responses:
         "200":
           description: Success Request
@@ -337,7 +317,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/models.UpdateUser'
+          $ref: '#/definitions/models.UserUpdate'
       responses:
         "200":
           description: Success Request
@@ -371,227 +351,6 @@ paths:
       summary: Update User
       tags:
       - User
-  /user/phone:
-    get:
-      consumes:
-      - application/json
-      description: Get List Phone
-      operationId: get_list_phone
-      parameters:
-      - description: offset
-        in: query
-        name: offset
-        type: string
-      - description: limit
-        in: query
-        name: limit
-        type: string
-      responses:
-        "200":
-          description: Success Request
-          schema:
-            allOf:
-            - $ref: '#/definitions/handler.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            allOf:
-            - $ref: '#/definitions/handler.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
-        "500":
-          description: Server error
-          schema:
-            allOf:
-            - $ref: '#/definitions/handler.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
-      summary: Get List Phone
-      tags:
-      - Phone
-    post:
-      consumes:
-      - application/json
-      description: Create Phone
-      operationId: create_user_phone
-      parameters:
-      - description: CreatePhoneRequest
-        in: body
-        name: Phone
-        required: true
-        schema:
-          $ref: '#/definitions/models.CreatePhone'
-      responses:
-        "200":
-          description: Success Request
-          schema:
-            allOf:
-            - $ref: '#/definitions/handler.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            allOf:
-            - $ref: '#/definitions/handler.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
-        "500":
-          description: Server error
-          schema:
-            allOf:
-            - $ref: '#/definitions/handler.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
-      summary: Create Phone
-      tags:
-      - Phone
-  /user/phone/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete Phone
-      operationId: delete_Phone
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: Success Request
-          schema:
-            allOf:
-            - $ref: '#/definitions/handler.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            allOf:
-            - $ref: '#/definitions/handler.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
-        "500":
-          description: Server error
-          schema:
-            allOf:
-            - $ref: '#/definitions/handler.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
-      summary: Delete Phone
-      tags:
-      - Phone
-    get:
-      consumes:
-      - application/json
-      description: Get By ID Phone
-      operationId: get_by_id_Phone
-      parameters:
-      - description: id
-        in: path
-        name: id
-        type: string
-      responses:
-        "200":
-          description: Success Request
-          schema:
-            allOf:
-            - $ref: '#/definitions/handler.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            allOf:
-            - $ref: '#/definitions/handler.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
-        "500":
-          description: Server error
-          schema:
-            allOf:
-            - $ref: '#/definitions/handler.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
-      summary: Get By ID Phone
-      tags:
-      - Phone
-    put:
-      consumes:
-      - application/json
-      description: Update Phone
-      operationId: update_phone
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: UpdatePhoneRequest
-        in: body
-        name: Phone
-        required: true
-        schema:
-          $ref: '#/definitions/models.UpdatePhone'
-      responses:
-        "200":
-          description: Success Request
-          schema:
-            allOf:
-            - $ref: '#/definitions/handler.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            allOf:
-            - $ref: '#/definitions/handler.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
-        "500":
-          description: Server error
-          schema:
-            allOf:
-            - $ref: '#/definitions/handler.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
-      summary: Update Phone
-      tags:
-      - Phone
 securityDefinitions:
   ApiKeyAuth:
     in: header

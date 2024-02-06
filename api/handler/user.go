@@ -18,13 +18,13 @@ import (
 // @Tags User
 // @Accept json
 // @Procedure json
-// @Param user body models.CreateUser true "CreateUserRequest"
+// @Param user body models.UserCreate true "CreateUserRequest"
 // @Success 200 {object} Response{data=string} "Success Request"
 // @Response 400 {object} Response{data=string} "Bad Request"
 // @Failure 500 {object} Response{data=string} "Server error"
 func (h *handler) CreateUser(c *gin.Context) {
 
-	var createUser models.CreateUser
+	var createUser models.UserCreate
 	err := c.ShouldBindJSON(&createUser)
 	if err != nil {
 		h.handlerResponse(c, "error user should bind json", http.StatusBadRequest, err.Error())
@@ -62,18 +62,18 @@ func (h *handler) CreateUser(c *gin.Context) {
 func (h *handler) GetByIdUser(c *gin.Context) {
 	var id string
 
-	val, exist := c.Get("Auth")
-	if !exist {
-		h.handlerResponse(c, "Here", http.StatusInternalServerError, nil)
-		return
-	}
+	// val, exist := c.Get("Auth")
+	// if !exist {
+	// 	h.handlerResponse(c, "Here", http.StatusInternalServerError, nil)
+	// 	return
+	// }
 
-	userData := val.(helper.TokenInfo)
-	if len(userData.UserID) > 0 {
-		id = userData.UserID
-	} else {
-		id = c.Param("id")
-	}
+	// userData := val.(helper.TokenInfo)
+	// if len(userData.UserID) > 0 {
+	// 	id = userData.UserID
+	// } else {
+	id = c.Param("id")
+	// }
 
 	if !helper.IsValidUUID(id) {
 		h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
@@ -116,7 +116,7 @@ func (h *handler) GetListUser(c *gin.Context) {
 		return
 	}
 
-	resp, err := h.strg.User().GetList(c.Request.Context(), &models.GetListUserRequest{
+	resp, err := h.strg.User().GetList(c.Request.Context(), &models.UserGetListRequest{
 		Offset: offset,
 		Limit:  limit,
 	})
@@ -138,7 +138,7 @@ func (h *handler) GetListUser(c *gin.Context) {
 // @Accept json
 // @Procedure json
 // @Param id path string true "id"
-// @Param user body models.UpdateUser true "UpdateUserRequest"
+// @Param user body models.UserUpdate true "UpdateUserRequest"
 // @Success 200 {object} Response{data=string} "Success Request"
 // @Response 400 {object} Response{data=string} "Bad Request"
 // @Failure 500 {object} Response{data=string} "Server error"
@@ -146,7 +146,7 @@ func (h *handler) UpdateUser(c *gin.Context) {
 
 	var (
 		id         string = c.Param("id")
-		updateUser models.UpdateUser
+		updateUser models.UserUpdate
 	)
 
 	if !helper.IsValidUUID(id) {

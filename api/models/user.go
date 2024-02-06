@@ -6,37 +6,40 @@ type LoginUser struct {
 }
 
 type User struct {
-	Id       string `json:"id"`
-	Name     string `json:"name"`
-	Login    string `json:"login"`
-	Password string `json:"password"`
-	Age      int    `json:"age"`
+	Id          string `json:"id"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	Email       string `json:"email"`
+	PhoneNumber string `json:"phone_number"`
+	CreatedAt   string `json:"created_at"`
+	UpdatedAt   string `json:"updated_at"`
 }
 
-type CreateUser struct {
-	Name     string `json:"name"`
-	Login    string `json:"login"`
-	Password string `json:"password"`
-	Age      int    `json:"age"`
+type UserCreate struct {
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	Email       string `json:"email"`
+	PhoneNumber string `json:"phone_number"`
 }
 
-type UpdateUser struct {
-	Id       string `json:"id"`
-	Login    string `json:"login"`
-	Password string `json:"password"`
+type UserUpdate struct {
+	Id          string `json:"id"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	Email       string `json:"email"`
+	PhoneNumber string `json:"phone_number"`
 }
 
 type UserPrimaryKey struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
+	Id string `json:"id"`
 }
 
-type GetListUserRequest struct {
+type UserGetListRequest struct {
 	Offset int `json:"offset"`
 	Limit  int `json:"limit"`
 }
 
-type GetListUserResponse struct {
+type UserGetListResponse struct {
 	Count int     `json:"count"`
 	Users []*User `json:"users"`
 }

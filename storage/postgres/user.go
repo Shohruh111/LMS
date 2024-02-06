@@ -9,6 +9,7 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 
 	"app/api/models"
+	"app/pkg/helper"
 )
 
 type userRepo struct {
@@ -21,7 +22,7 @@ func NewUserRepo(db *pgxpool.Pool) *userRepo {
 	}
 }
 
-func (r *userRepo) Create(ctx context.Context, req *models.CreateUser) (string, error) {
+func (u *userRepo) Create(ctx context.Context, req *models.UserCreate) (string, error) {
 
 	var (
 		id    = uuid.New().String()
@@ -29,16 +30,16 @@ func (r *userRepo) Create(ctx context.Context, req *models.CreateUser) (string, 
 	)
 
 	query = `
-		INSERT INTO users(id, login, password, name, age)
+		INSERT INTO "users"(id, first_name, last_name, email, phone_number)
 		VALUES ($1, $2, $3, $4, $5)
 	`
 
-	_, err := r.db.Exec(ctx, query,
+	_, err := u.db.Exec(ctx, query,
 		id,
-		req.Login,
-		req.Password,
-		req.Name,
-		req.Age,
+		req.FirstName,
+		req.LastName,
+		req.Email,
+		req.PhoneNumber,
 	)
 
 	if err != nil {
@@ -48,39 +49,41 @@ func (r *userRepo) Create(ctx context.Context, req *models.CreateUser) (string, 
 	return id, nil
 }
 
-func (r *userRepo) GetByID(ctx context.Context, req *models.UserPrimaryKey) (*models.User, error) {
+func (u *userRepo) GetByID(ctx context.Context, req *models.UserPrimaryKey) (*models.User, error) {
 
 	var (
-		query      string
-		whereField = "id"
-		id         sql.NullString
-		login      sql.NullString
-		password   sql.NullString
-		name       sql.NullString
-		age        int
+		query string
+
+		id          sql.NullString
+		firstName   sql.NullString
+		lastName    sql.NullString
+		email       sql.NullString
+		phoneNumber sql.NullString
+		createdAt   sql.NullString
+		updatedAt   sql.NullString
 	)
-	if len(req.Name) > 0 {
-		whereField = "name"
-		req.Id = req.Name
-	}
 
 	query = `
-		SELECT
+		SELECT 
 			id,
-			login,
-			password,
-			name,
-			age
-		FROM users
-		WHERE ` + whereField + ` = $1
+			first_name,
+			last_name,
+			email,
+			phone_number,
+			created_at, 
+			updated_at
+		FROM "users"
+		WHERE id = $1
 	`
 
-	err := r.db.QueryRow(ctx, query, req.Id).Scan(
+	err := u.db.QueryRow(ctx, query, req.Id).Scan(
 		&id,
-		&login,
-		&password,
-		&name,
-		&age,
+		&firstName,
+		&lastName,
+		&email,
+		&phoneNumber,
+		&createdAt,
+		&updatedAt,
 	)
 
 	if err != nil {
@@ -88,18 +91,20 @@ func (r *userRepo) GetByID(ctx context.Context, req *models.UserPrimaryKey) (*mo
 	}
 
 	return &models.User{
-		Id:       id.String,
-		Login:    login.String,
-		Password: password.String,
-		Name:     name.String,
-		Age:      age,
+		Id:          id.String,
+		FirstName:   firstName.String,
+		LastName:    lastName.String,
+		Email:       email.String,
+		PhoneNumber: phoneNumber.String,
+		CreatedAt:   createdAt.String,
+		UpdatedAt:   updatedAt.String,
 	}, nil
 }
 
-func (r *userRepo) GetList(ctx context.Context, req *models.GetListUserRequest) (*models.GetListUserResponse, error) {
+func (u *userRepo) GetList(ctx context.Context, req *models.UserGetListRequest) (*models.UserGetListResponse, error) {
 
 	var (
-		resp   = &models.GetListUserResponse{}
+		resp   = &models.UserGetListResponse{}
 		query  string
 		where  = " WHERE TRUE"
 		offset = " OFFSET 0"
@@ -110,11 +115,13 @@ func (r *userRepo) GetList(ctx context.Context, req *models.GetListUserRequest) 
 		SELECT
 			COUNT(*) OVER(),
 			id,
-			login,
-			password,
-			name,
-			age
-		FROM users
+			first_name,
+			last_name,
+			email,
+			phone_number,
+			created_at,
+			updated_at
+		FROM "users"
 	`
 
 	if req.Offset > 0 {
@@ -127,27 +134,31 @@ func (r *userRepo) GetList(ctx context.Context, req *models.GetListUserRequest) 
 
 	query += where + offset + limit
 
-	rows, err := r.db.Query(ctx, query)
+	rows, err := u.db.Query(ctx, query)
 	if err != nil {
 		return nil, err
 	}
 
 	for rows.Next() {
 		var (
-			id       sql.NullString
-			login    sql.NullString
-			password sql.NullString
-			name     sql.NullString
-			age      int
+			id          sql.NullString
+			firstName   sql.NullString
+			lastName    sql.NullString
+			email       sql.NullString
+			phoneNumber sql.NullString
+			createdAt   sql.NullString
+			updatedAt   sql.NullString
 		)
 
 		err := rows.Scan(
 			&resp.Count,
 			&id,
-			&login,
-			&password,
-			&name,
-			&age,
+			&firstName,
+			&lastName,
+			&email,
+			&phoneNumber,
+			&createdAt,
+			&updatedAt,
 		)
 
 		if err != nil {
@@ -155,37 +166,46 @@ func (r *userRepo) GetList(ctx context.Context, req *models.GetListUserRequest) 
 		}
 
 		resp.Users = append(resp.Users, &models.User{
-			Id:       id.String,
-			Login:    login.String,
-			Password: password.String,
-			Name:     name.String,
-			Age:      age,
+			Id:          id.String,
+			FirstName:   firstName.String,
+			LastName:    lastName.String,
+			Email:       email.String,
+			PhoneNumber: phoneNumber.String,
+			CreatedAt:   createdAt.String,
+			UpdatedAt:   updatedAt.String,
 		})
 	}
-
 	return resp, nil
 }
 
-func (r *userRepo) Update(ctx context.Context, req *models.UpdateUser) (int64, error) {
+func (u *userRepo) Update(ctx context.Context, req *models.UserUpdate) (int64, error) {
 
 	var (
-		query string
+		query  string
+		params map[string]interface{}
 	)
 
 	query = `
 		UPDATE
-			users
+			"users"
 		SET
-			login = $1,
-			password = $2
-		WHERE id = $3
+			first_name = :first_name,
+			last_name = :last_name,
+			email = :email,
+			phone_number = :phone_number,
+			updated_at = NOW()
+		WHERE id = :id
 	`
+	params = map[string]interface{}{
+		"id":           req.Id,
+		"first_name":   req.FirstName,
+		"last_name":    req.LastName,
+		"email":        req.Email,
+		"phone_number": req.PhoneNumber,
+	}
 
-	result, err := r.db.Exec(ctx, query,
-		req.Login,
-		req.Password,
-		req.Id,
-	)
+	query, args := helper.ReplaceQueryParams(query, params)
+	result, err := u.db.Exec(ctx, query, args...)
 	if err != nil {
 		return 0, err
 	}
@@ -193,9 +213,9 @@ func (r *userRepo) Update(ctx context.Context, req *models.UpdateUser) (int64, e
 	return result.RowsAffected(), nil
 }
 
-func (r *userRepo) Delete(ctx context.Context, req *models.UserPrimaryKey) error {
+func (u *userRepo) Delete(ctx context.Context, req *models.UserPrimaryKey) error {
 
-	_, err := r.db.Exec(ctx, "DELETE FROM users WHERE id = $1", req.Id)
+	_, err := u.db.Exec(ctx, `DELETE FROM "users" WHERE id = $1`, req.Id)
 	if err != nil {
 		return err
 	}

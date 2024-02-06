@@ -28,20 +28,11 @@ func NewApi(r *gin.Engine, cfg *config.Config, storage storage.StorageI, logger 
 	// Register Api
 	r.POST("/register", handler.Register)
 
-	v1 := r.Group("/user")
-
 	r.POST("/user", handler.CreateUser)
 	r.GET("/user/:id", handler.GetByIdUser)
 	r.GET("/user", handler.GetListUser)
 	r.PUT("/user/:id", handler.UpdateUser)
 	r.DELETE("/user/:id", handler.DeleteUser)
-
-	v1.Use(handler.AuthMiddleware())
-	v1.POST("/phone", handler.CreatePhone)
-	v1.GET("/phone/:id", handler.GetByIdPhone)
-	v1.GET("/phone", handler.GetListPhone)
-	v1.PUT("/phone/:id", handler.UpdatePhone)
-	v1.DELETE("/phone/:id", handler.DeletePhone)
 
 	url := ginSwagger.URL("swagger/doc.json")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
