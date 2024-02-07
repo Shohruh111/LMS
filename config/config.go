@@ -49,7 +49,7 @@ func Load() Config {
 	cfg.Environment = cast.ToString(getOrReturnDefaultValue("ENVIRONMENT", DebugMode))
 
 	cfg.ServerHost = cast.ToString(getOrReturnDefaultValue("SERVER_HOST", "lms-vuny.onrender.com"))
-	cfg.HTTPPort = cast.ToString(getOrReturnDefaultValue("HTTP_PORT", ":"))
+	cfg.HTTPPort = cast.ToString(getOrReturnDefaultValue("HTTP_PORT", ":8081"))
 
 	cfg.SecretKey = cast.ToString(getOrReturnDefaultValue("SECRET_KEY", "=huiowp34"))
 

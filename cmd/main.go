@@ -51,7 +51,7 @@ func main() {
 	api.NewApi(r, &cfg, pgconn, log)
 
 	fmt.Println("Listening server", cfg.ServerHost+cfg.HTTPPort)
-	err = r.Run(cfg.ServerHost)
+	err = r.Run(cfg.HTTPPort)
 	if err != nil {
 		panic(err)
 	}
