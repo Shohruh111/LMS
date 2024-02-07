@@ -53,10 +53,10 @@ func Load() Config {
 
 	cfg.SecretKey = cast.ToString(getOrReturnDefaultValue("SECRET_KEY", "=huiowp34"))
 
-	cfg.PostgresHost = cast.ToString(getOrReturnDefaultValue("POSTGRES_HOST", "localhost"))
-	cfg.PostgresUser = cast.ToString(getOrReturnDefaultValue("POSTGRES_USER", "postgres"))
-	cfg.PostgresDatabase = cast.ToString(getOrReturnDefaultValue("POSTGRES_DATABASE", "generic"))
-	cfg.PostgresPassword = cast.ToString(getOrReturnDefaultValue("POSTGRES_PASSWORD", "1234"))
+	cfg.PostgresHost = cast.ToString(getOrReturnDefaultValue("POSTGRES_HOST", "dpg-cn1t4o0l6cac73feegvg-a"))
+	cfg.PostgresUser = cast.ToString(getOrReturnDefaultValue("POSTGRES_USER", "generic_7tqa_user"))
+	cfg.PostgresDatabase = cast.ToString(getOrReturnDefaultValue("POSTGRES_DATABASE", "generic_7tqa"))
+	cfg.PostgresPassword = cast.ToString(getOrReturnDefaultValue("POSTGRES_PASSWORD", "nfrpSoH235HFHEJhRcnaXCuu9BoGX7K4"))
 	cfg.PostgresPort = cast.ToInt(getOrReturnDefaultValue("POSTGRES_PORT", 5432))
 
 	cfg.PostgresMaxConnection = cast.ToInt32(getOrReturnDefaultValue("POSTGRES_PORT", 30))

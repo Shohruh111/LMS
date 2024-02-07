@@ -14,13 +14,11 @@ type CourseInfoCreate struct {
 }
 
 type CourseInfoUpdate struct {
-	Id   string `json:"id"`
-	Type string `json:"type"`
+	
 }
 
 type CourseInfoPrimaryKey struct {
-	Id   string `json:"id"`
-	Type string `json:"type"`
+	
 }
 
 type CourseInfoGetListRequest struct {
@@ -30,5 +28,5 @@ type CourseInfoGetListRequest struct {
 
 type CourseInfoGetListResponse struct {
 	Count       int           `json:"count"`
-	CourseInfos []*CourseInfo `json:"CourseInfos"`
+	CourseInfos []*CourseInfo `json:"course_infos"`
 }
