@@ -30,16 +30,18 @@ func (u *userRepo) Create(ctx context.Context, req *models.UserCreate) (string, 
 	)
 
 	query = `
-		INSERT INTO "users"(id, first_name, last_name, email, phone_number)
-		VALUES ($1, $2, $3, $4, $5)
+		INSERT INTO "users"(id, role_id, first_name, last_name, email, phone_number, password)
+		VALUES ($1, $2, $3, $4, $5, $6, $7)
 	`
 
 	_, err := u.db.Exec(ctx, query,
 		id,
+		req.RoleId,
 		req.FirstName,
 		req.LastName,
 		req.Email,
 		req.PhoneNumber,
+		req.Password,
 	)
 
 	if err != nil {
@@ -55,33 +57,44 @@ func (u *userRepo) GetByID(ctx context.Context, req *models.UserPrimaryKey) (*mo
 		query string
 
 		id          sql.NullString
+		roleId      sql.NullString
 		firstName   sql.NullString
 		lastName    sql.NullString
 		email       sql.NullString
 		phoneNumber sql.NullString
+		password    sql.NullString
 		createdAt   sql.NullString
 		updatedAt   sql.NullString
+		where       string = " WHERE "
 	)
+	if len(req.Email) > 0 {
+		where += " email = $1 "
+	} else {
+		where += " id = $1 "
+	}
 
 	query = `
 		SELECT 
 			id,
+			role_id,
 			first_name,
 			last_name,
 			email,
 			phone_number,
+			password,
 			created_at, 
 			updated_at
 		FROM "users"
-		WHERE id = $1
-	`
+	` + where
 
 	err := u.db.QueryRow(ctx, query, req.Id).Scan(
 		&id,
+		&roleId,
 		&firstName,
 		&lastName,
 		&email,
 		&phoneNumber,
+		&password,
 		&createdAt,
 		&updatedAt,
 	)
@@ -92,10 +105,12 @@ func (u *userRepo) GetByID(ctx context.Context, req *models.UserPrimaryKey) (*mo
 
 	return &models.User{
 		Id:          id.String,
+		RoleId:      roleId.String,
 		FirstName:   firstName.String,
 		LastName:    lastName.String,
 		Email:       email.String,
 		PhoneNumber: phoneNumber.String,
+		Password:    password.String,
 		CreatedAt:   createdAt.String,
 		UpdatedAt:   updatedAt.String,
 	}, nil
@@ -115,10 +130,12 @@ func (u *userRepo) GetList(ctx context.Context, req *models.UserGetListRequest) 
 		SELECT
 			COUNT(*) OVER(),
 			id,
+			role_id,
 			first_name,
 			last_name,
 			email,
 			phone_number,
+			password,
 			created_at,
 			updated_at
 		FROM "users"
@@ -142,10 +159,12 @@ func (u *userRepo) GetList(ctx context.Context, req *models.UserGetListRequest) 
 	for rows.Next() {
 		var (
 			id          sql.NullString
+			roleId      sql.NullString
 			firstName   sql.NullString
 			lastName    sql.NullString
 			email       sql.NullString
 			phoneNumber sql.NullString
+			password    sql.NullString
 			createdAt   sql.NullString
 			updatedAt   sql.NullString
 		)
@@ -153,10 +172,12 @@ func (u *userRepo) GetList(ctx context.Context, req *models.UserGetListRequest) 
 		err := rows.Scan(
 			&resp.Count,
 			&id,
+			&roleId,
 			&firstName,
 			&lastName,
 			&email,
 			&phoneNumber,
+			&password,
 			&createdAt,
 			&updatedAt,
 		)
@@ -167,10 +188,12 @@ func (u *userRepo) GetList(ctx context.Context, req *models.UserGetListRequest) 
 
 		resp.Users = append(resp.Users, &models.User{
 			Id:          id.String,
+			RoleId:      roleId.String,
 			FirstName:   firstName.String,
 			LastName:    lastName.String,
 			Email:       email.String,
 			PhoneNumber: phoneNumber.String,
+			Password:    password.String,
 			CreatedAt:   createdAt.String,
 			UpdatedAt:   updatedAt.String,
 		})

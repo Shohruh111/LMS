@@ -34,6 +34,18 @@ func NewApi(r *gin.Engine, cfg *config.Config, storage storage.StorageI, logger 
 	r.PUT("/user/:id", handler.UpdateUser)
 	r.DELETE("/user/:id", handler.DeleteUser)
 
+	r.POST("/role", handler.CreateUser)
+	r.GET("/role/:id", handler.GetByIdUser)
+	r.GET("/role", handler.GetListUser)
+	r.PUT("/role/:id", handler.UpdateUser)
+	r.DELETE("/role/:id", handler.DeleteUser)
+
+	r.POST("/course", handler.CreateUser)
+	r.GET("/course/:id", handler.GetByIdUser)
+	r.GET("/course", handler.GetListUser)
+	r.PUT("/course/:id", handler.UpdateUser)
+	r.DELETE("/course/:id", handler.DeleteUser)
+
 	url := ginSwagger.URL("swagger/doc.json")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 }
