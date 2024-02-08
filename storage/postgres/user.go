@@ -138,7 +138,8 @@ func (u *userRepo) GetList(ctx context.Context, req *models.UserGetListRequest) 
 			password,
 			created_at,
 			updated_at
-		FROM "users"
+		FROM "users" AS u
+		JOIN "roles" AS r ON u.role_id = r.id
 	`
 
 	if req.Offset > 0 {
