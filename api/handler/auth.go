@@ -10,8 +10,8 @@ import (
 )
 
 // Login godoc
-// @ID login
-// @Router /login [POST]
+// @ID /auth/login
+// @Router /auth/login [POST]
 // @Summary Login
 // @Description Login
 // @Tags Auth
@@ -46,8 +46,8 @@ func (h *handler) Login(c *gin.Context) {
 }
 
 // Register godoc
-// @ID register
-// @Router /register [POST]
+// @ID /auth/register
+// @Router /auth/register [POST]
 // @Summary Register
 // @Description Register
 // @Tags Auth
