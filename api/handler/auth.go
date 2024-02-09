@@ -2,6 +2,7 @@ package handler
 
 import (
 	"app/api/models"
+	"app/pkg/helper"
 	"context"
 	"errors"
 	"net/http"
@@ -60,7 +61,12 @@ func (h *handler) Login(c *gin.Context) {
 func (h *handler) Register(c *gin.Context) {
 
 	var createUser models.UserCreate
-	var id string
+	var (
+		id      string
+		to      string = "shohruhramozonov2662@gmail.com"
+		subject string = "Test Email"
+		body    string = "This is a test email sent from a Gin application."
+	)
 	err := c.ShouldBindJSON(&createUser)
 	if err != nil {
 		h.handlerResponse(c, "error user should bind json", http.StatusBadRequest, err.Error())
@@ -70,11 +76,19 @@ func (h *handler) Register(c *gin.Context) {
 	resp, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: createUser.Email})
 	if err != nil {
 		if err.Error() == "no rows in result set" {
-			id, err = h.strg.User().Create(context.Background(), &createUser)
+			// id, err = h.strg.User().Create(context.Background(), &createUser)
+			// if err != nil {
+			// 	h.handlerResponse(c, "storage.user.create", http.StatusInternalServerError, err.Error())
+			// 	return
+			// }
+			err = helper.SendEmail(to, subject, body)
 			if err != nil {
-				h.handlerResponse(c, "storage.user.create", http.StatusInternalServerError, err.Error())
+				h.handlerResponse(c, "Register.helper.SendEmail", http.StatusInternalServerError, err.Error())
 				return
 			}
+
+			h.handlerResponse(c, "Email sent successflly!", http.StatusOK, "Email sent successfully. Please, Check your email")
+			return
 		} else {
 			h.handlerResponse(c, "User already exist", http.StatusInternalServerError, err.Error())
 			return
@@ -83,6 +97,7 @@ func (h *handler) Register(c *gin.Context) {
 		h.handlerResponse(c, "User already exist", http.StatusBadRequest, nil)
 		return
 	}
+
 	resp, err = h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Id: id})
 
 	h.handlerResponse(c, "create user response", http.StatusCreated, resp)

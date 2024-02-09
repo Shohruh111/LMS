@@ -15,6 +15,7 @@ require (
 	github.com/swaggo/swag v1.16.1
 	go.uber.org/zap v1.25.0
 	golang.org/x/crypto v0.12.0
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
 
 require (
@@ -63,6 +64,7 @@ require (
 	golang.org/x/text v0.12.0 // indirect
 	golang.org/x/tools v0.7.0 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
+	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
