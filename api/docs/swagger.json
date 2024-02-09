@@ -430,7 +430,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Login"
+                    "Auth"
                 ],
                 "summary": "Login",
                 "operationId": "login",
@@ -510,7 +510,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Register"
+                    "Auth"
                 ],
                 "summary": "Register",
                 "operationId": "register",

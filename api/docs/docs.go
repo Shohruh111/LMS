@@ -442,7 +442,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Login"
+                    "Auth"
                 ],
                 "summary": "Login",
                 "operationId": "login",
@@ -522,7 +522,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Register"
+                    "Auth"
                 ],
                 "summary": "Register",
                 "operationId": "register",

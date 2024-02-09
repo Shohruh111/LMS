@@ -371,7 +371,7 @@ paths:
               type: object
       summary: Login
       tags:
-      - Login
+      - Auth
   /register:
     post:
       consumes:
@@ -415,7 +415,7 @@ paths:
               type: object
       summary: Register
       tags:
-      - Register
+      - Auth
   /role:
     get:
       consumes:

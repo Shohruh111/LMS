@@ -14,7 +14,7 @@ import (
 // @Router /login [POST]
 // @Summary Login
 // @Description Login
-// @Tags Login
+// @Tags Auth
 // @Accept json
 // @Procedure json
 // @Param login body models.LoginUser true "LoginRequest"
@@ -45,7 +45,7 @@ func (h *handler) Login(c *gin.Context) {
 // @Router /register [POST]
 // @Summary Register
 // @Description Register
-// @Tags Register
+// @Tags Auth
 // @Accept json
 // @Procedure json
 // @Param register body models.UserCreate true "CreateUserRequest"
