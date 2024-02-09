@@ -55,6 +55,7 @@ func (u *userRepo) GetByID(ctx context.Context, req *models.UserPrimaryKey) (*mo
 
 	var (
 		query string
+		find  string
 
 		id          sql.NullString
 		roleId      sql.NullString
@@ -69,8 +70,10 @@ func (u *userRepo) GetByID(ctx context.Context, req *models.UserPrimaryKey) (*mo
 	)
 	if len(req.Email) > 0 {
 		where += " email = $1 "
+		find = req.Email
 	} else {
 		where += " id = $1 "
+		find = req.Id
 	}
 
 	query = `
@@ -87,7 +90,7 @@ func (u *userRepo) GetByID(ctx context.Context, req *models.UserPrimaryKey) (*mo
 		FROM "users"
 	` + where
 
-	err := u.db.QueryRow(ctx, query, req.Id).Scan(
+	err := u.db.QueryRow(ctx, query, find).Scan(
 		&id,
 		&roleId,
 		&firstName,
