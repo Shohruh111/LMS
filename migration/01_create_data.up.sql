@@ -71,3 +71,19 @@ INSERT INTO "users"(id, role_id, first_name, last_name, email, phone_number, pas
 VALUES('5f6242db-5c4a-4080-99a7-646db032b6fd', '214fd852-b158-4e9a-9004-1cdc94c72835', 'Adam' , 'Johns', 'adam.johns@gmail.com', '+576432176', '123456789');
 INSERT INTO "users"(id, role_id, first_name, last_name, email, phone_number, password)
 VALUES('cac80e04-b3eb-4c6f-b3f7-32d5cadcaa48', '1ead7347-2c79-490d-b109-c9d75dcd0bac', 'Brat', 'Pitt', 'brat.pitt@gmail.com', '+57687432', '123457689');
+
+
+SELECT 
+			u.id,
+			u.role_id,
+			u.first_name,
+			u.last_name,
+			u.email,
+			u.phone_number,
+			u.password,
+			u.created_at, 
+			u.updated_at,
+
+			r.type
+		FROM "users" AS u
+		JOIN "roles" AS r ON u.role_id = r.id

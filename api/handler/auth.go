@@ -30,6 +30,10 @@ func (h *handler) Login(c *gin.Context) {
 	}
 	resp, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: loginUser.Email})
 	if err != nil {
+		if err.Error() == "no rows in result set" {
+			h.handlerResponse(c, "User doesn't exist", http.StatusBadRequest, error.Error(errors.New("User does not exist!")))
+			return
+		}
 		h.handlerResponse(c, "error in User GetByID Login", http.StatusBadRequest, err.Error())
 		return
 	}
@@ -37,6 +41,7 @@ func (h *handler) Login(c *gin.Context) {
 		h.handlerResponse(c, "", http.StatusBadRequest, error.Error(errors.New("Please, Enter Valid Code!")))
 		return
 	}
+
 	h.handlerResponse(c, "Login succesfully", http.StatusOK, resp)
 }
 

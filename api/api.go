@@ -22,11 +22,12 @@ func NewApi(r *gin.Engine, cfg *config.Config, storage storage.StorageI, logger 
 
 	r.Use(customCORSMiddleware())
 
+	v1 := r.Group("/auth")
 	// Login Api
-	r.POST("/login", handler.Login)
+	v1.POST("/login", handler.Login)
 
 	// Register Api
-	r.POST("/register", handler.Register)
+	v1.POST("/register", handler.Register)
 
 	r.POST("/user", handler.CreateUser)
 	r.GET("/user/:id", handler.GetByIdUser)

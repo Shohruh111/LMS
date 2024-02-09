@@ -52,6 +52,7 @@ func main() {
 
 	fmt.Println("Listening server", cfg.ServerHost+cfg.HTTPPort)
 	err = r.Run(":8081")
+	// err = r.Run(cfg.ServerHost + cfg.HTTPPort)
 	if err != nil {
 		panic(err)
 	}

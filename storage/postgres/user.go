@@ -66,28 +66,33 @@ func (u *userRepo) GetByID(ctx context.Context, req *models.UserPrimaryKey) (*mo
 		password    sql.NullString
 		createdAt   sql.NullString
 		updatedAt   sql.NullString
-		where       string = " WHERE "
+
+		userType sql.NullString
+		where    string = " WHERE "
 	)
 	if len(req.Email) > 0 {
-		where += " email = $1 "
+		where += " u.email = $1 "
 		find = req.Email
 	} else {
-		where += " id = $1 "
+		where += " u.id = $1 "
 		find = req.Id
 	}
 
 	query = `
 		SELECT 
-			id,
-			role_id,
-			first_name,
-			last_name,
-			email,
-			phone_number,
-			password,
-			created_at, 
-			updated_at
-		FROM "users"
+			u.id,
+			u.role_id,
+			u.first_name,
+			u.last_name,
+			u.email,
+			u.phone_number,
+			u.password,
+			u.created_at, 
+			u.updated_at,
+
+			r.type
+		FROM "users" AS u
+		JOIN "roles" AS r ON u.role_id = r.id
 	` + where
 
 	err := u.db.QueryRow(ctx, query, find).Scan(
@@ -100,6 +105,7 @@ func (u *userRepo) GetByID(ctx context.Context, req *models.UserPrimaryKey) (*mo
 		&password,
 		&createdAt,
 		&updatedAt,
+		&userType,
 	)
 
 	if err != nil {
@@ -114,6 +120,7 @@ func (u *userRepo) GetByID(ctx context.Context, req *models.UserPrimaryKey) (*mo
 		Email:       email.String,
 		PhoneNumber: phoneNumber.String,
 		Password:    password.String,
+		UserType:    userType.String,
 		CreatedAt:   createdAt.String,
 		UpdatedAt:   updatedAt.String,
 	}, nil
