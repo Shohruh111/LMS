@@ -16,6 +16,7 @@ require (
 	go.uber.org/zap v1.25.0
 	golang.org/x/crypto v0.12.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
+	gopkg.in/mail.v2 v2.3.1
 )
 
 require (
@@ -43,6 +44,8 @@ require (
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
 	github.com/jackc/pgtype v1.14.0 // indirect
 	github.com/jackc/puddle v1.3.0 // indirect
+	github.com/joegrasse/mail v1.0.0 // indirect
+	github.com/joegrasse/mime v0.0.0-20151001172835-f543c4783e35 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect

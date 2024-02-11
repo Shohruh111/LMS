@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strconv"
+	"time"
 
 	uuid "github.com/google/uuid"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -254,4 +256,85 @@ func (u *userRepo) Delete(ctx context.Context, req *models.UserPrimaryKey) error
 	}
 
 	return nil
+}
+
+func (u *userRepo) CheckOTP(ctx context.Context, req *models.CheckEmail, verifyCode int) (string, error) {
+
+	var (
+		requestId = uuid.New().String()
+		query     string
+	)
+
+	query = `
+		INSERT INTO "check_email"(request_id, email, verify_code)
+		VALUES ($1, $2, $3)
+	`
+
+	_, err := u.db.Exec(ctx, query,
+		requestId,
+		req.Email,
+		strconv.Itoa(verifyCode),
+	)
+	if err != nil {
+		return "", err
+	}
+
+	query = `
+		UPDATE "check_email"
+		SET expired_at = created_at + INTERVAL '1 minute'
+	`
+	_, err = u.db.Exec(ctx, query)
+	if err != nil {
+		return "", err
+	}
+
+	return requestId, nil
+}
+
+func (u *userRepo) GetOTP(ctx context.Context, req *models.CheckCode) (string, error) {
+
+	var (
+		query string
+
+		requestID  sql.NullString
+		email      sql.NullString
+		verifyCode sql.NullString
+		createdAt  sql.NullString
+		expiredAt  time.Time
+	)
+
+	query = `
+		SELECT 
+			request_id,
+			email,
+			verify_code,
+			created_at,
+			expired_at
+		FROM "check_email"
+		WHERE request_id = $1
+	`
+	err := u.db.QueryRow(ctx, query, req.RequestID).Scan(
+		&requestID,
+		&email,
+		&verifyCode,
+		&createdAt,
+		&expiredAt,
+	)
+	if err != nil {
+		return "", err
+	}
+
+	if time.Now().After(expiredAt) {
+		return "Code Expired!", err
+	}
+
+	// if s, err := strconv.Atoi(timeDifference.String); err != nil || s < 0 {
+	// 	return "Code Expired!", err
+	// }
+
+	if code, err := strconv.Atoi(verifyCode.String); code != req.Code || err != nil {
+		return "", err
+	}
+
+	return "Valid Code", nil
 }

@@ -17,6 +17,14 @@ CREATE TABLE "users"(
     "updated_at" TIMESTAMP
 );
 
+CREATE TABLE "check_email"(
+    "request_id" UUID PRIMARY KEY,
+    "email" VARCHAR(50) NOT NULL,
+    "verify_code" VARCHAR(6) NOT NULL,
+    "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    "expired_at" TIMESTAMP
+);
+
 CREATE TABLE "courses"(
     "id" UUID PRIMARY KEY,
     "name" VARCHAR(30) NOT NULL,
@@ -31,7 +39,7 @@ CREATE TABLE "courses"(
     "updated_at" TIMESTAMP
 ); 
 
-CREATE TABLE "courseOfUsers"(
+CREATE TABLE "course_of_users"(
     "id" UUID PRIMARY KEY,
     "user_id" UUID REFERENCES "users"("id"),
     "course_id" UUID REFERENCES "courses"("id"),
@@ -87,3 +95,8 @@ SELECT
 			r.type
 		FROM "users" AS u
 		JOIN "roles" AS r ON u.role_id = r.id
+
+
+SELECT 
+    created_at - CURRENT_TIMESTAMP as timek
+FROM "product";

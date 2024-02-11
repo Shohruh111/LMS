@@ -15,4 +15,6 @@ type UserRepoI interface {
 	GetList(context.Context, *models.UserGetListRequest) (*models.UserGetListResponse, error)
 	Update(context.Context, *models.UserUpdate) (int64, error)
 	Delete(context.Context, *models.UserPrimaryKey) error
+	CheckOTP(context.Context, *models.CheckEmail, int) (string, error)
+	GetOTP(context.Context, *models.CheckCode) (string, error)
 }

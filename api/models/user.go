@@ -5,6 +5,17 @@ type LoginUser struct {
 	Password string `json:"password"`
 }
 
+type CheckEmail struct {
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email     string `json:"email"`
+}
+
+type CheckCode struct {
+	Code      int    `json:"verify_code"`
+	RequestID string `json:"request_id"`
+}
+
 type User struct {
 	Id          string `json:"id"`
 	RoleId      string `json:"role_id"`

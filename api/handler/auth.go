@@ -62,33 +62,57 @@ func (h *handler) Register(c *gin.Context) {
 
 	var createUser models.UserCreate
 	var (
-		id      string
-		to      string = "shohruhramozonov2662@gmail.com"
-		subject string = "Test Email"
-		body    string = "This is a test email sent from a Gin application."
+		id string
 	)
 	err := c.ShouldBindJSON(&createUser)
 	if err != nil {
 		h.handlerResponse(c, "error user should bind json", http.StatusBadRequest, err.Error())
 		return
 	}
+	// id, err = h.strg.User().Create(context.Background(), &createUser)
+	// if err != nil {
+	// 	h.handlerResponse(c, "storage.user.create", http.StatusInternalServerError, err.Error())
+	// 	return
+	// }
 
-	resp, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: createUser.Email})
+	resp, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Id: id})
+
+	h.handlerResponse(c, "create user response", http.StatusCreated, resp)
+}
+
+// CheckEmail godoc
+// @ID /auth/check_email
+// @Router /auth/check_email [POST]
+// @Summary CheckEmail
+// @Description CheckEmail
+// @Tags Auth
+// @Accept json
+// @Procedure json
+// @Param checkEmail body models.CheckEmail true "CheckEmailRequest"
+// @Success 200 {object} Response{data=string} "Success Request"
+// @Response 400 {object} Response{data=string} "Bad Request"
+// @Failure 500 {object} Response{data=string} "Server error"
+func (h *handler) CheckEmail(c *gin.Context) {
+	var checkEmail models.CheckEmail
+	var requestId string
+	err := c.ShouldBindJSON(&checkEmail)
+	if err != nil {
+		h.handlerResponse(c, "error CheckEmail Auth", http.StatusInternalServerError, err.Error())
+		return
+	}
+	_, err = h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: checkEmail.Email})
 	if err != nil {
 		if err.Error() == "no rows in result set" {
-			// id, err = h.strg.User().Create(context.Background(), &createUser)
-			// if err != nil {
-			// 	h.handlerResponse(c, "storage.user.create", http.StatusInternalServerError, err.Error())
-			// 	return
-			// }
-			err = helper.SendEmail(to, subject, body)
+			verifyCode, err := helper.SendEmail(checkEmail.Email)
 			if err != nil {
-				h.handlerResponse(c, "Register.helper.SendEmail", http.StatusInternalServerError, err.Error())
+				h.handlerResponse(c, "error sendEMail", http.StatusInternalServerError, err.Error())
 				return
 			}
-
-			h.handlerResponse(c, "Email sent successflly!", http.StatusOK, "Email sent successfully. Please, Check your email")
-			return
+			requestId, err = h.strg.User().CheckOTP(context.Background(), &checkEmail, verifyCode)
+			if err != nil {
+				h.handlerResponse(c, "error in strg.User.CheckOTP", http.StatusInternalServerError, err.Error())
+				return
+			}
 		} else {
 			h.handlerResponse(c, "User already exist", http.StatusInternalServerError, err.Error())
 			return
@@ -98,7 +122,35 @@ func (h *handler) Register(c *gin.Context) {
 		return
 	}
 
-	resp, err = h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Id: id})
+	h.handlerResponse(c, "Email Sent Successfully!", http.StatusCreated, requestId)
+}
 
-	h.handlerResponse(c, "create user response", http.StatusCreated, resp)
+// CheckCode godoc
+// @ID /auth/check_code
+// @Router /auth/check_code [POST]
+// @Summary CheckCode
+// @Description CheckCode
+// @Tags Auth
+// @Accept json
+// @Procedure json
+// @Param checkEmail body models.CheckCode true "CheckCodeRequest"
+// @Success 200 {object} Response{data=string} "Success Request"
+// @Response 400 {object} Response{data=string} "Bad Request"
+// @Failure 500 {object} Response{data=string} "Server error"
+func (h *handler) CheckCode(c *gin.Context) {
+	var code models.CheckCode
+
+	err := c.ShouldBindJSON(&code)
+	if err != nil {
+		h.handlerResponse(c, "error Should Bind Json CheckCode", http.StatusBadRequest, err.Error())
+		return
+	}
+
+	ConfirmCode, err := h.strg.User().GetOTP(context.Background(), &code)
+	if err != nil {
+		h.handlerResponse(c, "error User.GetOTP", http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	h.handlerResponse(c, "Succcessfully checked", http.StatusOK, ConfirmCode)
 }
