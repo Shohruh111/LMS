@@ -21,8 +21,8 @@ CREATE TABLE "check_email"(
     "request_id" UUID PRIMARY KEY,
     "email" VARCHAR(50) NOT NULL,
     "verify_code" VARCHAR(6) NOT NULL,
-    "created_at" TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    "expired_at" TIMESTAMP WITHOUT TIME ZONE
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "expired_at" TIMESTAMP WITH TIME ZONE
 );
 
 CREATE TABLE "courses"(

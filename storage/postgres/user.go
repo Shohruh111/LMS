@@ -308,8 +308,8 @@ func (u *userRepo) GetOTP(ctx context.Context, req *models.CheckCode) (string, e
 			request_id,
 			email,
 			verify_code,
-			created_at ,
-			expired_at  
+			created_at AT TIME ZONE 'Tashkent/Uzbekistan',
+			expired_at AT TIME ZONE 'Tashkent/Uzbekistan'
 		FROM "check_email"
 		WHERE request_id = $1
 	`
