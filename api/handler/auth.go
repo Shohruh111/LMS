@@ -154,3 +154,43 @@ func (h *handler) CheckCode(c *gin.Context) {
 
 	h.handlerResponse(c, "Succcessfully checked", http.StatusOK, ConfirmCode)
 }
+
+// SendEmail godoc
+// @ID /auth/send_exist_email
+// @Router /auth/send_exist_email [POST]
+// @Summary SendEmail
+// @Description SendEmail
+// @Tags Auth
+// @Accept json
+// @Procedure json
+// @Param checkEmail body models.CheckEmail true "CheckEmailRequest"
+// @Success 200 {object} Response{data=string} "Success Request"
+// @Response 400 {object} Response{data=string} "Bad Request"
+// @Failure 500 {object} Response{data=string} "Server error"
+func (h *handler) SendCodeExistEmail(c *gin.Context) {
+	var email models.CheckEmail
+
+	err := c.ShouldBindJSON(&email)
+	if err != nil {
+		h.handlerResponse(c, "error Should Bind Json SendCodeExistEmail", http.StatusBadRequest, err.Error())
+		return
+	}
+
+	_, err = h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: email.Email})
+	if err == nil {
+		h.handlerResponse(c, "User already exist!", http.StatusOK, error.Error(errors.New("User already exist!")))
+		return
+	}
+	verifyCode, err := helper.SendEmail(email.Email)
+	if err != nil {
+		h.handlerResponse(c, "error in sendcodeexistEmail helper.SendEmail", http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	requestId, err := h.strg.User().CheckOTP(context.Background(), &email, verifyCode)
+	if err != nil {
+		h.handlerResponse(c, "error in strg.User.CheckOTP", http.StatusInternalServerError, err.Error())
+		return
+	}
+	h.handlerResponse(c, "Email sent successfully!", http.StatusOK, requestId)
+}

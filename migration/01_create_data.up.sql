@@ -21,8 +21,8 @@ CREATE TABLE "check_email"(
     "request_id" UUID PRIMARY KEY,
     "email" VARCHAR(50) NOT NULL,
     "verify_code" VARCHAR(6) NOT NULL,
-    "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    "expired_at" TIMESTAMP
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "expired_at" TIMESTAMP WITH TIME ZONE
 );
 
 CREATE TABLE "courses"(
@@ -32,7 +32,7 @@ CREATE TABLE "courses"(
     "description" VARCHAR(50) NOT NULL,
     "weekly_number" NUMERIC NOT NULL,
     "duration" VARCHAR(10) NOT NULL,
-    "price" VARCHAR(20) NOT NULL,
+    "price" NUMERIC NOT NULL,
     "beginning_date_course" VARCHAR(20) NOT NULL,
     "end_date" VARCHAR(20) NOT NULL,
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -43,8 +43,8 @@ CREATE TABLE "course_of_users"(
     "id" UUID PRIMARY KEY,
     "user_id" UUID REFERENCES "users"("id"),
     "course_id" UUID REFERENCES "courses"("id"),
-    "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
+    "updated_at" TIMESTAMP WITH TIME ZONE
 );
 
 CREATE TABLE "course_info"(

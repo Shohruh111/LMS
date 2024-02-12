@@ -308,8 +308,8 @@ func (u *userRepo) GetOTP(ctx context.Context, req *models.CheckCode) (string, e
 			request_id,
 			email,
 			verify_code,
-			created_at,
-			expired_at
+			created_at AT TIME ZONE 'Tashkent/Uzbekistan',
+			expired_at AT TIME ZONE 'Tashkent/Uzbekistan'
 		FROM "check_email"
 		WHERE request_id = $1
 	`
@@ -327,10 +327,6 @@ func (u *userRepo) GetOTP(ctx context.Context, req *models.CheckCode) (string, e
 	if time.Now().After(expiredAt) {
 		return "Code Expired!", err
 	}
-
-	// if s, err := strconv.Atoi(timeDifference.String); err != nil || s < 0 {
-	// 	return "Code Expired!", err
-	// }
 
 	if code, err := strconv.Atoi(verifyCode.String); code != req.Code || err != nil {
 		return "", err

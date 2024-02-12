@@ -18,10 +18,6 @@ definitions:
     properties:
       email:
         type: string
-      first_name:
-        type: string
-      last_name:
-        type: string
     type: object
   models.CourseCreate:
     properties:
@@ -289,6 +285,50 @@ paths:
                   type: string
               type: object
       summary: Register
+      tags:
+      - Auth
+  /auth/send_exist_email:
+    post:
+      consumes:
+      - application/json
+      description: SendEmail
+      operationId: /auth/send_exist_email
+      parameters:
+      - description: CheckEmailRequest
+        in: body
+        name: checkEmail
+        required: true
+        schema:
+          $ref: '#/definitions/models.CheckEmail'
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: SendEmail
       tags:
       - Auth
   /course:
