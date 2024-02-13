@@ -31,6 +31,7 @@ func NewApi(r *gin.Engine, cfg *config.Config, storage storage.StorageI, logger 
 	v1.POST("/check_email", handler.CheckEmail)
 	v1.POST("/check_code", handler.CheckCode)
 	v1.POST("/send_exist_email", handler.SendCodeExistEmail)
+	v1.POST("/update_password", handler.UpdatePassword)
 
 	r.POST("/user", handler.CreateUser)
 	r.GET("/user/:id", handler.GetByIdUser)

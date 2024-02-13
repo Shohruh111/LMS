@@ -69,11 +69,32 @@ func (h *handler) Register(c *gin.Context) {
 		h.handlerResponse(c, "error user should bind json", http.StatusBadRequest, err.Error())
 		return
 	}
-	// id, err = h.strg.User().Create(context.Background(), &createUser)
-	// if err != nil {
-	// 	h.handlerResponse(c, "storage.user.create", http.StatusInternalServerError, err.Error())
-	// 	return
-	// }
+	if len(createUser.RoleId) == 0 {
+		userRole, err := h.strg.Role().GetByID(context.Background(), &models.RolePrimaryKey{Type: "Oquvchi"})
+		if err != nil {
+			h.handlerResponse(c, "error Role.GetByID", http.StatusInternalServerError, err.Error())
+			return
+		}
+		createUser.RoleId = userRole.Id
+		id, err = h.strg.User().Create(context.Background(), &createUser)
+		if err != nil {
+			h.handlerResponse(c, "storage.user.create", http.StatusInternalServerError, err.Error())
+			return
+		}
+		resp, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Id: id})
+		if err != nil {
+			h.handlerResponse(c, "storage.user.getbyid", http.StatusInternalServerError, err.Error())
+			return
+		}
+		h.handlerResponse(c, "User Created Successfully!", http.StatusOK, resp)
+		return
+	}
+
+	id, err = h.strg.User().Create(context.Background(), &createUser)
+	if err != nil {
+		h.handlerResponse(c, "storage.user.create", http.StatusInternalServerError, err.Error())
+		return
+	}
 
 	resp, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Id: id})
 
@@ -121,8 +142,9 @@ func (h *handler) CheckEmail(c *gin.Context) {
 		h.handlerResponse(c, "User already exist", http.StatusBadRequest, nil)
 		return
 	}
+	Id := models.ConfirmCode{RequestId: requestId}
 
-	h.handlerResponse(c, "Email Sent Successfully!", http.StatusCreated, requestId)
+	h.handlerResponse(c, "Email Sent Successfully!", http.StatusCreated, Id)
 }
 
 // CheckCode godoc
@@ -193,4 +215,34 @@ func (h *handler) SendCodeExistEmail(c *gin.Context) {
 		return
 	}
 	h.handlerResponse(c, "Email sent successfully!", http.StatusOK, requestId)
+}
+
+// UpdatePassword godoc
+// @ID /auth/update_password
+// @Router /auth/update_password [POST]
+// @Summary UpdatePassword
+// @Description UpdatePassword
+// @Tags Auth
+// @Accept json
+// @Procedure json
+// @Param checkEmail body models.UpdatePassword true "UpdatePasswordRequest"
+// @Success 200 {object} Response{data=string} "Success Request"
+// @Response 400 {object} Response{data=string} "Bad Request"
+// @Failure 500 {object} Response{data=string} "Server error"
+func (h *handler) UpdatePassword(c *gin.Context) {
+	var update models.UpdatePassword
+
+	err := c.ShouldBindJSON(&update)
+	if err != nil {
+		h.handlerResponse(c, "error Should Bind Json UpdatePassword", http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	_, err = h.strg.User().UpdatePassword(context.Background(), &update)
+	if err != nil {
+		h.handlerResponse(c, "error in User.UpdatePassword", http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	h.handlerResponse(c, "Password updated successfully!", http.StatusOK, "Password updated successfully!")
 }

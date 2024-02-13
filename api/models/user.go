@@ -9,9 +9,18 @@ type CheckEmail struct {
 	Email string `json:"email"`
 }
 
+type ConfirmCode struct {
+	RequestId string `json:"request_id"`
+}
+
 type CheckCode struct {
 	Code      int    `json:"verify_code"`
 	RequestID string `json:"request_id"`
+}
+
+type UpdatePassword struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 type User struct {

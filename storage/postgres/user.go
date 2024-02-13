@@ -329,8 +329,26 @@ func (u *userRepo) GetOTP(ctx context.Context, req *models.CheckCode) (string, e
 	}
 
 	if code, err := strconv.Atoi(verifyCode.String); code != req.Code || err != nil {
-		return "", err
+		return "InValid Code", err
 	}
 
 	return "Valid Code", nil
+}
+
+func (u *userRepo) UpdatePassword(ctx context.Context, req *models.UpdatePassword) (int64, error) {
+	var (
+		query string
+	)
+
+	query = `
+		UPDATE "users"
+		SET password = $1
+		WHERE email = $2
+	`
+	result, err := u.db.Exec(ctx, query, req.Password, req.Email)
+	if err != nil {
+		return 0, err
+	}
+
+	return result.RowsAffected(), nil
 }

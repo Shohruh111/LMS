@@ -50,12 +50,21 @@ func (u *roleRepo) GetByID(ctx context.Context, req *models.RolePrimaryKey) (*mo
 	var (
 		query string
 		find  string
+		where string = " WHERE "
 
 		id        sql.NullString
 		typeRole  sql.NullString
 		createdAt sql.NullString
 		updatedAt sql.NullString
 	)
+
+	if len(req.Id) > 0 {
+		where += " id = $1 "
+		find = req.Id
+	} else if len(req.Type) > 0 {
+		where += "type = $1"
+		find = req.Type
+	}
 
 	query = `
 		SELECT 
@@ -64,7 +73,7 @@ func (u *roleRepo) GetByID(ctx context.Context, req *models.RolePrimaryKey) (*mo
 			created_at,
 			updated_at
 		FROM "roles"
-	`
+	` + where
 
 	err := u.db.QueryRow(ctx, query, find).Scan(
 		&id,

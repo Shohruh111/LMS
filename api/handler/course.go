@@ -1,6 +1,10 @@
 package handler
 
 import (
+	"app/api/models"
+	"app/pkg/helper"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,26 +23,26 @@ import (
 // @Failure 500 {object} Response{data=string} "Server error"
 func (h *handler) CreateCourse(c *gin.Context) {
 
-	// var createCourse models.CourseCreate
-	// err := c.ShouldBindJSON(&createCourse)
-	// if err != nil {
-	// 	h.handlerResponse(c, "error Course should bind json", http.StatusBadRequest, err.Error())
-	// 	return
-	// }
+	var createCourse models.CourseCreate
+	err := c.ShouldBindJSON(&createCourse)
+	if err != nil {
+		h.handlerResponse(c, "error Course should bind json", http.StatusBadRequest, err.Error())
+		return
+	}
 
-	// id, err := h.strg.Course().Create(c.Request.Context(), &createCourse)
-	// if err != nil {
-	// 	h.handlerResponse(c, "storage.Course.create", http.StatusInternalServerError, err.Error())
-	// 	return
-	// }
+	id, err := h.strg.Course().Create(c.Request.Context(), &createCourse)
+	if err != nil {
+		h.handlerResponse(c, "storage.Course.create", http.StatusInternalServerError, err.Error())
+		return
+	}
 
-	// resp, err := h.strg.Course().GetByID(c.Request.Context(), &models.CoursePrimaryKey{Id: id})
-	// if err != nil {
-	// 	h.handlerResponse(c, "storage.Course.getById", http.StatusInternalServerError, err.Error())
-	// 	return
-	// }
+	resp, err := h.strg.Course().GetByID(c.Request.Context(), &models.CoursePrimaryKey{Id: id})
+	if err != nil {
+		h.handlerResponse(c, "storage.Course.getById", http.StatusInternalServerError, err.Error())
+		return
+	}
 
-	// h.handlerResponse(c, "create Course resposne", http.StatusCreated, resp)
+	h.handlerResponse(c, "create Course resposne", http.StatusCreated, resp)
 }
 
 // @Security ApiKeyAuth
@@ -55,13 +59,13 @@ func (h *handler) CreateCourse(c *gin.Context) {
 // @Response 400 {object} Response{data=string} "Bad Request"
 // @Failure 500 {object} Response{data=string} "Server error"
 func (h *handler) GetByIdCourse(c *gin.Context) {
-	// var id string
+	var id string
 
-	// val, exist := c.Get("Auth")
-	// if !exist {
-	// 	h.handlerResponse(c, "Here", http.StatusInternalServerError, nil)
-	// 	return
-	// }
+	_, exist := c.Get("Auth")
+	if !exist {
+		h.handlerResponse(c, "Here", http.StatusInternalServerError, nil)
+		return
+	}
 
 	// CourseData := val.(helper.TokenInfo)
 	// if len(CourseData.CourseID) > 0 {
@@ -70,18 +74,18 @@ func (h *handler) GetByIdCourse(c *gin.Context) {
 	// id = c.Param("id")
 	// // }
 
-	// if !helper.IsValidUUID(id) {
-	// 	h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
-	// 	return
-	// }
+	if !helper.IsValidUUID(id) {
+		h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
+		return
+	}
 
-	// resp, err := h.strg.Course().GetByID(c.Request.Context(), &models.CoursePrimaryKey{Id: id})
-	// if err != nil {
-	// 	h.handlerResponse(c, "storage.Course.getById", http.StatusInternalServerError, err.Error())
-	// 	return
-	// }
+	resp, err := h.strg.Course().GetByID(c.Request.Context(), &models.CoursePrimaryKey{Id: id})
+	if err != nil {
+		h.handlerResponse(c, "storage.Course.getById", http.StatusInternalServerError, err.Error())
+		return
+	}
 
-	// h.handlerResponse(c, "get by id Course resposne", http.StatusOK, resp)
+	h.handlerResponse(c, "get by id Course resposne", http.StatusOK, resp)
 }
 
 // GetList Course godoc
@@ -99,28 +103,28 @@ func (h *handler) GetByIdCourse(c *gin.Context) {
 // @Failure 500 {object} Response{data=string} "Server error"
 func (h *handler) GetListCourse(c *gin.Context) {
 
-	// offset, err := h.getOffsetQuery(c.Query("offset"))
-	// if err != nil {
-	// 	h.handlerResponse(c, "get list Course offset", http.StatusBadRequest, "invalid offset")
-	// 	return
-	// }
+	offset, err := h.getOffsetQuery(c.Query("offset"))
+	if err != nil {
+		h.handlerResponse(c, "get list Course offset", http.StatusBadRequest, "invalid offset")
+		return
+	}
 
-	// limit, err := h.getLimitQuery(c.Query("limit"))
-	// if err != nil {
-	// 	h.handlerResponse(c, "get list Course limit", http.StatusBadRequest, "invalid limit")
-	// 	return
-	// }
+	limit, err := h.getLimitQuery(c.Query("limit"))
+	if err != nil {
+		h.handlerResponse(c, "get list Course limit", http.StatusBadRequest, "invalid limit")
+		return
+	}
 
-	// resp, err := h.strg.Course().GetList(c.Request.Context(), &models.CourseGetListRequest{
-	// 	Offset: offset,
-	// 	Limit:  limit,
-	// })
-	// if err != nil {
-	// 	h.handlerResponse(c, "storage.Course.get_list", http.StatusInternalServerError, err.Error())
-	// 	return
-	// }
+	resp, err := h.strg.Course().GetList(c.Request.Context(), &models.CourseGetListRequest{
+		Offset: offset,
+		Limit:  limit,
+	})
+	if err != nil {
+		h.handlerResponse(c, "storage.Course.get_list", http.StatusInternalServerError, err.Error())
+		return
+	}
 
-	// h.handlerResponse(c, "get list Course resposne", http.StatusOK, resp)
+	h.handlerResponse(c, "get list Course resposne", http.StatusOK, resp)
 }
 
 // @Security ApiKeyAuth
@@ -139,41 +143,41 @@ func (h *handler) GetListCourse(c *gin.Context) {
 // @Failure 500 {object} Response{data=string} "Server error"
 func (h *handler) UpdateCourse(c *gin.Context) {
 
-	// var (
-	// 	id         string = c.Param("id")
-	// 	updateCourse models.CourseUpdate
-	// )
+	var (
+		id           string = c.Param("id")
+		updateCourse models.CourseUpdate
+	)
 
-	// if !helper.IsValidUUID(id) {
-	// 	h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
-	// 	return
-	// }
+	if !helper.IsValidUUID(id) {
+		h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
+		return
+	}
 
-	// err := c.ShouldBindJSON(&updateCourse)
-	// if err != nil {
-	// 	h.handlerResponse(c, "error Course should bind json", http.StatusBadRequest, err.Error())
-	// 	return
-	// }
+	err := c.ShouldBindJSON(&updateCourse)
+	if err != nil {
+		h.handlerResponse(c, "error Course should bind json", http.StatusBadRequest, err.Error())
+		return
+	}
 
-	// updateCourse.Id = id
-	// rowsAffected, err := h.strg.Course().Update(c.Request.Context(), &updateCourse)
-	// if err != nil {
-	// 	h.handlerResponse(c, "storage.Course.update", http.StatusInternalServerError, err.Error())
-	// 	return
-	// }
+	updateCourse.Id = id
+	rowsAffected, err := h.strg.Course().Update(c.Request.Context(), &updateCourse)
+	if err != nil {
+		h.handlerResponse(c, "storage.Course.update", http.StatusInternalServerError, err.Error())
+		return
+	}
 
-	// if rowsAffected <= 0 {
-	// 	h.handlerResponse(c, "storage.Course.update", http.StatusBadRequest, "now rows affected")
-	// 	return
-	// }
+	if rowsAffected <= 0 {
+		h.handlerResponse(c, "storage.Course.update", http.StatusBadRequest, "now rows affected")
+		return
+	}
 
-	// resp, err := h.strg.Course().GetByID(c.Request.Context(), &models.CoursePrimaryKey{Id: updateCourse.Id})
-	// if err != nil {
-	// 	h.handlerResponse(c, "storage.Course.getById", http.StatusInternalServerError, err.Error())
-	// 	return
-	// }
+	resp, err := h.strg.Course().GetByID(c.Request.Context(), &models.CoursePrimaryKey{Id: updateCourse.Id})
+	if err != nil {
+		h.handlerResponse(c, "storage.Course.getById", http.StatusInternalServerError, err.Error())
+		return
+	}
 
-	// h.handlerResponse(c, "create Course resposne", http.StatusAccepted, resp)
+	h.handlerResponse(c, "create Course resposne", http.StatusAccepted, resp)
 }
 
 // @Security ApiKeyAuth
@@ -191,18 +195,18 @@ func (h *handler) UpdateCourse(c *gin.Context) {
 // @Failure 500 {object} Response{data=string} "Server error"
 func (h *handler) DeleteCourse(c *gin.Context) {
 
-	// var id string = c.Param("id")
+	var id string = c.Param("id")
 
-	// if !helper.IsValidUUID(id) {
-	// 	h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
-	// 	return
-	// }
+	if !helper.IsValidUUID(id) {
+		h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
+		return
+	}
 
-	// err := h.strg.Course().Delete(c.Request.Context(), &models.CoursePrimaryKey{Id: id})
-	// if err != nil {
-	// 	h.handlerResponse(c, "storage.Course.delete", http.StatusInternalServerError, err.Error())
-	// 	return
-	// }
+	err := h.strg.Course().Delete(c.Request.Context(), &models.CoursePrimaryKey{Id: id})
+	if err != nil {
+		h.handlerResponse(c, "storage.Course.delete", http.StatusInternalServerError, err.Error())
+		return
+	}
 
-	// h.handlerResponse(c, "create Course resposne", http.StatusNoContent, nil)
+	h.handlerResponse(c, "create Course resposne", http.StatusNoContent, nil)
 }
