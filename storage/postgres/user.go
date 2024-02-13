@@ -328,7 +328,10 @@ func (u *userRepo) GetOTP(ctx context.Context, req *models.CheckCode) (string, e
 		return "Code Expired!", err
 	}
 
-	if code, err := strconv.Atoi(verifyCode.String); code != req.Code || err != nil {
+	code, err := strconv.Atoi(verifyCode.String)
+	cameCode, err := strconv.Atoi(req.Code)
+
+	if code != cameCode || err != nil {
 		return "InValid Code", err
 	}
 

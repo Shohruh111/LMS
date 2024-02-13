@@ -14,7 +14,7 @@ type ConfirmCode struct {
 }
 
 type CheckCode struct {
-	Code      int    `json:"verify_code"`
+	Code      string `json:"verify_code"`
 	RequestID string `json:"request_id"`
 }
 
