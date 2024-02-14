@@ -3,6 +3,7 @@ package postgres
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"strconv"
 	"time"
@@ -332,7 +333,7 @@ func (u *userRepo) GetOTP(ctx context.Context, req *models.CheckCode) (string, e
 	cameCode, err := strconv.Atoi(req.Code)
 
 	if code != cameCode || err != nil {
-		return "InValid Code", err
+		return "InValid Code", errors.New("Invalid Code!")
 	}
 
 	return "Valid Code", nil
