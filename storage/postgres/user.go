@@ -345,7 +345,7 @@ func (u *userRepo) UpdatePassword(ctx context.Context, req *models.UpdatePasswor
 
 	query = `
 		UPDATE "users"
-		SET password = $1
+		SET password = $1, updated_at = NOW()
 		WHERE email = $2
 	`
 	result, err := u.db.Exec(ctx, query, req.Password, req.Email)

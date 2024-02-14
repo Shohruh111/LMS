@@ -218,8 +218,8 @@ func (h *handler) SendCodeExistEmail(c *gin.Context) {
 		h.handlerResponse(c, "error in strg.User.CheckOTP", http.StatusInternalServerError, err.Error())
 		return
 	}
-	reqId := models.ConfirmCode{RequestId: requestId}
-	h.handlerResponse(c, "Email sent successfully!", http.StatusOK, reqId)
+	informations := models.CheckEmail{RequestId: requestId, Email: email.Email}
+	h.handlerResponse(c, "Email sent successfully!", http.StatusOK, informations)
 }
 
 // UpdatePassword godoc
