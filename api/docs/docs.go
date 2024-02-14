@@ -1942,10 +1942,10 @@ const docTemplate = `{
                 "first_name": {
                     "type": "string"
                 },
-                "id": {
+                "last_name": {
                     "type": "string"
                 },
-                "last_name": {
+                "request_id": {
                     "type": "string"
                 }
             }

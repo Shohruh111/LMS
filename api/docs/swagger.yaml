@@ -20,9 +20,9 @@ definitions:
         type: string
       first_name:
         type: string
-      id:
-        type: string
       last_name:
+        type: string
+      request_id:
         type: string
     type: object
   models.CourseCreate:
