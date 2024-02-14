@@ -6,7 +6,9 @@ type LoginUser struct {
 }
 
 type CheckEmail struct {
-	Email string `json:"email"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email     string `json:"email"`
 }
 
 type ConfirmCode struct {

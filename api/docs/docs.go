@@ -1774,7 +1774,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "verify_code": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },
@@ -1782,6 +1782,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
                     "type": "string"
                 }
             }

@@ -12,11 +12,15 @@ definitions:
       request_id:
         type: string
       verify_code:
-        type: integer
+        type: string
     type: object
   models.CheckEmail:
     properties:
       email:
+        type: string
+      first_name:
+        type: string
+      last_name:
         type: string
     type: object
   models.CourseCreate:

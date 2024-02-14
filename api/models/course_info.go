@@ -10,6 +10,7 @@ type CourseInfo struct {
 }
 
 type CourseInfoCreate struct {
+	CourseId string `json:"course_id"`
 	
 }
 
@@ -18,7 +19,7 @@ type CourseInfoUpdate struct {
 }
 
 type CourseInfoPrimaryKey struct {
-	
+	Id string `json:"id"`
 }
 
 type CourseInfoGetListRequest struct {
