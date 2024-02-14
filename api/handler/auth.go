@@ -198,10 +198,13 @@ func (h *handler) SendCodeExistEmail(c *gin.Context) {
 		h.handlerResponse(c, "error Should Bind Json SendCodeExistEmail", http.StatusBadRequest, err.Error())
 		return
 	}
-
 	_, err = h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: email.Email})
 	if err != nil {
-		h.handlerResponse(c, "User already exist!", http.StatusOK, error.Error(errors.New("User already exist!")))
+		if err.Error() == "no rows in result set" {
+			h.handlerResponse(c, "Email not registered!", http.StatusBadRequest, error.Error(errors.New("Email is not registered!")))
+			return
+		}
+		h.handlerResponse(c, "error user.GetById.SendCodeExistEmail", http.StatusOK, err.Error())
 		return
 	}
 	verifyCode, err := helper.SendEmail(email.Email)
@@ -240,11 +243,17 @@ func (h *handler) UpdatePassword(c *gin.Context) {
 		return
 	}
 
-	_, err = h.strg.User().UpdatePassword(context.Background(), &update)
+	_, email, err := h.strg.User().UpdatePassword(context.Background(), &update)
 	if err != nil {
 		h.handlerResponse(c, "error in User.UpdatePassword", http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	h.handlerResponse(c, "Password updated successfully!", http.StatusOK, "Password updated successfully!")
+	user, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: email})
+	if err != nil {
+		h.handlerResponse(c, "error User.GetById.UpdatePassword", http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	h.handlerResponse(c, "Password updated successfully!", http.StatusOK, user)
 }

@@ -338,7 +338,7 @@ func (u *userRepo) GetOTP(ctx context.Context, req *models.CheckCode) (string, e
 	return "Valid Code", nil
 }
 
-func (u *userRepo) UpdatePassword(ctx context.Context, req *models.UpdatePassword) (int64, error) {
+func (u *userRepo) UpdatePassword(ctx context.Context, req *models.UpdatePassword) (int64, string, error) {
 	var (
 		query string
 	)
@@ -350,8 +350,8 @@ func (u *userRepo) UpdatePassword(ctx context.Context, req *models.UpdatePasswor
 	`
 	result, err := u.db.Exec(ctx, query, req.Password, req.Email)
 	if err != nil {
-		return 0, err
+		return 0, req.Email, err
 	}
 
-	return result.RowsAffected(), nil
+	return result.RowsAffected(), req.Email, nil
 }

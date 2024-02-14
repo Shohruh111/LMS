@@ -19,7 +19,7 @@ type UserRepoI interface {
 	Delete(context.Context, *models.UserPrimaryKey) error
 	CheckOTP(context.Context, *models.CheckEmail, int) (string, error)
 	GetOTP(context.Context, *models.CheckCode) (string, error)
-	UpdatePassword(context.Context, *models.UpdatePassword) (int64, error)
+	UpdatePassword(context.Context, *models.UpdatePassword) (int64, string, error)
 }
 
 type RoleRepoI interface {
