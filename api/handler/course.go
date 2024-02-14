@@ -3,6 +3,7 @@ package handler
 import (
 	"app/api/models"
 	"app/pkg/helper"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -209,4 +210,70 @@ func (h *handler) DeleteCourse(c *gin.Context) {
 	}
 
 	h.handlerResponse(c, "create Course resposne", http.StatusNoContent, nil)
+}
+
+// Upload Photo godoc
+// @ID photo_upload
+// @Router /photo_upload [POST]
+// @Summary Photo Upload
+// @Description Photo Upload
+// @Tags Course
+// @Accept json
+// @Procedure json
+// @Param photo formData file true "Photo file to upload"
+// @Success 200 {object} Response{data=string} "Success Request"
+// @Response 400 {object} Response{data=string} "Bad Request"
+// @Failure 500 {object} Response{data=string} "Server error"
+func (h *handler) PhotoUpload(c *gin.Context) {
+
+	file, err := c.FormFile("photo")
+	if err != nil {
+		return
+	}
+
+	videoFile, err := file.Open()
+	if err != nil {
+		h.handlerResponse(c, "error VideoLessons", http.StatusInternalServerError, err.Error())
+		return
+	}
+	defer videoFile.Close()
+
+	videoData, err := ioutil.ReadAll(videoFile)
+	if err != nil {
+		h.handlerResponse(c, "error ioutil.ReadAll VideoLessons", http.StatusInternalServerError, err.Error())
+		return
+	}
+	result, err := h.strg.Course().UploadPhotos(c.Request.Context(), &models.VideoLessons{FileName: file.Filename, VideoData: videoData})
+	if err != nil {
+		h.handlerResponse(c, "error Course.UploadVideos", http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	h.handlerResponse(c, "Video uploaded successfully!", http.StatusOK, result)
+}
+
+// Photo Get godoc
+// @ID photo_get
+// @Router /photo/{id} [Get]
+// @Summary Photo Get
+// @Description Photo Get
+// @Tags Course
+// @Accept json
+// @Procedure json
+// @Param id path string false "id"
+// @Success 200 {object} Response{data=string} "Success Request"
+// @Response 400 {object} Response{data=string} "Bad Request"
+// @Failure 500 {object} Response{data=string} "Server error"
+func (h *handler) PhotoGet(c *gin.Context) {
+
+	id := c.Param("id")
+
+	result, err := h.strg.Course().GetPhotos(c.Request.Context(), &models.VideoLessons{Id: id})
+	if err != nil {
+		h.handlerResponse(c, "error PhotoGet, GetPhotos", http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.Header("Content-Type", "image/jpeg")
+	c.Data(http.StatusOK, "photo", result.VideoData)
 }

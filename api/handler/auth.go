@@ -143,8 +143,9 @@ func (h *handler) CheckEmail(c *gin.Context) {
 		return
 	}
 	Id := models.ConfirmCode{RequestId: requestId}
+	checkEmail.Id = Id.RequestId
 
-	h.handlerResponse(c, "Email Sent Successfully!", http.StatusCreated, Id)
+	h.handlerResponse(c, "Email Sent Successfully!", http.StatusCreated, checkEmail)
 }
 
 // CheckCode godoc

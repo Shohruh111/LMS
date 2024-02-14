@@ -70,6 +70,13 @@ CREATE TABLE "course_report"(
 );
 
 
+CREATE TABLE "photos"(
+    "id" UUID PRIMARY KEY,
+    "name" VARCHAR(255),
+    "data" BYTEA
+);
+
+
 INSERT INTO "roles"(id, type)
 VALUES('214fd852-b158-4e9a-9004-1cdc94c72835', 'Teacher');
 INSERT INTO "roles"(id, type)

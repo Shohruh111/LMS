@@ -50,6 +50,8 @@ func NewApi(r *gin.Engine, cfg *config.Config, storage storage.StorageI, logger 
 	r.GET("/course", handler.GetListCourse)
 	r.PUT("/course/:id", handler.UpdateCourse)
 	r.DELETE("/course/:id", handler.DeleteCourse)
+	r.POST("/photo_upload", handler.PhotoUpload)
+	r.GET("/photo/:id", handler.PhotoGet)
 
 	url := ginSwagger.URL("swagger/doc.json")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))

@@ -20,6 +20,8 @@ definitions:
         type: string
       first_name:
         type: string
+      id:
+        type: string
       last_name:
         type: string
     type: object
@@ -613,6 +615,91 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Update Course
+      tags:
+      - Course
+  /photo/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Photo Get
+      operationId: photo_get
+      parameters:
+      - description: id
+        in: path
+        name: id
+        type: string
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Photo Get
+      tags:
+      - Course
+  /photo_upload:
+    post:
+      consumes:
+      - application/json
+      description: Photo Upload
+      operationId: photo_upload
+      parameters:
+      - description: Photo file to upload
+        in: formData
+        name: photo
+        required: true
+        type: file
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Photo Upload
       tags:
       - Course
   /role:

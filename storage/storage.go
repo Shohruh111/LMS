@@ -36,4 +36,6 @@ type CourseRepoI interface {
 	GetList(context.Context, *models.CourseGetListRequest) (*models.CourseGetListResponse, error)
 	Update(context.Context, *models.CourseUpdate) (int64, error)
 	Delete(context.Context, *models.CoursePrimaryKey) error
+	UploadPhotos(context.Context, *models.VideoLessons) (string, error)
+	GetPhotos(context.Context, *models.VideoLessons) (*models.VideoLessons, error)
 }

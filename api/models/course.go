@@ -1,5 +1,11 @@
 package models
 
+type VideoLessons struct {
+	Id        string `json:"id"`
+	FileName  string `json:"file_name"`
+	VideoData []byte `json:"video_data"`
+}
+
 type Course struct {
 	Id            string `json:"id"`
 	Name          string `json:"name"`
@@ -38,7 +44,7 @@ type CourseUpdate struct {
 }
 
 type CoursePrimaryKey struct {
-	Id   string `json:"id"`
+	Id string `json:"id"`
 }
 
 type CourseGetListRequest struct {

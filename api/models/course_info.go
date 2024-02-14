@@ -2,7 +2,7 @@ package models
 
 type CourseInfo struct {
 	Id            string `json:"id"`
-	CourseId       string `json:"course_id"`
+	CourseId      string `json:"course_id"`
 	PercentOfDone int    `json:"percent_of_done"`
 	RemainingExam string `json:"remaining_exam"`
 	CreatedAt     string `json:"created_at"`
@@ -10,16 +10,21 @@ type CourseInfo struct {
 }
 
 type CourseInfoCreate struct {
-	CourseId string `json:"course_id"`
-	
+	CourseId      string `json:"course_id"`
+	PercentOfDone int    `json:"percent_of_done"`
+	RemainingExam string `json:"remaining_exam"`
 }
 
 type CourseInfoUpdate struct {
-	
+	Id            string `json:"id"`
+	CourseId      string `json:"course_id"`
+	PercentOfDone int    `json:"percent_of_done"`
+	RemainingExam string `json:"remaining_exam"`
 }
 
 type CourseInfoPrimaryKey struct {
-	Id string `json:"id"`
+	Id       string `json:"id"`
+	CourseId string `json:"course_id"`
 }
 
 type CourseInfoGetListRequest struct {
