@@ -143,7 +143,7 @@ func (h *handler) CheckEmail(c *gin.Context) {
 		return
 	}
 	Id := models.ConfirmCode{RequestId: requestId}
-	checkEmail.Id = Id.RequestId
+	checkEmail.RequestId = Id.RequestId
 
 	h.handlerResponse(c, "Email Sent Successfully!", http.StatusCreated, checkEmail)
 }
