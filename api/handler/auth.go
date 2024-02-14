@@ -200,7 +200,7 @@ func (h *handler) SendCodeExistEmail(c *gin.Context) {
 	}
 
 	_, err = h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: email.Email})
-	if err == nil {
+	if err != nil {
 		h.handlerResponse(c, "User already exist!", http.StatusOK, error.Error(errors.New("User already exist!")))
 		return
 	}
