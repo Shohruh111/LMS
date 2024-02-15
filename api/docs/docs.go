@@ -1917,6 +1917,7 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
+                "error": {},
                 "status": {
                     "type": "integer"
                 }

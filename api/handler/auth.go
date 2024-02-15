@@ -27,6 +27,7 @@ func (h *handler) Login(c *gin.Context) {
 	err := c.ShouldBindJSON(&loginUser)
 	if err != nil {
 		h.handlerResponse(c, "error login user should bind json", http.StatusBadRequest, err.Error())
+
 		return
 	}
 	resp, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: loginUser.Email})
@@ -215,7 +216,7 @@ func (h *handler) SendCodeExistEmail(c *gin.Context) {
 
 	requestId, err := h.strg.User().CheckOTP(context.Background(), &email, verifyCode)
 	if err != nil {
-		h.handlerResponse(c, "error in strg.User.CheckOTP", http.StatusInternalServerError, err.Error())
+		h.handlerResponse(c, "error in strg.User.CheckOTP", http.StatusBadRequest, err.Error())
 		return
 	}
 	informations := models.CheckEmail{RequestId: requestId, Email: email.Email}

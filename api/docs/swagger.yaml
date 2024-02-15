@@ -4,6 +4,7 @@ definitions:
       data: {}
       description:
         type: string
+      error: {}
       status:
         type: integer
     type: object

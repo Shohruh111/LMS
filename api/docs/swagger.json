@@ -1905,6 +1905,7 @@
                 "description": {
                     "type": "string"
                 },
+                "error": {},
                 "status": {
                     "type": "integer"
                 }

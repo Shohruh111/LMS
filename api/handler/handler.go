@@ -19,6 +19,11 @@ type Response struct {
 	Status      int         `json:"status"`
 	Description string      `json:"description"`
 	Data        interface{} `json:"data"`
+	Error       interface{} `json:"error"`
+}
+
+type ErrorResponse struct {
+	Error interface{} `json:"error"`
 }
 
 func NewHandler(cfg *config.Config, storage storage.StorageI, logger logger.LoggerI) *handler {
@@ -32,18 +37,26 @@ func NewHandler(cfg *config.Config, storage storage.StorageI, logger logger.Logg
 func (h *handler) handlerResponse(c *gin.Context, path string, code int, message interface{}) {
 	response := Response{
 		Status: code,
-		Data:   message,
 	}
 
 	switch {
 	case code < 300:
+		response.Data = message
 		h.logger.Info(path, logger.Any("info", response))
+
 	case code >= 400:
+		response.Error = message
 		h.logger.Error(path, logger.Any("error", response))
 	}
 
 	c.JSON(code, response)
 }
+
+// func (h *handler) handlerError(c *gin.Context, path string, code int, message interface{}) {
+// 	error := ErrorResponse{
+// 		Error: message,
+// 	}
+// }
 
 func (h *handler) getOffsetQuery(offset string) (int, error) {
 
