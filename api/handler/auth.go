@@ -76,7 +76,7 @@ func (h *handler) Register(c *gin.Context) {
 			h.handlerResponse(c, "error Role.GetByID", http.StatusInternalServerError, err.Error())
 			return
 		}
-		createUser.RoleId = userRole.Id
+		createUser = models.UserCreate{RoleId: userRole.Id}
 		id, err = h.strg.User().Create(context.Background(), &createUser)
 		if err != nil {
 			h.handlerResponse(c, "storage.user.create", http.StatusInternalServerError, err.Error())
@@ -98,6 +98,10 @@ func (h *handler) Register(c *gin.Context) {
 	}
 
 	resp, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Id: id})
+	if err != nil {
+		h.handlerResponse(c, "", http.StatusInternalServerError, "")
+		return
+	}
 
 	h.handlerResponse(c, "create user response", http.StatusCreated, resp)
 }
