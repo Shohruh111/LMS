@@ -142,16 +142,19 @@ func (u *userRepo) GetList(ctx context.Context, req *models.UserGetListRequest) 
 	query = `
 		SELECT
 			COUNT(*) OVER(),
-			id,
-			role_id,
-			first_name,
-			last_name,
-			email,
-			phone_number,
-			password,
-			created_at,
-			updated_at
-		FROM "users" 
+			u.id,
+			u.role_id,
+			u.first_name,
+			u.last_name,
+			u.email,
+			u.phone_number,
+			u.password,
+			u.created_at,
+			u.updated_at,
+
+			r.type
+		FROM "users" AS u
+		JOIN "roles" AS r ON u.role_id = r.id
 	`
 
 	if req.Offset > 0 {
@@ -180,6 +183,7 @@ func (u *userRepo) GetList(ctx context.Context, req *models.UserGetListRequest) 
 			password    sql.NullString
 			createdAt   sql.NullString
 			updatedAt   sql.NullString
+			userType    sql.NullString
 		)
 
 		err := rows.Scan(
@@ -193,6 +197,7 @@ func (u *userRepo) GetList(ctx context.Context, req *models.UserGetListRequest) 
 			&password,
 			&createdAt,
 			&updatedAt,
+			&userType,
 		)
 
 		if err != nil {
@@ -207,6 +212,7 @@ func (u *userRepo) GetList(ctx context.Context, req *models.UserGetListRequest) 
 			Email:       email.String,
 			PhoneNumber: phoneNumber.String,
 			Password:    password.String,
+			UserType:    userType.String,
 			CreatedAt:   createdAt.String,
 			UpdatedAt:   updatedAt.String,
 		})
