@@ -52,11 +52,6 @@ func (h *handler) handlerResponse(c *gin.Context, path string, code int, message
 	c.JSON(code, response)
 }
 
-// func (h *handler) handlerError(c *gin.Context, path string, code int, message interface{}) {
-// 	error := ErrorResponse{
-// 		Error: message,
-// 	}
-// }
 
 func (h *handler) getOffsetQuery(offset string) (int, error) {
 

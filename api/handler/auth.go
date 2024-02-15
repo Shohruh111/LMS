@@ -183,7 +183,7 @@ func (h *handler) CheckCode(c *gin.Context) {
 
 	ConfirmCode, err := h.strg.User().GetOTP(context.Background(), &code)
 	if err != nil {
-		h.handlerResponse(c, "error User.GetOTP", http.StatusInternalServerError, err.Error())
+		h.handlerResponse(c, "error User.GetOTP", http.StatusBadRequest, err.Error())
 		return
 	}
 
