@@ -76,7 +76,14 @@ func (h *handler) Register(c *gin.Context) {
 			h.handlerResponse(c, "error Role.GetByID", http.StatusInternalServerError, err.Error())
 			return
 		}
-		createUser = models.UserCreate{RoleId: userRole.Id}
+		createUser = models.UserCreate{
+			RoleId:      userRole.Id,
+			FirstName:   createUser.FirstName,
+			LastName:    createUser.LastName,
+			Email:       createUser.Email,
+			PhoneNumber: createUser.PhoneNumber,
+			Password:    createUser.Password,
+		}
 		id, err = h.strg.User().Create(context.Background(), &createUser)
 		if err != nil {
 			h.handlerResponse(c, "storage.user.create", http.StatusInternalServerError, err.Error())
