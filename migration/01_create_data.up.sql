@@ -36,6 +36,7 @@ CREATE TABLE "courses"(
     "duration" VARCHAR(70) NOT NULL,
     "price" NUMERIC NOT NULL,
     "beginning_date_course" VARCHAR(20) NOT NULL,
+    "number_of_materials" NUMERIC NOT NULL,
     "end_date" VARCHAR(50) NOT NULL,
     "grade" NUMERIC NOT NULL,
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

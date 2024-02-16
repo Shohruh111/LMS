@@ -158,6 +158,7 @@ func (u *courseRepo) GetList(ctx context.Context, req *models.CourseGetListReque
 			price,
 			beginning_date_course,
 			end_date,
+			number_of_materials,
 			grade,
 			created_at,
 			updated_at
@@ -181,20 +182,21 @@ func (u *courseRepo) GetList(ctx context.Context, req *models.CourseGetListReque
 
 	for rows.Next() {
 		var (
-			id            sql.NullString
-			name          sql.NullString
-			photo         sql.NullString
-			forWho        sql.NullString
-			tipe          sql.NullString
-			description   sql.NullString
-			weeklyNumber  int
-			duration      sql.NullString
-			price         int
-			beginningDate sql.NullString
-			endDate       sql.NullString
-			grade         int
-			createdAt     sql.NullString
-			updatedAt     sql.NullString
+			id                sql.NullString
+			name              sql.NullString
+			photo             sql.NullString
+			forWho            sql.NullString
+			tipe              sql.NullString
+			description       sql.NullString
+			weeklyNumber      int
+			duration          sql.NullString
+			price             int
+			beginningDate     sql.NullString
+			endDate           sql.NullString
+			numberOfMaterials int
+			grade             int
+			createdAt         sql.NullString
+			updatedAt         sql.NullString
 		)
 
 		err := rows.Scan(
@@ -210,6 +212,7 @@ func (u *courseRepo) GetList(ctx context.Context, req *models.CourseGetListReque
 			&price,
 			&beginningDate,
 			&endDate,
+			&numberOfMaterials,
 			&grade,
 			&createdAt,
 			&updatedAt,
@@ -220,20 +223,21 @@ func (u *courseRepo) GetList(ctx context.Context, req *models.CourseGetListReque
 		}
 
 		resp.Courses = append(resp.Courses, &models.Course{
-			Id:            id.String,
-			Name:          name.String,
-			Photo:         photo.String,
-			ForWho:        forWho.String,
-			Type:          tipe.String,
-			Description:   description.String,
-			WeeklyNumber:  weeklyNumber,
-			Duration:      description.String,
-			Price:         price,
-			BeginningDate: beginningDate.String,
-			EndDate:       endDate.String,
-			Grade:         grade,
-			CreatedAt:     createdAt.String,
-			UpdatedAt:     updatedAt.String,
+			Id:                id.String,
+			Name:              name.String,
+			Photo:             photo.String,
+			ForWho:            forWho.String,
+			Type:              tipe.String,
+			Description:       description.String,
+			WeeklyNumber:      weeklyNumber,
+			Duration:          description.String,
+			Price:             price,
+			BeginningDate:     beginningDate.String,
+			EndDate:           endDate.String,
+			NumberOfMaterials: numberOfMaterials,
+			Grade:             grade,
+			CreatedAt:         createdAt.String,
+			UpdatedAt:         updatedAt.String,
 		})
 	}
 	return resp, nil
