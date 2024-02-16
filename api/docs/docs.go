@@ -1966,6 +1966,9 @@ const docTemplate = `{
                 "end_date": {
                     "type": "string"
                 },
+                "for_who": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -1974,6 +1977,9 @@ const docTemplate = `{
                 },
                 "price": {
                     "type": "integer"
+                },
+                "type": {
+                    "type": "string"
                 },
                 "weekly_number": {
                     "type": "integer"
@@ -1995,6 +2001,12 @@ const docTemplate = `{
                 "end_date": {
                     "type": "string"
                 },
+                "for_who": {
+                    "type": "string"
+                },
+                "grade": {
+                    "type": "integer"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -2006,6 +2018,9 @@ const docTemplate = `{
                 },
                 "price": {
                     "type": "integer"
+                },
+                "type": {
+                    "type": "string"
                 },
                 "weekly_number": {
                     "type": "integer"

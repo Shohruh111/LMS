@@ -1954,6 +1954,9 @@
                 "end_date": {
                     "type": "string"
                 },
+                "for_who": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -1962,6 +1965,9 @@
                 },
                 "price": {
                     "type": "integer"
+                },
+                "type": {
+                    "type": "string"
                 },
                 "weekly_number": {
                     "type": "integer"
@@ -1983,6 +1989,12 @@
                 "end_date": {
                     "type": "string"
                 },
+                "for_who": {
+                    "type": "string"
+                },
+                "grade": {
+                    "type": "integer"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -1994,6 +2006,9 @@
                 },
                 "price": {
                     "type": "integer"
+                },
+                "type": {
+                    "type": "string"
                 },
                 "weekly_number": {
                     "type": "integer"

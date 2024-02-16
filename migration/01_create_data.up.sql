@@ -27,14 +27,17 @@ CREATE TABLE "check_email"(
 
 CREATE TABLE "courses"(
     "id" UUID PRIMARY KEY,
-    "name" VARCHAR(30) NOT NULL,
-    "photo" VARCHAR(20),
+    "name" VARCHAR(70) NOT NULL,
+    "photo" VARCHAR(70),
     "description" VARCHAR(50) NOT NULL,
+    "for_who" VARCHAR(20) NOT NULL,
+    "type" VARCHAR(20) NOT NULL,
     "weekly_number" NUMERIC NOT NULL,
-    "duration" VARCHAR(10) NOT NULL,
+    "duration" VARCHAR(70) NOT NULL,
     "price" NUMERIC NOT NULL,
     "beginning_date_course" VARCHAR(20) NOT NULL,
-    "end_date" VARCHAR(20) NOT NULL,
+    "end_date" VARCHAR(50) NOT NULL,
+    "grade" NUMERIC NOT NULL,
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP
 ); 
