@@ -75,10 +75,10 @@ func (h *handler) GetByIdCourse(c *gin.Context) {
 	// id = c.Param("id")
 	// // }
 
-	if !helper.IsValidUUID(id) {
-		h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
-		return
-	}
+	// if !helper.IsValidUUID(id) {
+	// 	h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
+	// 	return
+	// }
 
 	resp, err := h.strg.Course().GetByID(c.Request.Context(), &models.CoursePrimaryKey{Id: id})
 	if err != nil {
