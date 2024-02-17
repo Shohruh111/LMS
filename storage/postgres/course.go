@@ -58,7 +58,6 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 
 	var (
 		query string
-		find  string
 
 		id            sql.NullString
 		name          sql.NullString
@@ -96,7 +95,7 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 		WHERE id = $1
 	`
 
-	err := u.db.QueryRow(ctx, query, find).Scan(
+	err := u.db.QueryRow(ctx, query, req.Id).Scan(
 		&id,
 		&name,
 		&photo,
@@ -141,7 +140,7 @@ func (u *courseRepo) GetList(ctx context.Context, req *models.CourseGetListReque
 		resp   = &models.CourseGetListResponse{}
 		query  string
 		where  = " WHERE TRUE"
-		offset = " OFFSET 0 " 
+		offset = " OFFSET 0 "
 		limit  = " LIMIT 10 "
 	)
 
