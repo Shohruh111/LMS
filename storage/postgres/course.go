@@ -93,6 +93,7 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 			created_at,
 			updated_at
 		FROM "courses" 
+		WHERE id = $1
 	`
 
 	err := u.db.QueryRow(ctx, query, find).Scan(
