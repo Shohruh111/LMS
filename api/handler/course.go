@@ -72,7 +72,7 @@ func (h *handler) GetByIdCourse(c *gin.Context) {
 	// if len(CourseData.CourseID) > 0 {
 	// 	id = CourseData.CourseID
 	// } else {
-	// id = c.Param("id")
+	id = c.Param("id")
 	// // }
 
 	// if !helper.IsValidUUID(id) {

@@ -75,10 +75,10 @@ func (h *handler) GetByIdUser(c *gin.Context) {
 	id = c.Param("id")
 	// }
 
-	// if !helper.IsValidUUID(id) {
-	// 	h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
-	// 	return
-	// }
+	if !helper.IsValidUUID(id) {
+		h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
+		return
+	}
 
 	resp, err := h.strg.User().GetByID(c.Request.Context(), &models.UserPrimaryKey{Id: id})
 	if err != nil {
