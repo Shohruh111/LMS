@@ -62,11 +62,11 @@ func (h *handler) CreateCourse(c *gin.Context) {
 func (h *handler) GetByIdCourse(c *gin.Context) {
 	var id string
 
-	_, exist := c.Get("Auth")
-	if !exist {
-		h.handlerResponse(c, "Here", http.StatusInternalServerError, nil)
-		return
-	}
+	// _, exist := c.Get("Auth")
+	// if !exist {
+	// 	h.handlerResponse(c, "Here", http.StatusInternalServerError, nil)
+	// 	return
+	// }
 
 	// CourseData := val.(helper.TokenInfo)
 	// if len(CourseData.CourseID) > 0 {

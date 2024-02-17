@@ -10,6 +10,7 @@ import (
 
 	uuid "github.com/google/uuid"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"golang.org/x/crypto/bcrypt"
 
 	"app/api/models"
 	"app/pkg/helper"
@@ -37,14 +38,19 @@ func (u *userRepo) Create(ctx context.Context, req *models.UserCreate) (string, 
 		VALUES ($1, $2, $3, $4, $5, $6, $7)
 	`
 
-	_, err := u.db.Exec(ctx, query,
+	hashPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+
+	_, err = u.db.Exec(ctx, query,
 		id,
 		req.RoleId,
 		req.FirstName,
 		req.LastName,
 		req.Email,
 		req.PhoneNumber,
-		req.Password,
+		hashPassword,
 	)
 
 	if err != nil {
@@ -122,7 +128,7 @@ func (u *userRepo) GetByID(ctx context.Context, req *models.UserPrimaryKey) (*mo
 		LastName:    lastName.String,
 		Email:       email.String,
 		PhoneNumber: phoneNumber.String,
-		Password:    password.String,
+		Password:    "",
 		UserType:    userType.String,
 		CreatedAt:   createdAt.String,
 		UpdatedAt:   updatedAt.String,
@@ -211,7 +217,7 @@ func (u *userRepo) GetList(ctx context.Context, req *models.UserGetListRequest) 
 			LastName:    lastName.String,
 			Email:       email.String,
 			PhoneNumber: phoneNumber.String,
-			Password:    password.String,
+			Password:    "",
 			UserType:    userType.String,
 			CreatedAt:   createdAt.String,
 			UpdatedAt:   updatedAt.String,
@@ -235,6 +241,7 @@ func (u *userRepo) Update(ctx context.Context, req *models.UserUpdate) (int64, e
 			last_name = :last_name,
 			email = :email,
 			phone_number = :phone_number,
+			password = :password,
 			updated_at = NOW()
 		WHERE id = :id
 	`
@@ -244,6 +251,7 @@ func (u *userRepo) Update(ctx context.Context, req *models.UserUpdate) (int64, e
 		"last_name":    req.LastName,
 		"email":        req.Email,
 		"phone_number": req.PhoneNumber,
+		"password":     req.Password,
 	}
 
 	query, args := helper.ReplaceQueryParams(query, params)

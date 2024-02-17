@@ -140,8 +140,8 @@ func (u *courseRepo) GetList(ctx context.Context, req *models.CourseGetListReque
 		resp   = &models.CourseGetListResponse{}
 		query  string
 		where  = " WHERE TRUE"
-		offset = " OFFSET 0"
-		limit  = " LIMIT 10"
+		offset = " OFFSET 0 " 
+		limit  = " LIMIT 10 "
 	)
 
 	query = `

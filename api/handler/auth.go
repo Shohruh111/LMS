@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // Login godoc
@@ -39,7 +40,12 @@ func (h *handler) Login(c *gin.Context) {
 		h.handlerResponse(c, "error in User GetByID Login", http.StatusBadRequest, err.Error())
 		return
 	}
-	if resp.Password != loginUser.Password {
+	hashPassword, err := bcrypt.GenerateFromPassword([]byte(loginUser.Password), bcrypt.DefaultCost)
+	if err != nil {
+		h.handlerResponse(c, "error in hashing password Login", http.StatusInternalServerError, err.Error())
+		return
+	}
+	if resp.Password != string(hashPassword) {
 		h.handlerResponse(c, "", http.StatusBadRequest, error.Error(errors.New("Please, Enter Valid Code!")))
 		return
 	}
