@@ -28,13 +28,7 @@ definitions:
     type: object
   models.CourseCreate:
     properties:
-      beginning_date_course:
-        type: string
-      description:
-        type: string
       duration:
-        type: string
-      end_date:
         type: string
       for_who:
         type: string
@@ -53,16 +47,10 @@ definitions:
     properties:
       beginning_date_course:
         type: string
-      description:
-        type: string
       duration:
-        type: string
-      end_date:
         type: string
       for_who:
         type: string
-      grade:
-        type: integer
       id:
         type: string
       name:
@@ -135,7 +123,7 @@ definitions:
 info:
   contact: {}
 paths:
-  /auth/check_code:
+  /lms/api/auth/checkCode:
     post:
       consumes:
       - application/json
@@ -179,7 +167,7 @@ paths:
       summary: CheckCode
       tags:
       - Auth
-  /auth/check_email:
+  /lms/api/auth/checkEmail:
     post:
       consumes:
       - application/json
@@ -223,7 +211,7 @@ paths:
       summary: CheckEmail
       tags:
       - Auth
-  /auth/login:
+  /lms/api/auth/login:
     post:
       consumes:
       - application/json
@@ -267,7 +255,7 @@ paths:
       summary: Login
       tags:
       - Auth
-  /auth/register:
+  /lms/api/auth/register:
     post:
       consumes:
       - application/json
@@ -311,7 +299,7 @@ paths:
       summary: Register
       tags:
       - Auth
-  /auth/send_exist_email:
+  /lms/api/auth/sendExistEmail:
     post:
       consumes:
       - application/json
@@ -355,7 +343,7 @@ paths:
       summary: SendEmail
       tags:
       - Auth
-  /auth/update_password:
+  /lms/api/auth/updatePassword:
     post:
       consumes:
       - application/json
@@ -399,7 +387,7 @@ paths:
       summary: UpdatePassword
       tags:
       - Auth
-  /course:
+  /lms/api/course:
     get:
       consumes:
       - application/json
@@ -490,7 +478,7 @@ paths:
       summary: Create Course
       tags:
       - Course
-  /course/{id}:
+  /lms/api/course/{id}:
     delete:
       consumes:
       - application/json
@@ -628,7 +616,95 @@ paths:
       summary: Update Course
       tags:
       - Course
-  /photo/{id}:
+  /lms/api/course/users:
+    get:
+      consumes:
+      - application/json
+      description: Get List Course Of Users
+      operationId: get_list_Course_of_users
+      parameters:
+      - description: id
+        in: path
+        name: id
+        type: string
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Get List Course Of Users
+      tags:
+      - Course
+  /lms/api/mentors:
+    get:
+      consumes:
+      - application/json
+      description: Get List Mentors
+      operationId: get_list_mentors
+      parameters:
+      - description: offset
+        in: query
+        name: offset
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Get List Mentors
+      tags:
+      - User
+  /lms/api/photo/{id}:
     get:
       consumes:
       - application/json
@@ -670,7 +746,7 @@ paths:
       summary: Photo Get
       tags:
       - Course
-  /photo_upload:
+  /lms/api/photoUpload:
     post:
       consumes:
       - application/json
@@ -713,7 +789,7 @@ paths:
       summary: Photo Upload
       tags:
       - Course
-  /role:
+  /lms/api/role:
     get:
       consumes:
       - application/json
@@ -804,7 +880,7 @@ paths:
       summary: Create Role
       tags:
       - Role
-  /role/{id}:
+  /lms/api/role/{id}:
     delete:
       consumes:
       - application/json
@@ -942,7 +1018,53 @@ paths:
       summary: Update Role
       tags:
       - Role
-  /user:
+  /lms/api/students:
+    get:
+      consumes:
+      - application/json
+      description: Get List Students
+      operationId: get_list_students
+      parameters:
+      - description: offset
+        in: query
+        name: offset
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Get List Students
+      tags:
+      - User
+  /lms/api/user:
     get:
       consumes:
       - application/json
@@ -956,6 +1078,10 @@ paths:
       - description: limit
         in: query
         name: limit
+        type: string
+      - description: filter
+        in: query
+        name: filter
         type: string
       responses:
         "200":
@@ -1033,7 +1159,7 @@ paths:
       summary: Create User
       tags:
       - User
-  /user/{id}:
+  /lms/api/user/{id}:
     delete:
       consumes:
       - application/json

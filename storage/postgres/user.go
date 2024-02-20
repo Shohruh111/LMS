@@ -140,7 +140,7 @@ func (u *userRepo) GetList(ctx context.Context, req *models.UserGetListRequest) 
 	var (
 		resp   = &models.UserGetListResponse{}
 		query  string
-		where  = " WHERE TRUE"
+		where  = " "
 		offset = " OFFSET 0"
 		limit  = " LIMIT 10"
 	)
@@ -169,6 +169,10 @@ func (u *userRepo) GetList(ctx context.Context, req *models.UserGetListRequest) 
 
 	if req.Limit > 0 {
 		limit = fmt.Sprintf(" LIMIT %d", req.Limit)
+	}
+
+	if len(req.Filter) > 0 {
+		where = " WHERE r.type = '" + req.Filter + "'"
 	}
 
 	query += where + offset + limit

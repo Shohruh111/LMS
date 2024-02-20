@@ -63,9 +63,9 @@ type UserPrimaryKey struct {
 }
 
 type UserGetListRequest struct {
-	Offset int `json:"offset"`
-	Limit  int `json:"limit"`
-	
+	Offset int    `json:"offset"`
+	Limit  int    `json:"limit"`
+	Filter string `json:"filter"`
 }
 
 type UserGetListResponse struct {

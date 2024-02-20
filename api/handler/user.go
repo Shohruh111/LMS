@@ -9,10 +9,15 @@ import (
 	"app/pkg/helper"
 )
 
+const (
+	students = "Oquvchi"
+	mentors  = "Mentors"
+)
+
 // @Security ApiKeyAuth
 // Create user godoc
 // @ID create_user
-// @Router /user [POST]
+// @Router /lms/api/user [POST]
 // @Summary Create User
 // @Description Create User
 // @Tags User
@@ -49,7 +54,7 @@ func (h *handler) CreateUser(c *gin.Context) {
 // @Security ApiKeyAuth
 // GetByID user godoc
 // @ID get_by_id_user
-// @Router /user/{id} [GET]
+// @Router /lms/api/user/{id} [GET]
 // @Summary Get By ID User
 // @Description Get By ID User
 // @Tags User
@@ -91,7 +96,7 @@ func (h *handler) GetByIdUser(c *gin.Context) {
 
 // GetList user godoc
 // @ID get_list_user
-// @Router /user [GET]
+// @Router /lms/api/user [GET]
 // @Summary Get List User
 // @Description Get List User
 // @Tags User
@@ -99,6 +104,7 @@ func (h *handler) GetByIdUser(c *gin.Context) {
 // @Procedure json
 // @Param offset query string false "offset"
 // @Param limit query string false "limit"
+// @Param filter query string false "filter"
 // @Success 200 {object} Response{data=string} "Success Request"
 // @Response 400 {object} Response{data=string} "Bad Request"
 // @Failure 500 {object} Response{data=string} "Server error"
@@ -115,10 +121,12 @@ func (h *handler) GetListUser(c *gin.Context) {
 		h.handlerResponse(c, "get list user limit", http.StatusBadRequest, "invalid limit")
 		return
 	}
+	filter := c.Query("filter")
 
 	resp, err := h.strg.User().GetList(c.Request.Context(), &models.UserGetListRequest{
 		Offset: offset,
 		Limit:  limit,
+		Filter: filter,
 	})
 	if err != nil {
 		h.handlerResponse(c, "storage.user.get_list", http.StatusInternalServerError, err.Error())
@@ -131,7 +139,7 @@ func (h *handler) GetListUser(c *gin.Context) {
 // @Security ApiKeyAuth
 // Update user godoc
 // @ID update_user
-// @Router /user/{id} [PUT]
+// @Router /lms/api/user/{id} [PUT]
 // @Summary Update User
 // @Description Update User
 // @Tags User
@@ -184,7 +192,7 @@ func (h *handler) UpdateUser(c *gin.Context) {
 // @Security ApiKeyAuth
 // Delete user godoc
 // @ID delete_user
-// @Router /user/{id} [DELETE]
+// @Router /lms/api/user/{id} [DELETE]
 // @Summary Delete User
 // @Description Delete User
 // @Tags User
@@ -210,4 +218,84 @@ func (h *handler) DeleteUser(c *gin.Context) {
 	}
 
 	h.handlerResponse(c, "create user resposne", http.StatusNoContent, nil)
+}
+
+// GetList students godoc
+// @ID get_list_students
+// @Router /lms/api/students [GET]
+// @Summary Get List Students
+// @Description Get List Students
+// @Tags User
+// @Accept json
+// @Procedure json
+// @Param offset query string false "offset"
+// @Param limit query string false "limit"
+// @Success 200 {object} Response{data=string} "Success Request"
+// @Response 400 {object} Response{data=string} "Bad Request"
+// @Failure 500 {object} Response{data=string} "Server error"
+func (h *handler) GetListStudents(c *gin.Context) {
+	offset, err := h.getOffsetQuery(c.Query("offset"))
+	if err != nil {
+		h.handlerResponse(c, "get list students offset", http.StatusBadRequest, "invalid offset")
+		return
+	}
+
+	limit, err := h.getLimitQuery(c.Query("limit"))
+	if err != nil {
+		h.handlerResponse(c, "get list students limit", http.StatusBadRequest, "invalid limit")
+		return
+	}
+
+	resp, err := h.strg.User().GetList(c.Request.Context(), &models.UserGetListRequest{
+		Offset: offset,
+		Limit:  limit,
+		Filter: students,
+	})
+
+	if err != nil {
+		h.handlerResponse(c, "storage.user.get_list_students", http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	h.handlerResponse(c, "get list students resposne", http.StatusOK, resp)
+}
+
+// GetList students godoc
+// @ID get_list_mentors
+// @Router /lms/api/mentors [GET]
+// @Summary Get List Mentors
+// @Description Get List Mentors
+// @Tags User
+// @Accept json
+// @Procedure json
+// @Param offset query string false "offset"
+// @Param limit query string false "limit"
+// @Success 200 {object} Response{data=string} "Success Request"
+// @Response 400 {object} Response{data=string} "Bad Request"
+// @Failure 500 {object} Response{data=string} "Server error"
+func (h *handler) GetListMentors(c *gin.Context) {
+	offset, err := h.getOffsetQuery(c.Query("offset"))
+	if err != nil {
+		h.handlerResponse(c, "get list mentors offset", http.StatusBadRequest, "invalid offset")
+		return
+	}
+
+	limit, err := h.getLimitQuery(c.Query("limit"))
+	if err != nil {
+		h.handlerResponse(c, "get list mentors limit", http.StatusBadRequest, "invalid limit")
+		return
+	}
+
+	resp, err := h.strg.User().GetList(c.Request.Context(), &models.UserGetListRequest{
+		Offset: offset,
+		Limit:  limit,
+		Filter: mentors,
+	})
+
+	if err != nil {
+		h.handlerResponse(c, "storage.user.get_list_mentors", http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	h.handlerResponse(c, "get list mentors resposne", http.StatusOK, resp)
 }

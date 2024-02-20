@@ -16,7 +16,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/auth/check_code": {
+        "/lms/api/auth/checkCode": {
             "post": {
                 "description": "CheckCode",
                 "consumes": [
@@ -96,7 +96,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/check_email": {
+        "/lms/api/auth/checkEmail": {
             "post": {
                 "description": "CheckEmail",
                 "consumes": [
@@ -176,7 +176,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/login": {
+        "/lms/api/auth/login": {
             "post": {
                 "description": "Login",
                 "consumes": [
@@ -256,7 +256,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/register": {
+        "/lms/api/auth/register": {
             "post": {
                 "description": "Register",
                 "consumes": [
@@ -336,7 +336,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/send_exist_email": {
+        "/lms/api/auth/sendExistEmail": {
             "post": {
                 "description": "SendEmail",
                 "consumes": [
@@ -416,7 +416,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/update_password": {
+        "/lms/api/auth/updatePassword": {
             "post": {
                 "description": "UpdatePassword",
                 "consumes": [
@@ -496,7 +496,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/course": {
+        "/lms/api/course": {
             "get": {
                 "description": "Get List Course",
                 "consumes": [
@@ -662,7 +662,84 @@ const docTemplate = `{
                 }
             }
         },
-        "/course/{id}": {
+        "/lms/api/course/users": {
+            "get": {
+                "description": "Get List Course Of Users",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Course"
+                ],
+                "summary": "Get List Course Of Users",
+                "operationId": "get_list_Course_of_users",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/lms/api/course/{id}": {
             "get": {
                 "security": [
                     {
@@ -915,7 +992,90 @@ const docTemplate = `{
                 }
             }
         },
-        "/photo/{id}": {
+        "/lms/api/mentors": {
+            "get": {
+                "description": "Get List Mentors",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get List Mentors",
+                "operationId": "get_list_mentors",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "offset",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "limit",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/lms/api/photo/{id}": {
             "get": {
                 "description": "Photo Get",
                 "consumes": [
@@ -992,7 +1152,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/photo_upload": {
+        "/lms/api/photoUpload": {
             "post": {
                 "description": "Photo Upload",
                 "consumes": [
@@ -1070,7 +1230,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/role": {
+        "/lms/api/role": {
             "get": {
                 "description": "Get List Role",
                 "consumes": [
@@ -1236,7 +1396,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/role/{id}": {
+        "/lms/api/role/{id}": {
             "get": {
                 "security": [
                     {
@@ -1489,7 +1649,90 @@ const docTemplate = `{
                 }
             }
         },
-        "/user": {
+        "/lms/api/students": {
+            "get": {
+                "description": "Get List Students",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get List Students",
+                "operationId": "get_list_students",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "offset",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "limit",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/lms/api/user": {
             "get": {
                 "description": "Get List User",
                 "consumes": [
@@ -1511,6 +1754,12 @@ const docTemplate = `{
                         "type": "string",
                         "description": "limit",
                         "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "filter",
+                        "name": "filter",
                         "in": "query"
                     }
                 ],
@@ -1655,7 +1904,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/{id}": {
+        "/lms/api/user/{id}": {
             "get": {
                 "security": [
                     {
@@ -1954,16 +2203,7 @@ const docTemplate = `{
         "models.CourseCreate": {
             "type": "object",
             "properties": {
-                "beginning_date_course": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
                 "duration": {
-                    "type": "string"
-                },
-                "end_date": {
                     "type": "string"
                 },
                 "for_who": {
@@ -1992,20 +2232,11 @@ const docTemplate = `{
                 "beginning_date_course": {
                     "type": "string"
                 },
-                "description": {
-                    "type": "string"
-                },
                 "duration": {
-                    "type": "string"
-                },
-                "end_date": {
                     "type": "string"
                 },
                 "for_who": {
                     "type": "string"
-                },
-                "grade": {
-                    "type": "integer"
                 },
                 "id": {
                     "type": "string"

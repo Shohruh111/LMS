@@ -7,34 +7,27 @@ type VideoLessons struct {
 }
 
 type Course struct {
-	Id                string `json:"id"`
-	Name              string `json:"name"`
-	Photo             string `json:"photo"`
-	ForWho            string `json:"for_who"`
-	Type              string `json:"type"`
-	Description       string `json:"description"`
-	WeeklyNumber      int    `json:"weekly_number"`
-	Duration          string `json:"duration"`
-	Price             int    `json:"price"`
-	BeginningDate     string `json:"beginning_date_course"`
-	EndDate           string `json:"end_date"`
-	NumberOfMaterials int    `json:"number_of_materials"`
-	Grade             int    `json:"grade"`
-	CreatedAt         string `json:"created_at"`
-	UpdatedAt         string `json:"updated_at"`
-}
-
-type CourseCreate struct {
+	Id            string `json:"id"`
 	Name          string `json:"name"`
 	Photo         string `json:"photo"`
-	Description   string `json:"description"`
 	ForWho        string `json:"for_who"`
 	Type          string `json:"type"`
 	WeeklyNumber  int    `json:"weekly_number"`
 	Duration      string `json:"duration"`
 	Price         int    `json:"price"`
 	BeginningDate string `json:"beginning_date_course"`
-	EndDate       string `json:"end_date"`
+	CreatedAt     string `json:"created_at"`
+	UpdatedAt     string `json:"updated_at"`
+}
+
+type CourseCreate struct {
+	Name         string `json:"name"`
+	Photo        string `json:"photo"`
+	ForWho       string `json:"for_who"`
+	Type         string `json:"type"`
+	WeeklyNumber int    `json:"weekly_number"`
+	Duration     string `json:"duration"`
+	Price        int    `json:"price"`
 }
 
 type CourseUpdate struct {
@@ -43,13 +36,10 @@ type CourseUpdate struct {
 	Photo         string `json:"photo"`
 	ForWho        string `json:"for_who"`
 	Type          string `json:"type"`
-	Description   string `json:"description"`
 	WeeklyNumber  int    `json:"weekly_number"`
 	Duration      string `json:"duration"`
 	Price         int    `json:"price"`
 	BeginningDate string `json:"beginning_date_course"`
-	EndDate       string `json:"end_date"`
-	Grade         int    `json:"grade"`
 }
 
 type CoursePrimaryKey struct {
@@ -59,6 +49,19 @@ type CoursePrimaryKey struct {
 type CourseGetListRequest struct {
 	Offset int `json:"offset"`
 	Limit  int `json:"limit"`
+}
+
+type CourseOfUsers struct {
+	PhoneNumber string `json:"phone_number"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	Email       string `json:"email"`
+	CreatedAt   string `json:"created_at"`
+}
+
+type CourseOfUsersGetListResponse struct {
+	Count         int              `json:"count"`
+	CourseOfUsers []*CourseOfUsers `json:"course_of_users"`
 }
 
 type CourseGetListResponse struct {

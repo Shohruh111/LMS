@@ -13,7 +13,7 @@ import (
 
 // Login godoc
 // @ID /auth/login
-// @Router /auth/login [POST]
+// @Router /lms/api/auth/login [POST]
 // @Summary Login
 // @Description Login
 // @Tags Auth
@@ -55,7 +55,7 @@ func (h *handler) Login(c *gin.Context) {
 
 // Register godoc
 // @ID /auth/register
-// @Router /auth/register [POST]
+// @Router /lms/api/auth/register [POST]
 // @Summary Register
 // @Description Register
 // @Tags Auth
@@ -121,7 +121,7 @@ func (h *handler) Register(c *gin.Context) {
 
 // CheckEmail godoc
 // @ID /auth/check_email
-// @Router /auth/check_email [POST]
+// @Router /lms/api/auth/checkEmail [POST]
 // @Summary CheckEmail
 // @Description CheckEmail
 // @Tags Auth
@@ -168,7 +168,7 @@ func (h *handler) CheckEmail(c *gin.Context) {
 
 // CheckCode godoc
 // @ID /auth/check_code
-// @Router /auth/check_code [POST]
+// @Router /lms/api/auth/checkCode [POST]
 // @Summary CheckCode
 // @Description CheckCode
 // @Tags Auth
@@ -198,7 +198,7 @@ func (h *handler) CheckCode(c *gin.Context) {
 
 // SendEmail godoc
 // @ID /auth/send_exist_email
-// @Router /auth/send_exist_email [POST]
+// @Router /lms/api/auth/sendExistEmail [POST]
 // @Summary SendEmail
 // @Description SendEmail
 // @Tags Auth
@@ -242,7 +242,7 @@ func (h *handler) SendCodeExistEmail(c *gin.Context) {
 
 // UpdatePassword godoc
 // @ID /auth/update_password
-// @Router /auth/update_password [POST]
+// @Router /lms/api/auth/updatePassword [POST]
 // @Summary UpdatePassword
 // @Description UpdatePassword
 // @Tags Auth

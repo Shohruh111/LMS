@@ -35,6 +35,7 @@ CREATE TABLE "courses"(
     "duration" VARCHAR(700) NOT NULL,
     "price" NUMERIC NOT NULL,
     "beginning_date_course" VARCHAR(200) NOT NULL,
+    "end_date" VARCHAR(200) NOT NULL,
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP
 ); 
@@ -42,17 +43,29 @@ CREATE TABLE "courses"(
 CREATE TABLE "course_of_users"(
     "id" UUID PRIMARY KEY,
     "user_id" UUID REFERENCES "users"("id"),
-    "course_id" UUID REFERENCES "courses"("id")
+    "course_id" UUID REFERENCES "courses"("id"),
+    "group_number" INT NOT NULL,
+    "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE "role_of_users"(
     "id" UUID PRIMARY KEY,
-    "role_id" UUID NOT NULL,
-    "user_id" UUID NOT NULL
+    "role_id" UUID REFERENCES "roles"("id") NOT NULL,
+    "user_id" UUID REFERENCES "users"("id") NOT NULL
 );
 
 CREATE TABLE "lessons"(
-    
+    "id" UUID PRIMARY KEY,
+    "course_id" UUID REFERENCES "courses"("id"),
+    "name" VARCHAR(40) NOT NULL,
+    "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE "lesson_of_users"(
+    "id" UUID PRIMARY KEY,
+    "user_id" UUID REFERENCES "users"("id"),
+    "lesson_id" UUID REFERENCES "lessons"("id"),
+    "status" BOOLEAN
 );
 
 CREATE TABLE "photos"(
@@ -60,6 +73,17 @@ CREATE TABLE "photos"(
     "name" VARCHAR(255),
     "data" BYTEA
 );
+
+
+SELECT 
+    c.beginning_date_course,
+    c.end_date,
+    COUNT(cs.user_id) as students,
+
+FROM "courses" AS c
+JOIN "course_of_users" AS cs ON c.id = cs.course_id,
+JOIN "lesson_of_users" AS lu ON cs.user_id = lu.user_id
+
 
 
 INSERT INTO "roles"(id, type)
@@ -92,6 +116,7 @@ SELECT
 SELECT 
     created_at - CURRENT_TIMESTAMP as timek
 FROM "product";
+
 
 
 

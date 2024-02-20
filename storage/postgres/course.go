@@ -29,8 +29,8 @@ func (u *courseRepo) Create(ctx context.Context, req *models.CourseCreate) (stri
 	)
 
 	query = `
-		INSERT INTO "courses"(id, name, photo, for_who, description, type, weekly_number, duration, price, beginning_date_course, end_date)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+		INSERT INTO "courses"(id, name, photo, for_who, type, weekly_number, duration, price, beginning_date_course)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 	`
 
 	_, err := u.db.Exec(ctx, query,
@@ -39,12 +39,9 @@ func (u *courseRepo) Create(ctx context.Context, req *models.CourseCreate) (stri
 		req.Photo,
 		req.ForWho,
 		req.Type,
-		req.Description,
 		req.WeeklyNumber,
 		req.Duration,
 		req.Price,
-		req.BeginningDate,
-		req.EndDate,
 	)
 
 	if err != nil {
@@ -64,13 +61,10 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 		photo         sql.NullString
 		forWho        sql.NullString
 		tipe          sql.NullString
-		description   sql.NullString
 		weeklyNumber  int
 		duration      sql.NullString
 		price         int
 		beginningDate sql.NullString
-		endDate       sql.NullString
-		grade         int
 		createdAt     sql.NullString
 		updatedAt     sql.NullString
 	)
@@ -80,15 +74,12 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 			id,
 			name,
 			photo,
-			description,
 			for_who,
 			type,
 			weekly_number,
 			duration,
 			price,
 			beginning_date_course,
-			end_date,
-			grade,
 			created_at,
 			updated_at
 		FROM "courses" 
@@ -99,15 +90,12 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 		&id,
 		&name,
 		&photo,
-		&description,
 		&forWho,
 		&tipe,
 		&weeklyNumber,
 		&duration,
 		&price,
 		&beginningDate,
-		&endDate,
-		&grade,
 		&createdAt,
 		&updatedAt,
 	)
@@ -122,13 +110,10 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 		Photo:         photo.String,
 		ForWho:        forWho.String,
 		Type:          tipe.String,
-		Description:   description.String,
 		WeeklyNumber:  weeklyNumber,
-		Duration:      description.String,
+		Duration:      duration.String,
 		Price:         price,
 		BeginningDate: beginningDate.String,
-		EndDate:       endDate.String,
-		Grade:         grade,
 		CreatedAt:     createdAt.String,
 		UpdatedAt:     updatedAt.String,
 	}, nil
@@ -152,14 +137,10 @@ func (u *courseRepo) GetList(ctx context.Context, req *models.CourseGetListReque
 			photo,
 			for_who,
 			type,
-			description,
 			weekly_number,
 			duration,
 			price,
 			beginning_date_course,
-			end_date,
-			number_of_materials,
-			grade,
 			created_at,
 			updated_at
 		FROM "courses" 
@@ -182,21 +163,17 @@ func (u *courseRepo) GetList(ctx context.Context, req *models.CourseGetListReque
 
 	for rows.Next() {
 		var (
-			id                sql.NullString
-			name              sql.NullString
-			photo             sql.NullString
-			forWho            sql.NullString
-			tipe              sql.NullString
-			description       sql.NullString
-			weeklyNumber      int
-			duration          sql.NullString
-			price             int
-			beginningDate     sql.NullString
-			endDate           sql.NullString
-			numberOfMaterials int
-			grade             int
-			createdAt         sql.NullString
-			updatedAt         sql.NullString
+			id            sql.NullString
+			name          sql.NullString
+			photo         sql.NullString
+			forWho        sql.NullString
+			tipe          sql.NullString
+			weeklyNumber  int
+			duration      sql.NullString
+			price         int
+			beginningDate sql.NullString
+			createdAt     sql.NullString
+			updatedAt     sql.NullString
 		)
 
 		err := rows.Scan(
@@ -206,14 +183,10 @@ func (u *courseRepo) GetList(ctx context.Context, req *models.CourseGetListReque
 			&photo,
 			&forWho,
 			&tipe,
-			&description,
 			&weeklyNumber,
 			&duration,
 			&price,
 			&beginningDate,
-			&endDate,
-			&numberOfMaterials,
-			&grade,
 			&createdAt,
 			&updatedAt,
 		)
@@ -223,21 +196,17 @@ func (u *courseRepo) GetList(ctx context.Context, req *models.CourseGetListReque
 		}
 
 		resp.Courses = append(resp.Courses, &models.Course{
-			Id:                id.String,
-			Name:              name.String,
-			Photo:             photo.String,
-			ForWho:            forWho.String,
-			Type:              tipe.String,
-			Description:       description.String,
-			WeeklyNumber:      weeklyNumber,
-			Duration:          description.String,
-			Price:             price,
-			BeginningDate:     beginningDate.String,
-			EndDate:           endDate.String,
-			NumberOfMaterials: numberOfMaterials,
-			Grade:             grade,
-			CreatedAt:         createdAt.String,
-			UpdatedAt:         updatedAt.String,
+			Id:            id.String,
+			Name:          name.String,
+			Photo:         photo.String,
+			ForWho:        forWho.String,
+			Type:          tipe.String,
+			WeeklyNumber:  weeklyNumber,
+			Duration:      duration.String,
+			Price:         price,
+			BeginningDate: beginningDate.String,
+			CreatedAt:     createdAt.String,
+			UpdatedAt:     updatedAt.String,
 		})
 	}
 	return resp, nil
@@ -258,13 +227,10 @@ func (u *courseRepo) Update(ctx context.Context, req *models.CourseUpdate) (int6
 			photo = :photo,
 			for_who = :for_who,
 			type = :type,
-			description = :description,
 			weekly_number = :weekly_number,
 			duration = :duration,
 			price = :price,
 			beginning_date_course = :beginning_date_course,
-			end_date = :end_date,
-			grade = :grade,
 			updated_at = NOW()
 		WHERE id = :id
 	`
@@ -274,13 +240,10 @@ func (u *courseRepo) Update(ctx context.Context, req *models.CourseUpdate) (int6
 		"photo":                 req.Photo,
 		"for_who":               req.ForWho,
 		"type":                  req.Type,
-		"description":           req.Description,
 		"weekly_number":         req.WeeklyNumber,
 		"duration":              req.Duration,
 		"price":                 req.Price,
 		"beginning_date_course": req.BeginningDate,
-		"end_date":              req.EndDate,
-		"grade":                 req.Grade,
 	}
 
 	query, args := helper.ReplaceQueryParams(query, params)
@@ -300,4 +263,68 @@ func (u *courseRepo) Delete(ctx context.Context, req *models.CoursePrimaryKey) e
 	}
 
 	return nil
+}
+
+func (u *courseRepo) GetListCourseOfUsers(ctx context.Context, req *models.CoursePrimaryKey) (*models.CourseOfUsersGetListResponse, error) {
+
+	var (
+		resp  = &models.CourseOfUsersGetListResponse{}
+		query string
+		where = " WHERE id = '" + req.Id + "'"
+	)
+
+	query = `
+		SELECT 
+			COUNT(*) OVER(),
+			u.phone_number,
+			u.first_name,
+			u.last_name,
+			u.email,
+
+			cu.created_at
+
+		FROM "course" as c
+		JOIN "course_of_users" AS cu ON c.id = cu.course_id
+		JOIN "users" AS u ON cu.user_id = u.id
+	`
+
+	query += where
+
+	rows, err := u.db.Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		var (
+			phoneNumber sql.NullString
+			firstName   sql.NullString
+			lastName    sql.NullString
+			email       sql.NullString
+			createdAt   sql.NullString
+		)
+
+		err := rows.Scan(
+			&resp.Count,
+			&phoneNumber,
+			&firstName,
+			&lastName,
+			&email,
+			&createdAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		resp.CourseOfUsers = append(resp.CourseOfUsers, &models.CourseOfUsers{
+			PhoneNumber: phoneNumber.String,
+			FirstName:   firstName.String,
+			LastName:    lastName.String,
+			Email:       email.String,
+			CreatedAt:   createdAt.String,
+		})
+
+	}
+
+	return resp, nil
 }

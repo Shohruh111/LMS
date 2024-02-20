@@ -38,4 +38,5 @@ type CourseRepoI interface {
 	Delete(context.Context, *models.CoursePrimaryKey) error
 	UploadPhotos(context.Context, *models.VideoLessons) (string, error)
 	GetPhotos(context.Context, *models.VideoLessons) (*models.VideoLessons, error)
+	GetListCourseOfUsers(context.Context, *models.CoursePrimaryKey) (*models.CourseOfUsersGetListResponse, error)
 }

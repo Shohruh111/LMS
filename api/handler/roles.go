@@ -11,7 +11,7 @@ import (
 // @Security ApiKeyAuth
 // Create Role godoc
 // @ID create_Role
-// @Router /role [POST]
+// @Router /lms/api/role [POST]
 // @Summary Create Role
 // @Description Create Role
 // @Tags Role
@@ -48,7 +48,7 @@ func (h *handler) CreateRole(c *gin.Context) {
 // @Security ApiKeyAuth
 // GetByID Role godoc
 // @ID get_by_id_Role
-// @Router /role/{id} [GET]
+// @Router /lms/api/role/{id} [GET]
 // @Summary Get By ID Role
 // @Description Get By ID Role
 // @Tags Role
@@ -90,7 +90,7 @@ func (h *handler) GetByIdRole(c *gin.Context) {
 
 // GetList Role godoc
 // @ID get_list_Role
-// @Router /role [GET]
+// @Router /lms/api/role [GET]
 // @Summary Get List Role
 // @Description Get List Role
 // @Tags Role
@@ -130,7 +130,7 @@ func (h *handler) GetListRole(c *gin.Context) {
 // @Security ApiKeyAuth
 // Update Role godoc
 // @ID update_Role
-// @Router /role/{id} [PUT]
+// @Router /lms/api/role/{id} [PUT]
 // @Summary Update Role
 // @Description Update Role
 // @Tags Role
@@ -183,7 +183,7 @@ func (h *handler) UpdateRole(c *gin.Context) {
 // @Security ApiKeyAuth
 // Delete Role godoc
 // @ID delete_Role
-// @Router /role/{id} [DELETE]
+// @Router /lms/api/role/{id} [DELETE]
 // @Summary Delete Role
 // @Description Delete Role
 // @Tags Role

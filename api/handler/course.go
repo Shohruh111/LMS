@@ -3,6 +3,7 @@ package handler
 import (
 	"app/api/models"
 	"app/pkg/helper"
+	"context"
 	"io/ioutil"
 	"net/http"
 
@@ -12,7 +13,7 @@ import (
 // @Security ApiKeyAuth
 // Create Course godoc
 // @ID create_Course
-// @Router /course [POST]
+// @Router /lms/api/course [POST]
 // @Summary Create Course
 // @Description Create Course
 // @Tags Course
@@ -49,7 +50,7 @@ func (h *handler) CreateCourse(c *gin.Context) {
 // @Security ApiKeyAuth
 // GetByID Course godoc
 // @ID get_by_id_Course
-// @Router /course/{id} [GET]
+// @Router /lms/api/course/{id} [GET]
 // @Summary Get By ID Course
 // @Description Get By ID Course
 // @Tags Course
@@ -91,7 +92,7 @@ func (h *handler) GetByIdCourse(c *gin.Context) {
 
 // GetList Course godoc
 // @ID get_list_Course
-// @Router /course [GET]
+// @Router /lms/api/course [GET]
 // @Summary Get List Course
 // @Description Get List Course
 // @Tags Course
@@ -131,7 +132,7 @@ func (h *handler) GetListCourse(c *gin.Context) {
 // @Security ApiKeyAuth
 // Update Course godoc
 // @ID update_Course
-// @Router /course/{id} [PUT]
+// @Router /lms/api/course/{id} [PUT]
 // @Summary Update Course
 // @Description Update Course
 // @Tags Course
@@ -184,7 +185,7 @@ func (h *handler) UpdateCourse(c *gin.Context) {
 // @Security ApiKeyAuth
 // Delete Course godoc
 // @ID delete_Course
-// @Router /course/{id} [DELETE]
+// @Router /lms/api/course/{id} [DELETE]
 // @Summary Delete Course
 // @Description Delete Course
 // @Tags Course
@@ -214,7 +215,7 @@ func (h *handler) DeleteCourse(c *gin.Context) {
 
 // Upload Photo godoc
 // @ID photo_upload
-// @Router /photo_upload [POST]
+// @Router /lms/api/photoUpload [POST]
 // @Summary Photo Upload
 // @Description Photo Upload
 // @Tags Course
@@ -254,7 +255,7 @@ func (h *handler) PhotoUpload(c *gin.Context) {
 
 // Photo Get godoc
 // @ID photo_get
-// @Router /photo/{id} [Get]
+// @Router /lms/api/photo/{id} [Get]
 // @Summary Photo Get
 // @Description Photo Get
 // @Tags Course
@@ -264,7 +265,7 @@ func (h *handler) PhotoUpload(c *gin.Context) {
 // @Success 200 {object} Response{data=string} "Success Request"
 // @Response 400 {object} Response{data=string} "Bad Request"
 // @Failure 500 {object} Response{data=string} "Server error"
-func (h *handler) PhotoGet(c *gin.Context) {
+func (h *handler) PhotoDownload(c *gin.Context) {
 
 	id := c.Param("id")
 
@@ -276,4 +277,27 @@ func (h *handler) PhotoGet(c *gin.Context) {
 
 	c.Header("Content-Type", "image/jpeg")
 	c.Data(http.StatusOK, "photo", result.VideoData)
+}
+
+// GetList Course Of Users godoc
+// @ID get_list_Course_of_users
+// @Router /lms/api/course/users [GET]
+// @Summary Get List Course Of Users
+// @Description Get List Course Of Users
+// @Tags Course
+// @Accept json
+// @Procedure json
+// @Param id path string false "id"
+// @Success 200 {object} Response{data=string} "Success Request"
+// @Response 400 {object} Response{data=string} "Bad Request"
+// @Failure 500 {object} Response{data=string} "Server error"
+func (h *handler) CourseOfUsers(c *gin.Context) {
+	Id := c.Param("id")
+	resp, err := h.strg.Course().GetListCourseOfUsers(context.Background(), &models.CoursePrimaryKey{Id: Id})
+	if err != nil {
+		h.handlerResponse(c, "error Course.GetListCourseOfUsers", http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	h.handlerResponse(c, "Successfull!", http.StatusOK, resp)
 }
