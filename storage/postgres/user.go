@@ -362,12 +362,17 @@ func (u *userRepo) UpdatePassword(ctx context.Context, req *models.UpdatePasswor
 		query string
 	)
 
+	hashPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return 0, req.Email, err
+	}
+
 	query = `
 		UPDATE "users"
 		SET password = $1, updated_at = NOW()
 		WHERE email = $2
 	`
-	result, err := u.db.Exec(ctx, query, req.Password, req.Email)
+	result, err := u.db.Exec(ctx, query, hashPassword, req.Email)
 	if err != nil {
 		return 0, req.Email, err
 	}
