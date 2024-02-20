@@ -43,11 +43,13 @@ func (h *handler) Login(c *gin.Context) {
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(resp.Password), []byte(loginUser.Password))
 	if err != nil {
-		h.handlerResponse(c, "Invalid Password", http.StatusBadRequest, "Invalid Password!")
+		// h.handlerResponse(c, "Invalid Password", http.StatusBadRequest, "Invalid Password!")
+		c.JSON(http.StatusBadRequest, "Invalid Password!")
 		return
 	}
 
-	h.handlerResponse(c, "Login succesfully", http.StatusOK, resp)
+	// h.handlerResponse(c, "Login succesfully", http.StatusOK, resp)
+	c.JSON(http.StatusOK, resp)
 }
 
 // Register godoc
