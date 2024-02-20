@@ -31,6 +31,7 @@ func (h *handler) Login(c *gin.Context) {
 
 		return
 	}
+
 	resp, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: loginUser.Email})
 	if err != nil {
 		if err.Error() == "no rows in result set" {
@@ -40,13 +41,9 @@ func (h *handler) Login(c *gin.Context) {
 		h.handlerResponse(c, "error in User GetByID Login", http.StatusBadRequest, err.Error())
 		return
 	}
-	hashPassword, err := bcrypt.GenerateFromPassword([]byte(loginUser.Password), bcrypt.DefaultCost)
+	err = bcrypt.CompareHashAndPassword([]byte(resp.Password), []byte(loginUser.Password))
 	if err != nil {
-		h.handlerResponse(c, "error in hashing password Login", http.StatusInternalServerError, err.Error())
-		return
-	}
-	if resp.Password != string(hashPassword) {
-		h.handlerResponse(c, "", http.StatusBadRequest, error.Error(errors.New("Please, Enter Valid Code!")))
+		h.handlerResponse(c, "Invalid Password", http.StatusBadRequest, "Invalid Password!")
 		return
 	}
 
