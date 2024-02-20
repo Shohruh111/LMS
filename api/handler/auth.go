@@ -4,7 +4,6 @@ import (
 	"app/api/models"
 	"app/pkg/helper"
 	"context"
-	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -27,29 +26,32 @@ func (h *handler) Login(c *gin.Context) {
 	var loginUser models.LoginUser
 	err := c.ShouldBindJSON(&loginUser)
 	if err != nil {
-		h.handlerResponse(c, "error login user should bind json", http.StatusBadRequest, err.Error())
-
+		h.logger.Error("error LOGIN user should bind json")
+		c.JSON(http.StatusBadRequest, "error LOGIN user should bind json")
 		return
 	}
 
 	resp, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: loginUser.Email})
 	if err != nil {
 		if err.Error() == "no rows in result set" {
-			h.handlerResponse(c, "User doesn't exist", http.StatusBadRequest, error.Error(errors.New("User does not exist!")))
+			h.logger.Error("User doesn't exist")
+			c.JSON(http.StatusBadRequest, "User doesn't exist")
 			return
 		}
-		h.handlerResponse(c, "error in User GetByID Login", http.StatusBadRequest, err.Error())
+		h.logger.Error("error in User GetByID Login")
+		c.JSON(http.StatusBadRequest, "error in User GetByID Login")
 		return
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(resp.Password), []byte(loginUser.Password))
 	if err != nil {
-		// h.handlerResponse(c, "Invalid Password", http.StatusBadRequest, "Invalid Password!")
+		h.logger.Error("error CompareHashAndPassword")
 		c.JSON(http.StatusBadRequest, "Invalid Password!")
 		return
 	}
+	resp.Password = ""
 
-	// h.handlerResponse(c, "Login succesfully", http.StatusOK, resp)
 	c.JSON(http.StatusOK, resp)
+
 }
 
 // Register godoc
@@ -72,13 +74,15 @@ func (h *handler) Register(c *gin.Context) {
 	)
 	err := c.ShouldBindJSON(&createUser)
 	if err != nil {
-		h.handlerResponse(c, "error user should bind json", http.StatusBadRequest, err.Error())
+		h.logger.Error("error REGISTER user should bind json")
+		c.JSON(http.StatusBadRequest, "error REGISTER user should bind json")
 		return
 	}
 	if len(createUser.RoleId) == 0 {
 		userRole, err := h.strg.Role().GetByID(context.Background(), &models.RolePrimaryKey{Type: "Oquvchi"})
 		if err != nil {
-			h.handlerResponse(c, "error Role.GetByID", http.StatusInternalServerError, err.Error())
+			h.logger.Error("error Role.GetByID")
+			c.JSON(http.StatusInternalServerError, "error Role.GetByID")
 			return
 		}
 		createUser = models.UserCreate{
@@ -91,31 +95,37 @@ func (h *handler) Register(c *gin.Context) {
 		}
 		id, err = h.strg.User().Create(context.Background(), &createUser)
 		if err != nil {
-			h.handlerResponse(c, "storage.user.create", http.StatusInternalServerError, err.Error())
+			h.logger.Error("storage.user.create")
+			c.JSON(http.StatusInternalServerError, "storage.user.create")
 			return
 		}
 		resp, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Id: id})
 		if err != nil {
-			h.handlerResponse(c, "storage.user.getbyid", http.StatusInternalServerError, err.Error())
+			h.logger.Error("storage.user.getbyid")
+			c.JSON(http.StatusInternalServerError, "storage.user.getbyid")
 			return
 		}
-		h.handlerResponse(c, "User Created Successfully!", http.StatusOK, resp)
+		h.logger.Info("User Created Successfully!")
+		c.JSON(http.StatusOK, resp)
 		return
 	}
 
 	id, err = h.strg.User().Create(context.Background(), &createUser)
 	if err != nil {
-		h.handlerResponse(c, "storage.user.create", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.user.create")
+		c.JSON(http.StatusInternalServerError, "storage.user.create")
 		return
 	}
 
 	resp, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Id: id})
 	if err != nil {
-		h.handlerResponse(c, "", http.StatusInternalServerError, "")
+		h.logger.Error("storage.user.getbyid")
+		c.JSON(http.StatusInternalServerError, "storage.user.getbyid")
 		return
 	}
 
-	h.handlerResponse(c, "create user response", http.StatusCreated, resp)
+	h.logger.Info("create user response")
+	c.JSON(http.StatusCreated, resp)
 }
 
 // CheckEmail godoc
@@ -135,7 +145,8 @@ func (h *handler) CheckEmail(c *gin.Context) {
 	var requestId string
 	err := c.ShouldBindJSON(&checkEmail)
 	if err != nil {
-		h.handlerResponse(c, "error CheckEmail Auth", http.StatusInternalServerError, err.Error())
+		h.logger.Error("error CheckEmail Auth")
+		c.JSON(http.StatusInternalServerError, "error CheckEmail Auth")
 		return
 	}
 	_, err = h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: checkEmail.Email})
@@ -143,26 +154,31 @@ func (h *handler) CheckEmail(c *gin.Context) {
 		if err.Error() == "no rows in result set" {
 			verifyCode, err := helper.SendEmail(checkEmail.Email)
 			if err != nil {
-				h.handlerResponse(c, "error sendEMail", http.StatusInternalServerError, err.Error())
+				h.logger.Error("error sendEMail")
+				c.JSON(http.StatusInternalServerError, "error sendEMail")
 				return
 			}
 			requestId, err = h.strg.User().CheckOTP(context.Background(), &checkEmail, verifyCode)
 			if err != nil {
-				h.handlerResponse(c, "error in strg.User.CheckOTP", http.StatusInternalServerError, err.Error())
+				h.logger.Error("error in strg.User.CheckOTP")
+				c.JSON(http.StatusInternalServerError, "error in strg.User.CheckOTP")
 				return
 			}
 		} else {
-			h.handlerResponse(c, "User already exist", http.StatusInternalServerError, err.Error())
+			h.logger.Error("User already exist")
+			c.JSON(http.StatusBadRequest, "User already exist")
 			return
 		}
 	} else if err == nil {
-		h.handlerResponse(c, "User already exist", http.StatusBadRequest, nil)
+		h.logger.Error("User already exist")
+		c.JSON(http.StatusBadRequest, "User already exist")
 		return
 	}
 	Id := models.ConfirmCode{RequestId: requestId}
 	checkEmail.RequestId = Id.RequestId
 
-	h.handlerResponse(c, "Email Sent Successfully!", http.StatusCreated, checkEmail)
+	h.logger.Info("Email sent Successfully!")
+	c.JSON(http.StatusCreated, checkEmail)
 }
 
 // CheckCode godoc
@@ -182,17 +198,20 @@ func (h *handler) CheckCode(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&code)
 	if err != nil {
-		h.handlerResponse(c, "error Should Bind Json CheckCode", http.StatusBadRequest, err.Error())
+		h.logger.Error("error Should Bind Json CheckCode")
+		c.JSON(http.StatusBadRequest, "error Should Bind Json CheckCode")
 		return
 	}
 
 	ConfirmCode, err := h.strg.User().GetOTP(context.Background(), &code)
 	if err != nil {
-		h.handlerResponse(c, "error User.GetOTP", http.StatusBadRequest, err.Error())
+		h.logger.Error("error in strg.User.GetOTP")
+		c.JSON(http.StatusBadRequest, "error in strg.User.GetOTP")
 		return
 	}
 
-	h.handlerResponse(c, "Succcessfully checked", http.StatusOK, ConfirmCode)
+	h.logger.Info("Successfully Checked!")
+	c.JSON(http.StatusOK, ConfirmCode)
 }
 
 // SendEmail godoc
@@ -212,31 +231,37 @@ func (h *handler) SendCodeExistEmail(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&email)
 	if err != nil {
-		h.handlerResponse(c, "error Should Bind Json SendCodeExistEmail", http.StatusBadRequest, err.Error())
+		h.logger.Error("error Should Bind Json SendCodeExistEmail")
+		c.JSON(http.StatusBadRequest, "error Should Bind Json SendCodeExistEmail")
 		return
 	}
 	_, err = h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: email.Email})
 	if err != nil {
 		if err.Error() == "no rows in result set" {
-			h.handlerResponse(c, "Email not registered!", http.StatusBadRequest, error.Error(errors.New("Email is not registered!")))
+			h.logger.Error("Email is not registered!")
+			c.JSON(http.StatusBadRequest, "Email is not registered!")
 			return
 		}
-		h.handlerResponse(c, "error user.GetById.SendCodeExistEmail", http.StatusOK, err.Error())
+		h.logger.Error("error user.GetById.SendCodeExistEmail")
+		c.JSON(http.StatusInternalServerError, "error user.GetById.SendCodeExistEmail")
 		return
 	}
 	verifyCode, err := helper.SendEmail(email.Email)
 	if err != nil {
-		h.handlerResponse(c, "error in sendcodeexistEmail helper.SendEmail", http.StatusInternalServerError, err.Error())
+		h.logger.Error("error SendCodeExistEmail helper.SendEmail")
+		c.JSON(http.StatusBadRequest, "error SendCodeExistEmail helper.SendEmail")
 		return
 	}
 
 	requestId, err := h.strg.User().CheckOTP(context.Background(), &email, verifyCode)
 	if err != nil {
-		h.handlerResponse(c, "error in strg.User.CheckOTP", http.StatusBadRequest, err.Error())
+		h.logger.Error("error in strg.User.CheckOTP")
+		c.JSON(http.StatusBadRequest, "error in strg.User.CheckOTP")
 		return
 	}
 	informations := models.CheckEmail{RequestId: requestId, Email: email.Email}
-	h.handlerResponse(c, "Email sent successfully!", http.StatusOK, informations)
+	h.logger.Info("Email Sent Successfully!")
+	c.JSON(http.StatusOK, informations)
 }
 
 // UpdatePassword godoc
@@ -256,21 +281,25 @@ func (h *handler) UpdatePassword(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&update)
 	if err != nil {
-		h.handlerResponse(c, "error Should Bind Json UpdatePassword", http.StatusInternalServerError, err.Error())
+		h.logger.Error("error Should Bind Json UpdatePassword")
+		c.JSON(http.StatusBadRequest, "error Should Bind Json UpdatePassword")
 		return
 	}
 
 	_, email, err := h.strg.User().UpdatePassword(context.Background(), &update)
 	if err != nil {
-		h.handlerResponse(c, "error in User.UpdatePassword", http.StatusInternalServerError, err.Error())
+		h.logger.Error("error in User.UpdatePassword")
+		c.JSON(http.StatusInternalServerError, "error in User.UpdatePassword")
 		return
 	}
 
 	user, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: email})
 	if err != nil {
-		h.handlerResponse(c, "error User.GetById.UpdatePassword", http.StatusInternalServerError, err.Error())
+		h.logger.Error("error User.GetById.UpdatePassword")
+		c.JSON(http.StatusInternalServerError, "error User.GetById.UpdatePassword")
 		return
 	}
 
-	h.handlerResponse(c, "Password updated successfully!", http.StatusOK, user)
+	h.logger.Info("Password Updated Successfully!")
+	c.JSON(http.StatusOK, user)
 }

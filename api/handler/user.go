@@ -32,23 +32,27 @@ func (h *handler) CreateUser(c *gin.Context) {
 	var createUser models.UserCreate
 	err := c.ShouldBindJSON(&createUser)
 	if err != nil {
-		h.handlerResponse(c, "error user should bind json", http.StatusBadRequest, err.Error())
+		h.logger.Error("error User Should Bind Json!")
+		c.JSON(http.StatusBadRequest, "error User Should Bind Json")
 		return
 	}
 
 	id, err := h.strg.User().Create(c.Request.Context(), &createUser)
 	if err != nil {
-		h.handlerResponse(c, "storage.user.create", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.User.Create!")
+		c.JSON(http.StatusInternalServerError, "storage.User.Create")
 		return
 	}
 
 	resp, err := h.strg.User().GetByID(c.Request.Context(), &models.UserPrimaryKey{Id: id})
 	if err != nil {
-		h.handlerResponse(c, "storage.user.getById", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.User.GetByID!")
+		c.JSON(http.StatusInternalServerError, "storage.User.GetByID")
 		return
 	}
 
-	h.handlerResponse(c, "create user resposne", http.StatusCreated, resp)
+	h.logger.Info("Create User Successfully!!")
+	c.JSON(http.StatusCreated, resp)
 }
 
 // @Security ApiKeyAuth
@@ -81,17 +85,21 @@ func (h *handler) GetByIdUser(c *gin.Context) {
 	// }
 
 	if !helper.IsValidUUID(id) {
-		h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
+		h.logger.Error("is valid uuid!")
+		c.JSON(http.StatusBadRequest, "invalid id")
 		return
 	}
 
 	resp, err := h.strg.User().GetByID(c.Request.Context(), &models.UserPrimaryKey{Id: id})
 	if err != nil {
-		h.handlerResponse(c, "storage.user.getById", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.User.GetByID!")
+		c.JSON(http.StatusInternalServerError, "storage.User.GetByID")
 		return
 	}
 
 	h.handlerResponse(c, "get by id user resposne", http.StatusOK, resp)
+	h.logger.Info("GetByID User Response!")
+	c.JSON(http.StatusOK, resp)
 }
 
 // GetList user godoc
@@ -112,13 +120,15 @@ func (h *handler) GetListUser(c *gin.Context) {
 
 	offset, err := h.getOffsetQuery(c.Query("offset"))
 	if err != nil {
-		h.handlerResponse(c, "get list user offset", http.StatusBadRequest, "invalid offset")
+		h.logger.Error("GetListUser INVALID OFFSET!")
+		c.JSON(http.StatusBadRequest, "INVALID OFFSET")
 		return
 	}
 
 	limit, err := h.getLimitQuery(c.Query("limit"))
 	if err != nil {
-		h.handlerResponse(c, "get list user limit", http.StatusBadRequest, "invalid limit")
+		h.logger.Error("GetListUser INVALID LIMIT!")
+		c.JSON(http.StatusBadRequest, "INVALID LIMIT")
 		return
 	}
 	filter := c.Query("filter")
@@ -129,11 +139,13 @@ func (h *handler) GetListUser(c *gin.Context) {
 		Filter: filter,
 	})
 	if err != nil {
-		h.handlerResponse(c, "storage.user.get_list", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.User.GetList!")
+		c.JSON(http.StatusInternalServerError, "storage.User.GetList!")
 		return
 	}
 
-	h.handlerResponse(c, "get list user resposne", http.StatusOK, resp)
+	h.logger.Info("GetListUser Response!")
+	c.JSON(http.StatusOK, resp)
 }
 
 // @Security ApiKeyAuth
@@ -158,35 +170,41 @@ func (h *handler) UpdateUser(c *gin.Context) {
 	)
 
 	if !helper.IsValidUUID(id) {
-		h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
+		h.logger.Error("is not valid uuid")
+		c.JSON(http.StatusBadRequest, "invalid id")
 		return
 	}
 
 	err := c.ShouldBindJSON(&updateUser)
 	if err != nil {
-		h.handlerResponse(c, "error user should bind json", http.StatusBadRequest, err.Error())
+		h.logger.Error("error User Should Bind Json")
+		c.JSON(http.StatusBadRequest, "error User Should Bind Json")
 		return
 	}
 
 	updateUser.Id = id
 	rowsAffected, err := h.strg.User().Update(c.Request.Context(), &updateUser)
 	if err != nil {
-		h.handlerResponse(c, "storage.user.update", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.User.Update!")
+		c.JSON(http.StatusInternalServerError, "storage.User.Update")
 		return
 	}
 
 	if rowsAffected <= 0 {
-		h.handlerResponse(c, "storage.user.update", http.StatusBadRequest, "now rows affected")
+		h.logger.Error("storage.User.Update!")
+		c.JSON(http.StatusBadRequest, "no rows affected!")
 		return
 	}
 
 	resp, err := h.strg.User().GetByID(c.Request.Context(), &models.UserPrimaryKey{Id: updateUser.Id})
 	if err != nil {
-		h.handlerResponse(c, "storage.user.getById", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.User.GetByID!")
+		c.JSON(http.StatusInternalServerError, "storage.User.GetByID")
 		return
 	}
 
-	h.handlerResponse(c, "create user resposne", http.StatusAccepted, resp)
+	h.logger.Info("Create User Response!")
+	c.JSON(http.StatusAccepted, resp)
 }
 
 // @Security ApiKeyAuth
@@ -207,17 +225,20 @@ func (h *handler) DeleteUser(c *gin.Context) {
 	var id string = c.Param("id")
 
 	if !helper.IsValidUUID(id) {
-		h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
+		h.logger.Error("is nor valid uuid!")
+		c.JSON(http.StatusBadRequest, "invalid id!")
 		return
 	}
 
 	err := h.strg.User().Delete(c.Request.Context(), &models.UserPrimaryKey{Id: id})
 	if err != nil {
-		h.handlerResponse(c, "storage.user.delete", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.User.Delete!")
+		c.JSON(http.StatusInternalServerError, "storage.User.Delete")
 		return
 	}
 
-	h.handlerResponse(c, "create user resposne", http.StatusNoContent, nil)
+	h.logger.Info("User Deleted Successfully!")
+	c.JSON(http.StatusNoContent, nil)
 }
 
 // GetList students godoc
@@ -236,13 +257,15 @@ func (h *handler) DeleteUser(c *gin.Context) {
 func (h *handler) GetListStudents(c *gin.Context) {
 	offset, err := h.getOffsetQuery(c.Query("offset"))
 	if err != nil {
-		h.handlerResponse(c, "get list students offset", http.StatusBadRequest, "invalid offset")
+		h.logger.Error("GetListStudents INVALID OFFSET!")
+		c.JSON(http.StatusBadRequest, "INVALID OFFSET")
 		return
 	}
 
 	limit, err := h.getLimitQuery(c.Query("limit"))
 	if err != nil {
-		h.handlerResponse(c, "get list students limit", http.StatusBadRequest, "invalid limit")
+		h.logger.Error("GetListStudents INVALID LIMIT!")
+		c.JSON(http.StatusBadRequest, "INVALID LIMIT")
 		return
 	}
 
@@ -253,11 +276,13 @@ func (h *handler) GetListStudents(c *gin.Context) {
 	})
 
 	if err != nil {
-		h.handlerResponse(c, "storage.user.get_list_students", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.User.GetListStudents!")
+		c.JSON(http.StatusInternalServerError, "storage.User.GetLustStudents")
 		return
 	}
 
-	h.handlerResponse(c, "get list students resposne", http.StatusOK, resp)
+	h.logger.Info("GetList Students Response!")
+	c.JSON(http.StatusOK, resp)
 }
 
 // GetList students godoc
@@ -276,13 +301,15 @@ func (h *handler) GetListStudents(c *gin.Context) {
 func (h *handler) GetListMentors(c *gin.Context) {
 	offset, err := h.getOffsetQuery(c.Query("offset"))
 	if err != nil {
-		h.handlerResponse(c, "get list mentors offset", http.StatusBadRequest, "invalid offset")
+		h.logger.Error("GetListMentors INVALID OFFSET!")
+		c.JSON(http.StatusBadRequest, "INVALID OFFSET")
 		return
 	}
 
 	limit, err := h.getLimitQuery(c.Query("limit"))
 	if err != nil {
-		h.handlerResponse(c, "get list mentors limit", http.StatusBadRequest, "invalid limit")
+		h.logger.Error("GetListMentors INVALID LIMIT!")
+		c.JSON(http.StatusBadRequest, "INVALID LIMIT")
 		return
 	}
 
@@ -293,9 +320,11 @@ func (h *handler) GetListMentors(c *gin.Context) {
 	})
 
 	if err != nil {
-		h.handlerResponse(c, "storage.user.get_list_mentors", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.User.GetListMentors!")
+		c.JSON(http.StatusInternalServerError, "storage.User.GetListMentors!")
 		return
 	}
 
-	h.handlerResponse(c, "get list mentors resposne", http.StatusOK, resp)
+	h.logger.Info("GetListMentors Response!")
+	c.JSON(http.StatusOK, resp)
 }

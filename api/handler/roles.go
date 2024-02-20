@@ -26,23 +26,27 @@ func (h *handler) CreateRole(c *gin.Context) {
 	var createRole models.RoleCreate
 	err := c.ShouldBindJSON(&createRole)
 	if err != nil {
-		h.handlerResponse(c, "error Role should bind json", http.StatusBadRequest, err.Error())
+		h.logger.Error("error Role Create Should Bind Json!")
+		c.JSON(http.StatusBadRequest, "error Role Create Should Bind Json!")
 		return
 	}
 
 	id, err := h.strg.Role().Create(c.Request.Context(), &createRole)
 	if err != nil {
-		h.handlerResponse(c, "storage.Role.create", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.Role.Create!")
+		c.JSON(http.StatusInternalServerError, "storage.Role.Create!")
 		return
 	}
 
 	resp, err := h.strg.Role().GetByID(c.Request.Context(), &models.RolePrimaryKey{Id: id})
 	if err != nil {
-		h.handlerResponse(c, "storage.Role.getById", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.Role.GetByID!")
+		c.JSON(http.StatusInternalServerError, "storage.Role.GetByID")
 		return
 	}
 
-	h.handlerResponse(c, "create Role resposne", http.StatusCreated, resp)
+	h.logger.Info("Create Role Response!")
+	c.JSON(http.StatusCreated, resp)
 }
 
 // @Security ApiKeyAuth
@@ -61,11 +65,12 @@ func (h *handler) CreateRole(c *gin.Context) {
 func (h *handler) GetByIdRole(c *gin.Context) {
 	var id string
 
-	_, exist := c.Get("Auth")
-	if !exist {
-		h.handlerResponse(c, "Here", http.StatusInternalServerError, nil)
-		return
-	}
+	// _, exist := c.Get("Auth")
+	// if !exist {
+	// 	h.logger.Error("error in AUTH!")
+	// 	c.JSON(http.StatusInternalServerError, "error in AUTH!")
+	// 	return
+	// }
 
 	// RoleData := val.(helper.TokenInfo)
 	// if len(RoleData.RoleID) > 0 {
@@ -75,17 +80,20 @@ func (h *handler) GetByIdRole(c *gin.Context) {
 	// }
 
 	if !helper.IsValidUUID(id) {
-		h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
+		h.logger.Error("is not valid uuid!")
+		c.JSON(http.StatusBadRequest, "invalid id")
 		return
 	}
 
 	resp, err := h.strg.Role().GetByID(c.Request.Context(), &models.RolePrimaryKey{Id: id})
 	if err != nil {
-		h.handlerResponse(c, "storage.Role.getById", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.Role.GetByID!")
+		c.JSON(http.StatusInternalServerError, "storage.Role.GetByID")
 		return
 	}
 
-	h.handlerResponse(c, "get by id Role resposne", http.StatusOK, resp)
+	h.logger.Error("GetByID Role Response!")
+	c.JSON(http.StatusOK, resp)
 }
 
 // GetList Role godoc
@@ -105,13 +113,15 @@ func (h *handler) GetListRole(c *gin.Context) {
 
 	offset, err := h.getOffsetQuery(c.Query("offset"))
 	if err != nil {
-		h.handlerResponse(c, "get list Role offset", http.StatusBadRequest, "invalid offset")
+		h.logger.Error("GetListRole INVALID Offset!")
+		c.JSON(http.StatusBadRequest, "Invalid offset!")
 		return
 	}
 
 	limit, err := h.getLimitQuery(c.Query("limit"))
 	if err != nil {
-		h.handlerResponse(c, "get list Role limit", http.StatusBadRequest, "invalid limit")
+		h.logger.Error("GetListRole INVALID Limit!")
+		c.JSON(http.StatusBadRequest, "Invalid Limit")
 		return
 	}
 
@@ -120,11 +130,13 @@ func (h *handler) GetListRole(c *gin.Context) {
 		Limit:  limit,
 	})
 	if err != nil {
-		h.handlerResponse(c, "storage.Role.get_list", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.Role.GetList!")
+		c.JSON(http.StatusInternalServerError, "storage.Role.GetList")
 		return
 	}
 
-	h.handlerResponse(c, "get list Role resposne", http.StatusOK, resp)
+	h.logger.Info("GetListRole Response!")
+	c.JSON(http.StatusOK, resp)
 }
 
 // @Security ApiKeyAuth
@@ -149,35 +161,41 @@ func (h *handler) UpdateRole(c *gin.Context) {
 	)
 
 	if !helper.IsValidUUID(id) {
-		h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
+		h.logger.Error("is invalid uuid!")
+		c.JSON(http.StatusBadRequest, "invalid id")
 		return
 	}
 
 	err := c.ShouldBindJSON(&updateRole)
 	if err != nil {
-		h.handlerResponse(c, "error Role should bind json", http.StatusBadRequest, err.Error())
+		h.logger.Error("error Role Should Bind Json!")
+		c.JSON(http.StatusBadRequest, "error Role Should Bind Json")
 		return
 	}
 
 	updateRole.Id = id
 	rowsAffected, err := h.strg.Role().Update(c.Request.Context(), &updateRole)
 	if err != nil {
-		h.handlerResponse(c, "storage.Role.update", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.Role.Update!")
+		c.JSON(http.StatusInternalServerError, "storage.Role.Update")
 		return
 	}
 
 	if rowsAffected <= 0 {
-		h.handlerResponse(c, "storage.Role.update", http.StatusBadRequest, "now rows affected")
+		h.logger.Error("storage.Role.Update!")
+		c.JSON(http.StatusBadRequest, "no rows affected")
 		return
 	}
 
 	resp, err := h.strg.Role().GetByID(c.Request.Context(), &models.RolePrimaryKey{Id: updateRole.Id})
 	if err != nil {
-		h.handlerResponse(c, "storage.Role.getById", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.Role.GetByID!")
+		c.JSON(http.StatusInternalServerError, "storage.Role.GetByID")
 		return
 	}
 
-	h.handlerResponse(c, "create Role resposne", http.StatusAccepted, resp)
+	h.logger.Info("Update Role Successfully!")
+	c.JSON(http.StatusAccepted, resp)
 }
 
 // @Security ApiKeyAuth
@@ -198,15 +216,19 @@ func (h *handler) DeleteRole(c *gin.Context) {
 	var id string = c.Param("id")
 
 	if !helper.IsValidUUID(id) {
-		h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
+		h.logger.Error("is nor valid uuid!")
+		c.JSON(http.StatusBadRequest, "invalid id")
 		return
 	}
 
 	err := h.strg.Role().Delete(c.Request.Context(), &models.RolePrimaryKey{Id: id})
 	if err != nil {
-		h.handlerResponse(c, "storage.Role.delete", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.Role.DELETE!")
+		c.JSON(http.StatusInternalServerError, "storage.Role.DELETE")
 		return
 	}
 
 	h.handlerResponse(c, "create Role resposne", http.StatusNoContent, nil)
+	h.logger.Info("Deleted Role Successfully!")
+	c.JSON(http.StatusNoContent, nil)
 }

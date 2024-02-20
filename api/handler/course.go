@@ -29,22 +29,27 @@ func (h *handler) CreateCourse(c *gin.Context) {
 	err := c.ShouldBindJSON(&createCourse)
 	if err != nil {
 		h.handlerResponse(c, "error Course should bind json", http.StatusBadRequest, err.Error())
+		h.logger.Error("error Course Create Should Bind Json")
+		c.JSON(http.StatusBadRequest, "error Course Create Should Bind Json")
 		return
 	}
 
 	id, err := h.strg.Course().Create(c.Request.Context(), &createCourse)
 	if err != nil {
-		h.handlerResponse(c, "storage.Course.create", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.Course.Create!")
+		c.JSON(http.StatusInternalServerError, "storage.Course.Create!")
 		return
 	}
 
 	resp, err := h.strg.Course().GetByID(c.Request.Context(), &models.CoursePrimaryKey{Id: id})
 	if err != nil {
-		h.handlerResponse(c, "storage.Course.getById", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.Course.GetById!")
+		c.JSON(http.StatusInternalServerError, "storage.Course.GetById")
 		return
 	}
 
-	h.handlerResponse(c, "create Course resposne", http.StatusCreated, resp)
+	h.logger.Info("Create Course Response!")
+	c.JSON(http.StatusCreated, resp)
 }
 
 // @Security ApiKeyAuth
@@ -76,18 +81,21 @@ func (h *handler) GetByIdCourse(c *gin.Context) {
 	id = c.Param("id")
 	// // }
 
-	// if !helper.IsValidUUID(id) {
-	// 	h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
-	// 	return
-	// }
-
-	resp, err := h.strg.Course().GetByID(c.Request.Context(), &models.CoursePrimaryKey{Id: id})
-	if err != nil {
-		h.handlerResponse(c, "storage.Course.getById", http.StatusInternalServerError, err.Error())
+	if !helper.IsValidUUID(id) {
+		h.logger.Error("is not valid uuid!")
+		c.JSON(http.StatusBadRequest, "invalid id")
 		return
 	}
 
-	h.handlerResponse(c, "get by id Course resposne", http.StatusOK, resp)
+	resp, err := h.strg.Course().GetByID(c.Request.Context(), &models.CoursePrimaryKey{Id: id})
+	if err != nil {
+		h.logger.Error("storage.Course.GetById!")
+		c.JSON(http.StatusInternalServerError, "storage.Course.GetById")
+		return
+	}
+
+	h.logger.Info("GetById Course Response!")
+	c.JSON(http.StatusOK, resp)
 }
 
 // GetList Course godoc
@@ -107,13 +115,15 @@ func (h *handler) GetListCourse(c *gin.Context) {
 
 	offset, err := h.getOffsetQuery(c.Query("offset"))
 	if err != nil {
-		h.handlerResponse(c, "get list Course offset", http.StatusBadRequest, "invalid offset")
+		h.logger.Error("GetListCourse Offset")
+		c.JSON(http.StatusBadRequest, "GetListCourse Offset")
 		return
 	}
 
 	limit, err := h.getLimitQuery(c.Query("limit"))
 	if err != nil {
-		h.handlerResponse(c, "get list Course limit", http.StatusBadRequest, "invalid limit")
+		h.logger.Error("GetListCourse limit!")
+		c.JSON(http.StatusBadRequest, "GetListCourse Limit")
 		return
 	}
 
@@ -122,11 +132,12 @@ func (h *handler) GetListCourse(c *gin.Context) {
 		Limit:  limit,
 	})
 	if err != nil {
-		h.handlerResponse(c, "storage.Course.get_list", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.Course.GetList!")
+		c.JSON(http.StatusInternalServerError, "storage.Course.GetList!")
 		return
 	}
-
-	h.handlerResponse(c, "get list Course resposne", http.StatusOK, resp)
+	h.logger.Info("GetListCourse Response!!")
+	c.JSON(http.StatusOK, resp)
 }
 
 // @Security ApiKeyAuth
@@ -151,35 +162,41 @@ func (h *handler) UpdateCourse(c *gin.Context) {
 	)
 
 	if !helper.IsValidUUID(id) {
-		h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
+		h.logger.Error("is not valid uuid")
+		c.JSON(http.StatusBadRequest, "invalid id")
 		return
 	}
 
 	err := c.ShouldBindJSON(&updateCourse)
 	if err != nil {
-		h.handlerResponse(c, "error Course should bind json", http.StatusBadRequest, err.Error())
+		h.logger.Error("error Course should bind json!")
+		c.JSON(http.StatusBadRequest, "error Course should bind json")
 		return
 	}
 
 	updateCourse.Id = id
 	rowsAffected, err := h.strg.Course().Update(c.Request.Context(), &updateCourse)
 	if err != nil {
-		h.handlerResponse(c, "storage.Course.update", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.Course.Update")
+		c.JSON(http.StatusInternalServerError, "storage.Course.Update")
 		return
 	}
 
 	if rowsAffected <= 0 {
-		h.handlerResponse(c, "storage.Course.update", http.StatusBadRequest, "now rows affected")
+		h.logger.Error("storage.Course.Update")
+		c.JSON(http.StatusBadRequest, "no rows affected!")
 		return
 	}
 
 	resp, err := h.strg.Course().GetByID(c.Request.Context(), &models.CoursePrimaryKey{Id: updateCourse.Id})
 	if err != nil {
-		h.handlerResponse(c, "storage.Course.getById", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.Course.GetById!")
+		c.JSON(http.StatusInternalServerError, "storage.Course.GetById")
 		return
 	}
 
-	h.handlerResponse(c, "create Course resposne", http.StatusAccepted, resp)
+	h.logger.Info("Create Course Response!")
+	c.JSON(http.StatusAccepted, resp)
 }
 
 // @Security ApiKeyAuth
@@ -200,17 +217,21 @@ func (h *handler) DeleteCourse(c *gin.Context) {
 	var id string = c.Param("id")
 
 	if !helper.IsValidUUID(id) {
-		h.handlerResponse(c, "is valid uuid", http.StatusBadRequest, "invalid id")
+		h.logger.Error("is not valid uuid!")
+		c.JSON(http.StatusOK, "invalid uuid")
+
 		return
 	}
 
 	err := h.strg.Course().Delete(c.Request.Context(), &models.CoursePrimaryKey{Id: id})
 	if err != nil {
-		h.handlerResponse(c, "storage.Course.delete", http.StatusInternalServerError, err.Error())
+		h.logger.Error("storage.Course.Delete!")
+		c.JSON(http.StatusInternalServerError, "storage.Course.Delete!")
 		return
 	}
 
-	h.handlerResponse(c, "create Course resposne", http.StatusNoContent, nil)
+	h.logger.Info("Create Course Response!")
+	c.JSON(http.StatusNoContent, nil)
 }
 
 // Upload Photo godoc
@@ -234,23 +255,27 @@ func (h *handler) PhotoUpload(c *gin.Context) {
 
 	videoFile, err := file.Open()
 	if err != nil {
-		h.handlerResponse(c, "error VideoLessons", http.StatusInternalServerError, err.Error())
+		h.logger.Error("error VideoLessons!")
+		c.JSON(http.StatusInternalServerError, "error VideoLessons!")
 		return
 	}
 	defer videoFile.Close()
 
 	videoData, err := ioutil.ReadAll(videoFile)
 	if err != nil {
-		h.handlerResponse(c, "error ioutil.ReadAll VideoLessons", http.StatusInternalServerError, err.Error())
+		h.logger.Error("error ioutil.ReadAll.VideoLessons!")
+		c.JSON(http.StatusInternalServerError, "error ioutil.ReadALl.VideoLessons!")
 		return
 	}
 	result, err := h.strg.Course().UploadPhotos(c.Request.Context(), &models.VideoLessons{FileName: file.Filename, VideoData: videoData})
 	if err != nil {
-		h.handlerResponse(c, "error Course.UploadVideos", http.StatusInternalServerError, err.Error())
+		h.logger.Error("error Course.UploadVideos!")
+		c.JSON(http.StatusInternalServerError, "error Course.UploadVideos!")
 		return
 	}
 
-	h.handlerResponse(c, "Video uploaded successfully!", http.StatusOK, result)
+	h.logger.Info("Video Uploaded Successfully!")
+	c.JSON(http.StatusOK, result)
 }
 
 // Photo Get godoc
@@ -271,7 +296,8 @@ func (h *handler) PhotoDownload(c *gin.Context) {
 
 	result, err := h.strg.Course().GetPhotos(c.Request.Context(), &models.VideoLessons{Id: id})
 	if err != nil {
-		h.handlerResponse(c, "error PhotoGet, GetPhotos", http.StatusInternalServerError, err.Error())
+		h.logger.Error("error PhotoGet.PhotoDownloads!")
+		c.JSON(http.StatusInternalServerError, "error PhotoGet.PhotoDownloads!")
 		return
 	}
 
@@ -295,9 +321,11 @@ func (h *handler) CourseOfUsers(c *gin.Context) {
 	Id := c.Param("id")
 	resp, err := h.strg.Course().GetListCourseOfUsers(context.Background(), &models.CoursePrimaryKey{Id: Id})
 	if err != nil {
-		h.handlerResponse(c, "error Course.GetListCourseOfUsers", http.StatusInternalServerError, err.Error())
+		h.logger.Error("error Course.GetListCourseOfUsers")
+		c.JSON(http.StatusInternalServerError, "error Course.GetListCourseOfUsers!")
 		return
 	}
 
-	h.handlerResponse(c, "Successfull!", http.StatusOK, resp)
+	h.logger.Info("Successfull!")
+	c.JSON(http.StatusOK, resp)
 }
