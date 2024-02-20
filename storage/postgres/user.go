@@ -128,7 +128,7 @@ func (u *userRepo) GetByID(ctx context.Context, req *models.UserPrimaryKey) (*mo
 		LastName:    lastName.String,
 		Email:       email.String,
 		PhoneNumber: phoneNumber.String,
-		Password:    "",
+		Password:    password.String,
 		UserType:    userType.String,
 		CreatedAt:   createdAt.String,
 		UpdatedAt:   updatedAt.String,
