@@ -97,7 +97,6 @@ func (h *handler) GetByIdUser(c *gin.Context) {
 		return
 	}
 
-	h.handlerResponse(c, "get by id user resposne", http.StatusOK, resp)
 	h.logger.Info("GetByID User Response!")
 	c.JSON(http.StatusOK, resp)
 }
