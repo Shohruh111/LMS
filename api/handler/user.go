@@ -96,7 +96,7 @@ func (h *handler) GetByIdUser(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, "storage.User.GetByID")
 		return
 	}
-
+	resp.Password = ""
 	h.logger.Info("GetByID User Response!")
 	c.JSON(http.StatusOK, resp)
 }
