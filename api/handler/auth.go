@@ -5,6 +5,7 @@ import (
 	"app/pkg/helper"
 	"context"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -23,6 +24,7 @@ import (
 // @Response 400 {object} Response{data=string} "Bad Request"
 // @Failure 500 {object} Response{data=string} "Server error"
 func (h *handler) Login(c *gin.Context) {
+
 	var loginUser models.LoginUser
 	err := c.ShouldBindJSON(&loginUser)
 	if err != nil {
@@ -50,10 +52,32 @@ func (h *handler) Login(c *gin.Context) {
 	}
 	resp.Password = ""
 
-	c.JSON(http.StatusOK, resp)
+	// result, err := helper.GenerateJWT(map[string]interface{}{"user_id": resp.Id}, time.Hour*360, h.cfg.SecretKey)
+	// if err != nil {
+	// 	h.logger.Error("error in tokens GENERATEJWT.LOGIN")
+	// 	c.JSON(http.StatusInternalServerError, "Server Error!")
+	// }
+
+	var credentails = map[string]interface{}{
+		"user_id": resp.Id,
+	}
+	accessToken, err := helper.GenerateJWT(credentails, time.Hour*360, h.cfg.SecretKey)
+	if err != nil {
+		h.logger.Error("error in tokens GENERATEJWT.LOGIN")
+		c.JSON(http.StatusInternalServerError, "Server Error!")
+		return
+	}
+
+	user := models.LoginResponse{
+		AccessToken: accessToken,
+		User:        *resp,
+	}
+
+	c.JSON(http.StatusOK, user)
 
 }
 
+// @Security ApiKeyAuth
 // Register godoc
 // @ID /auth/register
 // @Router /lms/api/auth/register [POST]
@@ -128,6 +152,7 @@ func (h *handler) Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, resp)
 }
 
+// @Security ApiKeyAuth
 // CheckEmail godoc
 // @ID /auth/check_email
 // @Router /lms/api/auth/checkEmail [POST]
@@ -181,6 +206,7 @@ func (h *handler) CheckEmail(c *gin.Context) {
 	c.JSON(http.StatusCreated, checkEmail)
 }
 
+// @Security ApiKeyAuth
 // CheckCode godoc
 // @ID /auth/check_code
 // @Router /lms/api/auth/checkCode [POST]
@@ -214,6 +240,7 @@ func (h *handler) CheckCode(c *gin.Context) {
 	c.JSON(http.StatusOK, ConfirmCode)
 }
 
+// @Security ApiKeyAuth
 // SendEmail godoc
 // @ID /auth/send_exist_email
 // @Router /lms/api/auth/sendExistEmail [POST]
@@ -277,6 +304,12 @@ func (h *handler) SendCodeExistEmail(c *gin.Context) {
 // @Response 400 {object} Response{data=string} "Bad Request"
 // @Failure 500 {object} Response{data=string} "Server error"
 func (h *handler) UpdatePassword(c *gin.Context) {
+	// val, exist := c.Get("user_id")
+	// fmt.Println(val)
+	// if !exist {
+	// 	c.JSON(http.StatusBadRequest, "invalid token")
+	// 	return
+	// }
 	var update models.UpdatePassword
 
 	err := c.ShouldBindJSON(&update)

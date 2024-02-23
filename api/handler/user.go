@@ -37,6 +37,13 @@ func (h *handler) CreateUser(c *gin.Context) {
 		return
 	}
 
+	role, err := h.strg.Role().GetByID(c.Request.Context(), &models.RolePrimaryKey{Type: createUser.UserType})
+	if err != nil {
+		h.logger.Error("error Role.GetByID.CreateUser")
+		c.JSON(http.StatusInternalServerError, "Serve Error!")
+	}
+	createUser.RoleId = role.Id
+	
 	id, err := h.strg.User().Create(c.Request.Context(), &createUser)
 	if err != nil {
 		h.logger.Error("storage.User.Create!")
@@ -202,7 +209,7 @@ func (h *handler) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	h.logger.Info("Create User Response!")
+	h.logger.Info("Update User Response!")
 	c.JSON(http.StatusAccepted, resp)
 }
 

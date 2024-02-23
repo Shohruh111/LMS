@@ -18,6 +18,11 @@ const docTemplate = `{
     "paths": {
         "/lms/api/auth/checkCode": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "CheckCode",
                 "consumes": [
                     "application/json"
@@ -98,6 +103,11 @@ const docTemplate = `{
         },
         "/lms/api/auth/checkEmail": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "CheckEmail",
                 "consumes": [
                     "application/json"
@@ -258,6 +268,11 @@ const docTemplate = `{
         },
         "/lms/api/auth/register": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Register",
                 "consumes": [
                     "application/json"
@@ -338,6 +353,11 @@ const docTemplate = `{
         },
         "/lms/api/auth/sendExistEmail": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "SendEmail",
                 "consumes": [
                     "application/json"
@@ -2318,6 +2338,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role_id": {
+                    "type": "string"
+                },
+                "user_type": {
                     "type": "string"
                 }
             }

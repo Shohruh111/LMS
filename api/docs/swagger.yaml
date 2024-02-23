@@ -104,6 +104,8 @@ definitions:
         type: string
       role_id:
         type: string
+      user_type:
+        type: string
     type: object
   models.UserUpdate:
     properties:
@@ -164,6 +166,8 @@ paths:
                 data:
                   type: string
               type: object
+      security:
+      - ApiKeyAuth: []
       summary: CheckCode
       tags:
       - Auth
@@ -208,6 +212,8 @@ paths:
                 data:
                   type: string
               type: object
+      security:
+      - ApiKeyAuth: []
       summary: CheckEmail
       tags:
       - Auth
@@ -296,6 +302,8 @@ paths:
                 data:
                   type: string
               type: object
+      security:
+      - ApiKeyAuth: []
       summary: Register
       tags:
       - Auth
@@ -340,6 +348,8 @@ paths:
                 data:
                   type: string
               type: object
+      security:
+      - ApiKeyAuth: []
       summary: SendEmail
       tags:
       - Auth

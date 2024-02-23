@@ -1,5 +1,10 @@
 package models
 
+type LoginResponse struct {
+	AccessToken string `json:"access_token"`
+	User        User   `json:"user"`
+}
+
 type LoginUser struct {
 	Email    string `json:"login"`
 	Password string `json:"password"`
@@ -46,6 +51,7 @@ type UserCreate struct {
 	Email       string `json:"email"`
 	PhoneNumber string `json:"phone_number"`
 	Password    string `json:"password"`
+	UserType    string `json:"user_type"`
 }
 
 type UserUpdate struct {

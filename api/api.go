@@ -23,11 +23,15 @@ func NewApi(r *gin.Engine, cfg *config.Config, storage storage.StorageI, logger 
 	r.Use(customCORSMiddleware())
 
 	v1 := r.Group("/lms/api/auth")
+
 	// Login Api
 	v1.POST("/login", handler.Login)
 
+	// v1.Use(handler.AuthMiddleware())
+
 	// Register Api
 	v1.POST("/register", handler.Register)
+
 	v1.POST("/checkEmail", handler.CheckEmail)
 	v1.POST("/checkCode", handler.CheckCode)
 	v1.POST("/sendExistEmail", handler.SendCodeExistEmail)
