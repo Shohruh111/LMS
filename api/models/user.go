@@ -2,7 +2,7 @@ package models
 
 type LoginResponse struct {
 	AccessToken string `json:"access_token"`
-	User        User   `json:"user"`
+	User        User   `json:"data"`
 }
 
 type LoginUser struct {
