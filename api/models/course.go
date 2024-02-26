@@ -21,15 +21,15 @@ type Course struct {
 }
 
 type CourseCreate struct {
-	Name         string `json:"name"`
-	Photo        string `json:"photo"`
-	ForWho       string `json:"for_who"`
-	Type         string `json:"type"`
-	WeeklyNumber int    `json:"weekly_number"`
-	Duration     string `json:"duration"`
-	Price        int    `json:"price"`
-	BeginingDate string `json:"beginning_date_course`
-	EndDate      string `json:"end_date"`
+	Name          string `json:"name"`
+	Photo         string `json:"photo"`
+	ForWho        string `json:"for_who"`
+	Type          string `json:"type"`
+	WeeklyNumber  int    `json:"weekly_number"`
+	Duration      string `json:"duration"`
+	Price         int    `json:"price"`
+	BeginningDate string `json:"beginning_date_course"`
+	EndDate       string `json:"end_date"`
 }
 
 type CourseUpdate struct {
