@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -43,7 +44,7 @@ func (h *handler) CreateUser(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, "Serve Error!")
 	}
 	createUser.RoleId = role.Id
-	
+
 	id, err := h.strg.User().Create(c.Request.Context(), &createUser)
 	if err != nil {
 		h.logger.Error("storage.User.Create!")
@@ -123,6 +124,9 @@ func (h *handler) GetByIdUser(c *gin.Context) {
 // @Response 400 {object} Response{data=string} "Bad Request"
 // @Failure 500 {object} Response{data=string} "Server error"
 func (h *handler) GetListUser(c *gin.Context) {
+
+	path := c.FullPath()
+	fmt.Println("\t\n: " + path)
 
 	offset, err := h.getOffsetQuery(c.Query("offset"))
 	if err != nil {
