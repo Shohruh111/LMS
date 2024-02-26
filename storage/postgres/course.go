@@ -42,7 +42,7 @@ func (u *courseRepo) Create(ctx context.Context, req *models.CourseCreate) (stri
 		req.WeeklyNumber,
 		req.Duration,
 		req.Price,
-		req.BeginingDate,
+		req.BeginningDate,
 		req.EndDate,
 	)
 
