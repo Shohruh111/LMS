@@ -67,6 +67,7 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 		duration      sql.NullString
 		price         int
 		beginningDate sql.NullString
+		endDate       sql.NullString
 		createdAt     sql.NullString
 		updatedAt     sql.NullString
 	)
@@ -82,6 +83,7 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 			duration,
 			price,
 			beginning_date_course,
+			end_date,
 			created_at,
 			updated_at
 		FROM "courses" 
@@ -98,6 +100,7 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 		&duration,
 		&price,
 		&beginningDate,
+		&endDate,
 		&createdAt,
 		&updatedAt,
 	)
