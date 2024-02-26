@@ -2223,7 +2223,13 @@ const docTemplate = `{
         "models.CourseCreate": {
             "type": "object",
             "properties": {
+                "beginning_date_course": {
+                    "type": "string"
+                },
                 "duration": {
+                    "type": "string"
+                },
+                "end_date": {
                     "type": "string"
                 },
                 "for_who": {
