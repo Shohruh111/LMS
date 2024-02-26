@@ -129,7 +129,7 @@ definitions:
 info:
   contact: {}
 paths:
-  /lms/api/auth/checkCode:
+  /lms/api/v1/auth/checkCode:
     post:
       consumes:
       - application/json
@@ -175,7 +175,7 @@ paths:
       summary: CheckCode
       tags:
       - Auth
-  /lms/api/auth/checkEmail:
+  /lms/api/v1/auth/checkEmail:
     post:
       consumes:
       - application/json
@@ -221,7 +221,7 @@ paths:
       summary: CheckEmail
       tags:
       - Auth
-  /lms/api/auth/login:
+  /lms/api/v1/auth/login:
     post:
       consumes:
       - application/json
@@ -265,7 +265,7 @@ paths:
       summary: Login
       tags:
       - Auth
-  /lms/api/auth/register:
+  /lms/api/v1/auth/register:
     post:
       consumes:
       - application/json
@@ -311,12 +311,12 @@ paths:
       summary: Register
       tags:
       - Auth
-  /lms/api/auth/sendExistEmail:
+  /lms/api/v1/auth/restorePassword:
     post:
       consumes:
       - application/json
       description: SendEmail
-      operationId: /auth/send_exist_email
+      operationId: /auth/restore_password
       parameters:
       - description: CheckEmailRequest
         in: body
@@ -357,7 +357,7 @@ paths:
       summary: SendEmail
       tags:
       - Auth
-  /lms/api/auth/updatePassword:
+  /lms/api/v1/auth/updatePassword:
     post:
       consumes:
       - application/json
@@ -401,12 +401,12 @@ paths:
       summary: UpdatePassword
       tags:
       - Auth
-  /lms/api/course:
+  /lms/api/v1/course:
     get:
       consumes:
       - application/json
-      description: Get List Course
-      operationId: get_list_Course
+      description: Get List Courses
+      operationId: get_list_Courses
       parameters:
       - description: offset
         in: query
@@ -444,14 +444,14 @@ paths:
                 data:
                   type: string
               type: object
-      summary: Get List Course
+      summary: Get List Courses
       tags:
       - Course
     post:
       consumes:
       - application/json
-      description: Create Course
-      operationId: create_Course
+      description: Create Courses
+      operationId: create_Courses
       parameters:
       - description: CreateCourseRequest
         in: body
@@ -489,15 +489,15 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: Create Course
+      summary: Create Courses
       tags:
       - Course
-  /lms/api/course/{id}:
+  /lms/api/v1/course/{id}:
     delete:
       consumes:
       - application/json
-      description: Delete Course
-      operationId: delete_Course
+      description: Delete Courses
+      operationId: delete_Courses
       parameters:
       - description: id
         in: path
@@ -534,14 +534,14 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: Delete Course
+      summary: Delete Courses
       tags:
       - Course
     get:
       consumes:
       - application/json
-      description: Get By ID Course
-      operationId: get_by_id_Course
+      description: Get By ID Courses
+      operationId: get_by_id_Courses
       parameters:
       - description: id
         in: path
@@ -577,14 +577,14 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: Get By ID Course
+      summary: Get By ID Courses
       tags:
       - Course
     put:
       consumes:
       - application/json
-      description: Update Course
-      operationId: update_Course
+      description: Update Courses
+      operationId: update_Courses
       parameters:
       - description: id
         in: path
@@ -627,15 +627,15 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: Update Course
+      summary: Update Courses
       tags:
       - Course
-  /lms/api/course/users:
+  /lms/api/v1/course/users:
     get:
       consumes:
       - application/json
       description: Get List Course Of Users
-      operationId: get_list_Course_of_users
+      operationId: get_list_Course_of_Users
       parameters:
       - description: id
         in: path
@@ -672,7 +672,7 @@ paths:
       summary: Get List Course Of Users
       tags:
       - Course
-  /lms/api/excel/mentors:
+  /lms/api/v1/excel/mentors:
     get:
       consumes:
       - application/json
@@ -709,7 +709,7 @@ paths:
       summary: Get List Mentors
       tags:
       - Excel
-  /lms/api/excel/students:
+  /lms/api/v1/excel/students:
     get:
       consumes:
       - application/json
@@ -746,7 +746,7 @@ paths:
       summary: Get List Students
       tags:
       - Excel
-  /lms/api/mentors:
+  /lms/api/v1/mentors:
     get:
       consumes:
       - application/json
@@ -792,7 +792,7 @@ paths:
       summary: Get List Mentors
       tags:
       - User
-  /lms/api/photo/{id}:
+  /lms/api/v1/photo/{id}:
     get:
       consumes:
       - application/json
@@ -834,7 +834,7 @@ paths:
       summary: Photo Get
       tags:
       - Course
-  /lms/api/photoUpload:
+  /lms/api/v1/photoUpload:
     post:
       consumes:
       - application/json
@@ -877,12 +877,12 @@ paths:
       summary: Photo Upload
       tags:
       - Course
-  /lms/api/role:
+  /lms/api/v1/role:
     get:
       consumes:
       - application/json
-      description: Get List Role
-      operationId: get_list_Role
+      description: Get List Roles
+      operationId: get_list_Roles
       parameters:
       - description: offset
         in: query
@@ -920,14 +920,14 @@ paths:
                 data:
                   type: string
               type: object
-      summary: Get List Role
+      summary: Get List Roles
       tags:
       - Role
     post:
       consumes:
       - application/json
-      description: Create Role
-      operationId: create_Role
+      description: Create Roles
+      operationId: create_Roles
       parameters:
       - description: CreateRoleRequest
         in: body
@@ -965,15 +965,15 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: Create Role
+      summary: Create Roles
       tags:
       - Role
-  /lms/api/role/{id}:
+  /lms/api/v1/role/{id}:
     delete:
       consumes:
       - application/json
-      description: Delete Role
-      operationId: delete_Role
+      description: Delete Roles
+      operationId: delete_Roles
       parameters:
       - description: id
         in: path
@@ -1010,14 +1010,14 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: Delete Role
+      summary: Delete Roles
       tags:
       - Role
     get:
       consumes:
       - application/json
-      description: Get By ID Role
-      operationId: get_by_id_Role
+      description: Get By ID Roles
+      operationId: get_by_id_Roles
       parameters:
       - description: id
         in: path
@@ -1053,14 +1053,14 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: Get By ID Role
+      summary: Get By ID Roles
       tags:
       - Role
     put:
       consumes:
       - application/json
-      description: Update Role
-      operationId: update_Role
+      description: Update Roles
+      operationId: update_Roles
       parameters:
       - description: id
         in: path
@@ -1103,10 +1103,10 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: Update Role
+      summary: Update Roles
       tags:
       - Role
-  /lms/api/students:
+  /lms/api/v1/students:
     get:
       consumes:
       - application/json
@@ -1152,12 +1152,12 @@ paths:
       summary: Get List Students
       tags:
       - User
-  /lms/api/user:
+  /lms/api/v1/user:
     get:
       consumes:
       - application/json
-      description: Get List User
-      operationId: get_list_user
+      description: Get List Users
+      operationId: get_list_users
       parameters:
       - description: offset
         in: query
@@ -1199,14 +1199,14 @@ paths:
                 data:
                   type: string
               type: object
-      summary: Get List User
+      summary: Get List Users
       tags:
       - User
     post:
       consumes:
       - application/json
-      description: Create User
-      operationId: create_user
+      description: Create Users
+      operationId: create_users
       parameters:
       - description: CreateUserRequest
         in: body
@@ -1244,15 +1244,15 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: Create User
+      summary: Create Users
       tags:
       - User
-  /lms/api/user/{id}:
+  /lms/api/v1/user/{id}:
     delete:
       consumes:
       - application/json
-      description: Delete User
-      operationId: delete_user
+      description: Delete Users
+      operationId: delete_users
       parameters:
       - description: id
         in: path
@@ -1289,14 +1289,14 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: Delete User
+      summary: Delete Users
       tags:
       - User
     get:
       consumes:
       - application/json
-      description: Get By ID User
-      operationId: get_by_id_user
+      description: Get By ID Users
+      operationId: get_by_id_users
       parameters:
       - description: id
         in: path
@@ -1332,14 +1332,14 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: Get By ID User
+      summary: Get By ID Users
       tags:
       - User
     put:
       consumes:
       - application/json
-      description: Update User
-      operationId: update_user
+      description: Update Users
+      operationId: update_users
       parameters:
       - description: id
         in: path
@@ -1382,7 +1382,7 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: Update User
+      summary: Update Users
       tags:
       - User
 securityDefinitions:

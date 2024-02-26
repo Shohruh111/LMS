@@ -16,7 +16,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/lms/api/auth/checkCode": {
+        "/lms/api/v1/auth/checkCode": {
             "post": {
                 "security": [
                     {
@@ -101,7 +101,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/auth/checkEmail": {
+        "/lms/api/v1/auth/checkEmail": {
             "post": {
                 "security": [
                     {
@@ -186,7 +186,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/auth/login": {
+        "/lms/api/v1/auth/login": {
             "post": {
                 "description": "Login",
                 "consumes": [
@@ -266,7 +266,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/auth/register": {
+        "/lms/api/v1/auth/register": {
             "post": {
                 "security": [
                     {
@@ -351,7 +351,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/auth/sendExistEmail": {
+        "/lms/api/v1/auth/restorePassword": {
             "post": {
                 "security": [
                     {
@@ -366,7 +366,7 @@ const docTemplate = `{
                     "Auth"
                 ],
                 "summary": "SendEmail",
-                "operationId": "/auth/send_exist_email",
+                "operationId": "/auth/restore_password",
                 "parameters": [
                     {
                         "description": "CheckEmailRequest",
@@ -436,7 +436,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/auth/updatePassword": {
+        "/lms/api/v1/auth/updatePassword": {
             "post": {
                 "description": "UpdatePassword",
                 "consumes": [
@@ -516,17 +516,17 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/course": {
+        "/lms/api/v1/course": {
             "get": {
-                "description": "Get List Course",
+                "description": "Get List Courses",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Course"
                 ],
-                "summary": "Get List Course",
-                "operationId": "get_list_Course",
+                "summary": "Get List Courses",
+                "operationId": "get_list_Courses",
                 "parameters": [
                     {
                         "type": "string",
@@ -604,15 +604,15 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Create Course",
+                "description": "Create Courses",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Course"
                 ],
-                "summary": "Create Course",
-                "operationId": "create_Course",
+                "summary": "Create Courses",
+                "operationId": "create_Courses",
                 "parameters": [
                     {
                         "description": "CreateCourseRequest",
@@ -682,7 +682,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/course/users": {
+        "/lms/api/v1/course/users": {
             "get": {
                 "description": "Get List Course Of Users",
                 "consumes": [
@@ -692,7 +692,7 @@ const docTemplate = `{
                     "Course"
                 ],
                 "summary": "Get List Course Of Users",
-                "operationId": "get_list_Course_of_users",
+                "operationId": "get_list_Course_of_Users",
                 "parameters": [
                     {
                         "type": "string",
@@ -759,22 +759,22 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/course/{id}": {
+        "/lms/api/v1/course/{id}": {
             "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Get By ID Course",
+                "description": "Get By ID Courses",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Course"
                 ],
-                "summary": "Get By ID Course",
-                "operationId": "get_by_id_Course",
+                "summary": "Get By ID Courses",
+                "operationId": "get_by_id_Courses",
                 "parameters": [
                     {
                         "type": "string",
@@ -846,15 +846,15 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Update Course",
+                "description": "Update Courses",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Course"
                 ],
-                "summary": "Update Course",
-                "operationId": "update_Course",
+                "summary": "Update Courses",
+                "operationId": "update_Courses",
                 "parameters": [
                     {
                         "type": "string",
@@ -936,15 +936,15 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Delete Course",
+                "description": "Delete Courses",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Course"
                 ],
-                "summary": "Delete Course",
-                "operationId": "delete_Course",
+                "summary": "Delete Courses",
+                "operationId": "delete_Courses",
                 "parameters": [
                     {
                         "type": "string",
@@ -1012,7 +1012,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/excel/mentors": {
+        "/lms/api/v1/excel/mentors": {
             "get": {
                 "description": "Get List Mentors Excel Format",
                 "consumes": [
@@ -1081,7 +1081,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/excel/students": {
+        "/lms/api/v1/excel/students": {
             "get": {
                 "description": "Get List Students Excel Format",
                 "consumes": [
@@ -1150,7 +1150,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/mentors": {
+        "/lms/api/v1/mentors": {
             "get": {
                 "description": "Get List Mentors",
                 "consumes": [
@@ -1233,7 +1233,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/photo/{id}": {
+        "/lms/api/v1/photo/{id}": {
             "get": {
                 "description": "Photo Get",
                 "consumes": [
@@ -1310,7 +1310,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/photoUpload": {
+        "/lms/api/v1/photoUpload": {
             "post": {
                 "description": "Photo Upload",
                 "consumes": [
@@ -1388,17 +1388,17 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/role": {
+        "/lms/api/v1/role": {
             "get": {
-                "description": "Get List Role",
+                "description": "Get List Roles",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Role"
                 ],
-                "summary": "Get List Role",
-                "operationId": "get_list_Role",
+                "summary": "Get List Roles",
+                "operationId": "get_list_Roles",
                 "parameters": [
                     {
                         "type": "string",
@@ -1476,15 +1476,15 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Create Role",
+                "description": "Create Roles",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Role"
                 ],
-                "summary": "Create Role",
-                "operationId": "create_Role",
+                "summary": "Create Roles",
+                "operationId": "create_Roles",
                 "parameters": [
                     {
                         "description": "CreateRoleRequest",
@@ -1554,22 +1554,22 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/role/{id}": {
+        "/lms/api/v1/role/{id}": {
             "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Get By ID Role",
+                "description": "Get By ID Roles",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Role"
                 ],
-                "summary": "Get By ID Role",
-                "operationId": "get_by_id_Role",
+                "summary": "Get By ID Roles",
+                "operationId": "get_by_id_Roles",
                 "parameters": [
                     {
                         "type": "string",
@@ -1641,15 +1641,15 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Update Role",
+                "description": "Update Roles",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Role"
                 ],
-                "summary": "Update Role",
-                "operationId": "update_Role",
+                "summary": "Update Roles",
+                "operationId": "update_Roles",
                 "parameters": [
                     {
                         "type": "string",
@@ -1731,15 +1731,15 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Delete Role",
+                "description": "Delete Roles",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Role"
                 ],
-                "summary": "Delete Role",
-                "operationId": "delete_Role",
+                "summary": "Delete Roles",
+                "operationId": "delete_Roles",
                 "parameters": [
                     {
                         "type": "string",
@@ -1807,7 +1807,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/students": {
+        "/lms/api/v1/students": {
             "get": {
                 "description": "Get List Students",
                 "consumes": [
@@ -1890,17 +1890,17 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/user": {
+        "/lms/api/v1/user": {
             "get": {
-                "description": "Get List User",
+                "description": "Get List Users",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "User"
                 ],
-                "summary": "Get List User",
-                "operationId": "get_list_user",
+                "summary": "Get List Users",
+                "operationId": "get_list_users",
                 "parameters": [
                     {
                         "type": "string",
@@ -1984,15 +1984,15 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Create User",
+                "description": "Create Users",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "User"
                 ],
-                "summary": "Create User",
-                "operationId": "create_user",
+                "summary": "Create Users",
+                "operationId": "create_users",
                 "parameters": [
                     {
                         "description": "CreateUserRequest",
@@ -2062,22 +2062,22 @@ const docTemplate = `{
                 }
             }
         },
-        "/lms/api/user/{id}": {
+        "/lms/api/v1/user/{id}": {
             "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Get By ID User",
+                "description": "Get By ID Users",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "User"
                 ],
-                "summary": "Get By ID User",
-                "operationId": "get_by_id_user",
+                "summary": "Get By ID Users",
+                "operationId": "get_by_id_users",
                 "parameters": [
                     {
                         "type": "string",
@@ -2149,15 +2149,15 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Update User",
+                "description": "Update Users",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "User"
                 ],
-                "summary": "Update User",
-                "operationId": "update_user",
+                "summary": "Update Users",
+                "operationId": "update_users",
                 "parameters": [
                     {
                         "type": "string",
@@ -2239,15 +2239,15 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Delete User",
+                "description": "Delete Users",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "User"
                 ],
-                "summary": "Delete User",
-                "operationId": "delete_user",
+                "summary": "Delete Users",
+                "operationId": "delete_users",
                 "parameters": [
                     {
                         "type": "string",

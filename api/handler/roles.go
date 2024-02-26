@@ -9,11 +9,11 @@ import (
 )
 
 // @Security ApiKeyAuth
-// Create Role godoc
-// @ID create_Role
-// @Router /lms/api/role [POST]
-// @Summary Create Role
-// @Description Create Role
+// Create Roles godoc
+// @ID create_Roles
+// @Router /lms/api/v1/role [POST]
+// @Summary Create Roles
+// @Description Create Roles
 // @Tags Role
 // @Accept json
 // @Procedure json
@@ -50,11 +50,11 @@ func (h *handler) CreateRole(c *gin.Context) {
 }
 
 // @Security ApiKeyAuth
-// GetByID Role godoc
-// @ID get_by_id_Role
-// @Router /lms/api/role/{id} [GET]
-// @Summary Get By ID Role
-// @Description Get By ID Role
+// GetByID Roles godoc
+// @ID get_by_id_Roles
+// @Router /lms/api/v1/role/{id} [GET]
+// @Summary Get By ID Roles
+// @Description Get By ID Roles
 // @Tags Role
 // @Accept json
 // @Procedure json
@@ -96,11 +96,11 @@ func (h *handler) GetByIdRole(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-// GetList Role godoc
-// @ID get_list_Role
-// @Router /lms/api/role [GET]
-// @Summary Get List Role
-// @Description Get List Role
+// GetList Roles godoc
+// @ID get_list_Roles
+// @Router /lms/api/v1/role [GET]
+// @Summary Get List Roles
+// @Description Get List Roles
 // @Tags Role
 // @Accept json
 // @Procedure json
@@ -140,11 +140,11 @@ func (h *handler) GetListRole(c *gin.Context) {
 }
 
 // @Security ApiKeyAuth
-// Update Role godoc
-// @ID update_Role
-// @Router /lms/api/role/{id} [PUT]
-// @Summary Update Role
-// @Description Update Role
+// Update Roles godoc
+// @ID update_Roles
+// @Router /lms/api/v1/role/{id} [PUT]
+// @Summary Update Roles
+// @Description Update Roles
 // @Tags Role
 // @Accept json
 // @Procedure json
@@ -199,11 +199,11 @@ func (h *handler) UpdateRole(c *gin.Context) {
 }
 
 // @Security ApiKeyAuth
-// Delete Role godoc
-// @ID delete_Role
-// @Router /lms/api/role/{id} [DELETE]
-// @Summary Delete Role
-// @Description Delete Role
+// Delete Roles godoc
+// @ID delete_Roles
+// @Router /lms/api/v1/role/{id} [DELETE]
+// @Summary Delete Roles
+// @Description Delete Roles
 // @Tags Role
 // @Accept json
 // @Procedure json

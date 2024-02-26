@@ -16,7 +16,7 @@ const (
 
 // Students Excel godoc
 // @ID get_list_students_excel
-// @Router /lms/api/excel/students [GET]
+// @Router /lms/api/v1/excel/students [GET]
 // @Summary Get List Students
 // @Description Get List Students Excel Format
 // @Tags Excel
@@ -68,7 +68,7 @@ func (h *handler) StudentsExcelDownload(c *gin.Context) {
 
 // Mentors Excel godoc
 // @ID get_list_mentors_excel
-// @Router /lms/api/excel/mentors [GET]
+// @Router /lms/api/v1/excel/mentors [GET]
 // @Summary Get List Mentors
 // @Description Get List Mentors Excel Format
 // @Tags Excel

@@ -13,7 +13,7 @@ import (
 
 // Login godoc
 // @ID /auth/login
-// @Router /lms/api/auth/login [POST]
+// @Router /lms/api/v1/auth/login [POST]
 // @Summary Login
 // @Description Login
 // @Tags Auth
@@ -80,7 +80,7 @@ func (h *handler) Login(c *gin.Context) {
 // @Security ApiKeyAuth
 // Register godoc
 // @ID /auth/register
-// @Router /lms/api/auth/register [POST]
+// @Router /lms/api/v1/auth/register [POST]
 // @Summary Register
 // @Description Register
 // @Tags Auth
@@ -155,7 +155,7 @@ func (h *handler) Register(c *gin.Context) {
 // @Security ApiKeyAuth
 // CheckEmail godoc
 // @ID /auth/check_email
-// @Router /lms/api/auth/checkEmail [POST]
+// @Router /lms/api/v1/auth/checkEmail [POST]
 // @Summary CheckEmail
 // @Description CheckEmail
 // @Tags Auth
@@ -209,7 +209,7 @@ func (h *handler) CheckEmail(c *gin.Context) {
 // @Security ApiKeyAuth
 // CheckCode godoc
 // @ID /auth/check_code
-// @Router /lms/api/auth/checkCode [POST]
+// @Router /lms/api/v1/auth/checkCode [POST]
 // @Summary CheckCode
 // @Description CheckCode
 // @Tags Auth
@@ -241,9 +241,9 @@ func (h *handler) CheckCode(c *gin.Context) {
 }
 
 // @Security ApiKeyAuth
-// SendEmail godoc
-// @ID /auth/send_exist_email
-// @Router /lms/api/auth/sendExistEmail [POST]
+// RestorePassword godoc
+// @ID /auth/restore_password
+// @Router /lms/api/v1/auth/restorePassword [POST]
 // @Summary SendEmail
 // @Description SendEmail
 // @Tags Auth
@@ -253,7 +253,7 @@ func (h *handler) CheckCode(c *gin.Context) {
 // @Success 200 {object} Response{data=string} "Success Request"
 // @Response 400 {object} Response{data=string} "Bad Request"
 // @Failure 500 {object} Response{data=string} "Server error"
-func (h *handler) SendCodeExistEmail(c *gin.Context) {
+func (h *handler) RestorePassword(c *gin.Context) {
 	var email models.CheckEmail
 
 	err := c.ShouldBindJSON(&email)
@@ -293,7 +293,7 @@ func (h *handler) SendCodeExistEmail(c *gin.Context) {
 
 // UpdatePassword godoc
 // @ID /auth/update_password
-// @Router /lms/api/auth/updatePassword [POST]
+// @Router /lms/api/v1/auth/updatePassword [POST]
 // @Summary UpdatePassword
 // @Description UpdatePassword
 // @Tags Auth

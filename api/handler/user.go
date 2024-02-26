@@ -16,11 +16,11 @@ const (
 )
 
 // @Security ApiKeyAuth
-// Create user godoc
-// @ID create_user
-// @Router /lms/api/user [POST]
-// @Summary Create User
-// @Description Create User
+// Create Users godoc
+// @ID create_users
+// @Router /lms/api/v1/user [POST]
+// @Summary Create Users
+// @Description Create Users
 // @Tags User
 // @Accept json
 // @Procedure json
@@ -64,11 +64,11 @@ func (h *handler) CreateUser(c *gin.Context) {
 }
 
 // @Security ApiKeyAuth
-// GetByID user godoc
-// @ID get_by_id_user
-// @Router /lms/api/user/{id} [GET]
-// @Summary Get By ID User
-// @Description Get By ID User
+// GetByID Users godoc
+// @ID get_by_id_users
+// @Router /lms/api/v1/user/{id} [GET]
+// @Summary Get By ID Users
+// @Description Get By ID Users
 // @Tags User
 // @Accept json
 // @Procedure json
@@ -109,11 +109,11 @@ func (h *handler) GetByIdUser(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-// GetList user godoc
-// @ID get_list_user
-// @Router /lms/api/user [GET]
-// @Summary Get List User
-// @Description Get List User
+// GetList Users godoc
+// @ID get_list_users
+// @Router /lms/api/v1/user [GET]
+// @Summary Get List Users
+// @Description Get List Users
 // @Tags User
 // @Accept json
 // @Procedure json
@@ -159,11 +159,11 @@ func (h *handler) GetListUser(c *gin.Context) {
 }
 
 // @Security ApiKeyAuth
-// Update user godoc
-// @ID update_user
-// @Router /lms/api/user/{id} [PUT]
-// @Summary Update User
-// @Description Update User
+// Update Users godoc
+// @ID update_users
+// @Router /lms/api/v1/user/{id} [PUT]
+// @Summary Update Users
+// @Description Update Users
 // @Tags User
 // @Accept json
 // @Procedure json
@@ -218,11 +218,11 @@ func (h *handler) UpdateUser(c *gin.Context) {
 }
 
 // @Security ApiKeyAuth
-// Delete user godoc
-// @ID delete_user
-// @Router /lms/api/user/{id} [DELETE]
-// @Summary Delete User
-// @Description Delete User
+// Delete Users godoc
+// @ID delete_users
+// @Router /lms/api/v1/user/{id} [DELETE]
+// @Summary Delete Users
+// @Description Delete Users
 // @Tags User
 // @Accept json
 // @Procedure json
@@ -251,9 +251,9 @@ func (h *handler) DeleteUser(c *gin.Context) {
 	c.JSON(http.StatusNoContent, nil)
 }
 
-// GetList students godoc
+// GetList Students godoc
 // @ID get_list_students
-// @Router /lms/api/students [GET]
+// @Router /lms/api/v1/students [GET]
 // @Summary Get List Students
 // @Description Get List Students
 // @Tags User
@@ -295,9 +295,9 @@ func (h *handler) GetListStudents(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-// GetList students godoc
+// GetList Mentors godoc
 // @ID get_list_mentors
-// @Router /lms/api/mentors [GET]
+// @Router /lms/api/v1/mentors [GET]
 // @Summary Get List Mentors
 // @Description Get List Mentors
 // @Tags User

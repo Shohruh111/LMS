@@ -11,11 +11,11 @@ import (
 )
 
 // @Security ApiKeyAuth
-// Create Course godoc
-// @ID create_Course
-// @Router /lms/api/course [POST]
-// @Summary Create Course
-// @Description Create Course
+// Create Courses godoc
+// @ID create_Courses
+// @Router /lms/api/v1/course [POST]
+// @Summary Create Courses
+// @Description Create Courses
 // @Tags Course
 // @Accept json
 // @Procedure json
@@ -53,11 +53,11 @@ func (h *handler) CreateCourse(c *gin.Context) {
 }
 
 // @Security ApiKeyAuth
-// GetByID Course godoc
-// @ID get_by_id_Course
-// @Router /lms/api/course/{id} [GET]
-// @Summary Get By ID Course
-// @Description Get By ID Course
+// GetByID Courses godoc
+// @ID get_by_id_Courses
+// @Router /lms/api/v1/course/{id} [GET]
+// @Summary Get By ID Courses
+// @Description Get By ID Courses
 // @Tags Course
 // @Accept json
 // @Procedure json
@@ -98,11 +98,11 @@ func (h *handler) GetByIdCourse(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-// GetList Course godoc
-// @ID get_list_Course
-// @Router /lms/api/course [GET]
-// @Summary Get List Course
-// @Description Get List Course
+// GetList Courses godoc
+// @ID get_list_Courses
+// @Router /lms/api/v1/course [GET]
+// @Summary Get List Courses
+// @Description Get List Courses
 // @Tags Course
 // @Accept json
 // @Procedure json
@@ -141,11 +141,11 @@ func (h *handler) GetListCourse(c *gin.Context) {
 }
 
 // @Security ApiKeyAuth
-// Update Course godoc
-// @ID update_Course
-// @Router /lms/api/course/{id} [PUT]
-// @Summary Update Course
-// @Description Update Course
+// Update Courses godoc
+// @ID update_Courses
+// @Router /lms/api/v1/course/{id} [PUT]
+// @Summary Update Courses
+// @Description Update Courses
 // @Tags Course
 // @Accept json
 // @Procedure json
@@ -200,11 +200,11 @@ func (h *handler) UpdateCourse(c *gin.Context) {
 }
 
 // @Security ApiKeyAuth
-// Delete Course godoc
-// @ID delete_Course
-// @Router /lms/api/course/{id} [DELETE]
-// @Summary Delete Course
-// @Description Delete Course
+// Delete Courses godoc
+// @ID delete_Courses
+// @Router /lms/api/v1/course/{id} [DELETE]
+// @Summary Delete Courses
+// @Description Delete Courses
 // @Tags Course
 // @Accept json
 // @Procedure json
@@ -236,7 +236,7 @@ func (h *handler) DeleteCourse(c *gin.Context) {
 
 // Upload Photo godoc
 // @ID photo_upload
-// @Router /lms/api/photoUpload [POST]
+// @Router /lms/api/v1/photoUpload [POST]
 // @Summary Photo Upload
 // @Description Photo Upload
 // @Tags Course
@@ -280,7 +280,7 @@ func (h *handler) PhotoUpload(c *gin.Context) {
 
 // Photo Get godoc
 // @ID photo_get
-// @Router /lms/api/photo/{id} [Get]
+// @Router /lms/api/v1/photo/{id} [Get]
 // @Summary Photo Get
 // @Description Photo Get
 // @Tags Course
@@ -306,8 +306,8 @@ func (h *handler) PhotoDownload(c *gin.Context) {
 }
 
 // GetList Course Of Users godoc
-// @ID get_list_Course_of_users
-// @Router /lms/api/course/users [GET]
+// @ID get_list_Course_of_Users
+// @Router /lms/api/v1/course/users [GET]
 // @Summary Get List Course Of Users
 // @Description Get List Course Of Users
 // @Tags Course
