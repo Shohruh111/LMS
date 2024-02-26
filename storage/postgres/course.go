@@ -29,8 +29,8 @@ func (u *courseRepo) Create(ctx context.Context, req *models.CourseCreate) (stri
 	)
 
 	query = `
-		INSERT INTO "courses"(id, name, photo, for_who, type, weekly_number, duration, price, beginning_date_course)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+		INSERT INTO "courses"(id, name, photo, for_who, type, weekly_number, duration, price, beginning_date_course, end_date)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 	`
 
 	_, err := u.db.Exec(ctx, query,
@@ -42,6 +42,8 @@ func (u *courseRepo) Create(ctx context.Context, req *models.CourseCreate) (stri
 		req.WeeklyNumber,
 		req.Duration,
 		req.Price,
+		req.BeginingDate,
+		req.EndDate,
 	)
 
 	if err != nil {

@@ -28,6 +28,8 @@ type CourseCreate struct {
 	WeeklyNumber int    `json:"weekly_number"`
 	Duration     string `json:"duration"`
 	Price        int    `json:"price"`
+	BeginingDate string `json:"beginning_date_course`
+	EndDate      string `json:"end_date"`
 }
 
 type CourseUpdate struct {
