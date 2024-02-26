@@ -103,7 +103,7 @@ func (h *handler) Register(c *gin.Context) {
 		return
 	}
 	if len(createUser.RoleId) == 0 {
-		userRole, err := h.strg.Role().GetByID(context.Background(), &models.RolePrimaryKey{Type: "Oquvchi"})
+		userRole, err := h.strg.Role().GetByID(context.Background(), &models.RolePrimaryKey{Type: "Student"})
 		if err != nil {
 			h.logger.Error("error Role.GetByID")
 			c.JSON(http.StatusInternalServerError, "error Role.GetByID")
