@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	students = "Oquvchi"
-	mentors  = "Mentors"
+	students = "Student"
+	mentors  = "Mentor"
 )
 
 // @Security ApiKeyAuth
