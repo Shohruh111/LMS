@@ -6,7 +6,7 @@ import (
 	"database/sql"
 )
 
-func (u *userRepo) GetAllStudentsForExcel(ctx context.Context, req *models.UserGetListRequest) (*models.UserGetListResponse, error) {
+func (u *userRepo) GetAllUsersForExcel(ctx context.Context, req *models.UserGetListRequest) (*models.UserGetListResponse, error) {
 
 	var (
 		resp  = &models.UserGetListResponse{}
