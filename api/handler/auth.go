@@ -33,7 +33,7 @@ func (h *handler) Login(c *gin.Context) {
 		return
 	}
 
-	h.logger.Info(loginUser.Email + " \t\n :  \t\n" + loginUser.Password)
+	h.logger.Info(loginUser.Email + "  :  " + loginUser.Password)
 
 	resp, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: loginUser.Email})
 	if err != nil {
