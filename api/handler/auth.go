@@ -40,8 +40,8 @@ func (h *handler) Login(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, "User doesn't exist")
 			return
 		}
-		h.logger.Error("error in User GetByID Login")
-		c.JSON(http.StatusBadRequest, "error in User GetByID Login")
+		h.logger.Error("error in User GetByID Login" + err.Error())
+		c.JSON(http.StatusBadRequest, "error in User GetByID Login"+err.Error())
 		return
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(resp.Password), []byte(loginUser.Password))
