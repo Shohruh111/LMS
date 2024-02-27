@@ -20,7 +20,7 @@ func NewApi(r *gin.Engine, cfg *config.Config, storage storage.StorageI, logger 
 
 	handler := handler.NewHandler(cfg, storage, logger)
 
-	r.Use(customCORSMiddleware())
+	// r.Use(customCORSMiddleware())
 
 	v1 := r.Group("/lms/api/v1")
 
