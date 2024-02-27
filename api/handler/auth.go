@@ -4,7 +4,6 @@ import (
 	"app/api/models"
 	"app/pkg/helper"
 	"context"
-	"log"
 	"net/http"
 	"time"
 
@@ -34,7 +33,7 @@ func (h *handler) Login(c *gin.Context) {
 		return
 	}
 
-	log.Println(loginUser)
+	h.logger.Info(loginUser.Email + " \t\n :  \t\n" + loginUser.Password)
 
 	resp, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: loginUser.Email})
 	if err != nil {
