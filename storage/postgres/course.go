@@ -158,6 +158,9 @@ func (u *courseRepo) GetList(ctx context.Context, req *models.CourseGetListReque
 	if req.Limit > 0 {
 		limit = fmt.Sprintf(" LIMIT %d", req.Limit)
 	}
+	if len(req.Search) > 0 {
+		where = " WHERE name ILIKE " + "'" + req.Search + "%'" + " OR for_who ILIKE " + "'" + req.Search + "%'" + "OR type ILIKE "+ "'" + req.Search + "%'" 
+	}
 
 	query += where + offset + limit
 

@@ -174,6 +174,9 @@ func (u *userRepo) GetList(ctx context.Context, req *models.UserGetListRequest) 
 	if len(req.Filter) > 0 {
 		where = " WHERE r.type = '" + req.Filter + "'"
 	}
+	if len(req.Search) >0{
+		where += " AND first_name ILIKE " + "'" + req.Search + "%'" + " OR last_name ILIKE " + "'" + req.Search + "%'" + "OR phone_number ILIKE "+ "'" + req.Search + "%'"  + "OR email ILIKE "+ "'" + req.Search+"%' "
+	}
 
 	query += where + offset + limit
 

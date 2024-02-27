@@ -108,6 +108,7 @@ func (h *handler) GetByIdCourse(c *gin.Context) {
 // @Procedure json
 // @Param offset query string false "offset"
 // @Param limit query string false "limit"
+// @Param search query string false "search"
 // @Success 200 {object} Response{data=string} "Success Request"
 // @Response 400 {object} Response{data=string} "Bad Request"
 // @Failure 500 {object} Response{data=string} "Server error"
@@ -126,13 +127,20 @@ func (h *handler) GetListCourse(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, "GetListCourse Limit")
 		return
 	}
+	search, err := h.getSearchQuery(c.Query("search"))
+	if err != nil {
+		h.logger.Error("GetListCourse search!")
+		c.JSON(http.StatusBadRequest, "GetListCourse search!")
+		return
+	}
 
 	resp, err := h.strg.Course().GetList(c.Request.Context(), &models.CourseGetListRequest{
 		Offset: offset,
 		Limit:  limit,
+		Search: search,
 	})
 	if err != nil {
-		h.logger.Error("storage.Course.GetList!")
+		h.logger.Error("storage.Course.GetList!" + err.Error())
 		c.JSON(http.StatusInternalServerError, "storage.Course.GetList!")
 		return
 	}

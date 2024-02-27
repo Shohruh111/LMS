@@ -261,6 +261,7 @@ func (h *handler) DeleteUser(c *gin.Context) {
 // @Procedure json
 // @Param offset query string false "offset"
 // @Param limit query string false "limit"
+// @Param search query string false "search"
 // @Success 200 {object} Response{data=string} "Success Request"
 // @Response 400 {object} Response{data=string} "Bad Request"
 // @Failure 500 {object} Response{data=string} "Server error"
@@ -279,14 +280,22 @@ func (h *handler) GetListStudents(c *gin.Context) {
 		return
 	}
 
+	search, err := h.getSearchQuery(c.Query("search"))
+	if err != nil {
+		h.logger.Error("GetListStudents INVALID SEARCH!")
+		c.JSON(http.StatusBadRequest, "INVALID SEARCH")
+		return
+	}
+
 	resp, err := h.strg.User().GetList(c.Request.Context(), &models.UserGetListRequest{
 		Offset: offset,
 		Limit:  limit,
 		Filter: students,
+		Search: search,
 	})
 
 	if err != nil {
-		h.logger.Error("storage.User.GetListStudents!")
+		h.logger.Error("storage.User.GetListStudents!" + err.Error())
 		c.JSON(http.StatusInternalServerError, "storage.User.GetLustStudents")
 		return
 	}
@@ -305,6 +314,7 @@ func (h *handler) GetListStudents(c *gin.Context) {
 // @Procedure json
 // @Param offset query string false "offset"
 // @Param limit query string false "limit"
+// @Param search query string false "search"
 // @Success 200 {object} Response{data=string} "Success Request"
 // @Response 400 {object} Response{data=string} "Bad Request"
 // @Failure 500 {object} Response{data=string} "Server error"
@@ -323,10 +333,18 @@ func (h *handler) GetListMentors(c *gin.Context) {
 		return
 	}
 
+	search, err := h.getSearchQuery(c.Query("search"))
+	if err != nil {
+		h.logger.Error("GetListMentors INVALID SEARCH!")
+		c.JSON(http.StatusBadRequest, "INVALID SEARCH")
+		return
+	}
+
 	resp, err := h.strg.User().GetList(c.Request.Context(), &models.UserGetListRequest{
 		Offset: offset,
 		Limit:  limit,
 		Filter: mentors,
+		Search: search,
 	})
 
 	if err != nil {

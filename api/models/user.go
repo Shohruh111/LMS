@@ -72,6 +72,7 @@ type UserGetListRequest struct {
 	Offset int    `json:"offset"`
 	Limit  int    `json:"limit"`
 	Filter string `json:"filter"`
+	Search string `json:"search"`
 }
 
 type UserGetListResponse struct {

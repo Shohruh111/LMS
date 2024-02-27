@@ -70,3 +70,7 @@ func (h *handler) getLimitQuery(limit string) (int, error) {
 
 	return strconv.Atoi(limit)
 }
+
+func (h *handler) getSearchQuery(search string) (string, error) {
+	return search, nil
+}

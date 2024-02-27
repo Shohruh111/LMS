@@ -416,6 +416,10 @@ paths:
         in: query
         name: limit
         type: string
+      - description: search
+        in: query
+        name: search
+        type: string
       responses:
         "200":
           description: Success Request
@@ -798,6 +802,10 @@ paths:
         in: query
         name: limit
         type: string
+      - description: search
+        in: query
+        name: search
+        type: string
       responses:
         "200":
           description: Success Request
@@ -1157,6 +1165,10 @@ paths:
       - description: limit
         in: query
         name: limit
+        type: string
+      - description: search
+        in: query
+        name: search
         type: string
       responses:
         "200":
