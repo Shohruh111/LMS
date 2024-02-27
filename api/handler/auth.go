@@ -4,6 +4,7 @@ import (
 	"app/api/models"
 	"app/pkg/helper"
 	"context"
+	"log"
 	"net/http"
 	"time"
 
@@ -32,6 +33,8 @@ func (h *handler) Login(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, "error LOGIN user should bind json")
 		return
 	}
+
+	log.Println(loginUser)
 
 	resp, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: loginUser.Email})
 	if err != nil {
