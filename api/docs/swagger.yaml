@@ -672,6 +672,43 @@ paths:
       summary: Get List Course Of Users
       tags:
       - Course
+  /lms/api/v1/excel/courses:
+    get:
+      consumes:
+      - application/json
+      description: Get List Courses Excel Format
+      operationId: get_list_courses_excel
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Get List Courses
+      tags:
+      - Excel
   /lms/api/v1/excel/mentors:
     get:
       consumes:

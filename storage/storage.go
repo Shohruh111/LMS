@@ -21,6 +21,7 @@ type UserRepoI interface {
 	GetOTP(context.Context, *models.CheckCode) (string, error)
 	UpdatePassword(context.Context, *models.UpdatePassword) (int64, string, error)
 	GetAllUsersForExcel(context.Context, *models.UserGetListRequest) (*models.UserGetListResponse, error)
+	GetAllCoursesForExcel(context.Context) (*models.CourseGetListResponse, error)
 }
 
 type RoleRepoI interface {

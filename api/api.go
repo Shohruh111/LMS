@@ -47,6 +47,7 @@ func NewApi(r *gin.Engine, cfg *config.Config, storage storage.StorageI, logger 
 
 	v1.GET("/excel/students", handler.StudentsExcelDownload)
 	v1.GET("/excel/mentors", handler.MentorsExcelDownload)
+	v1.GET("/excel/courses", handler.CoursesExcelDownload)
 
 	v1.POST("/role", handler.CreateRole)
 	v1.GET("/role/:id", handler.GetByIdRole)

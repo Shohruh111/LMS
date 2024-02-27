@@ -117,3 +117,55 @@ func (h *handler) MentorsExcelDownload(c *gin.Context) {
 		c.String(http.StatusInternalServerError, "Error writing Excel file to response")
 	}
 }
+
+// Courses Excel godoc
+// @ID get_list_courses_excel
+// @Router /lms/api/v1/excel/courses [GET]
+// @Summary Get List Courses
+// @Description Get List Courses Excel Format
+// @Tags Excel
+// @Accept json
+// @Procedure json
+// @Success 200 {object} Response{data=string} "Success Request"
+// @Response 400 {object} Response{data=string} "Bad Request"
+// @Failure 500 {object} Response{data=string} "Server error"
+func (h *handler) CoursesExcelDownload(c *gin.Context) {
+
+	var (
+		headers = []string{"ID", "Name", "Description", "Type", "Weekly Number", "Duration", "Price", "Beginning Date Of Course", "End Date"}
+		datas   [][]interface{}
+	)
+
+	resp, err := h.strg.User().GetAllCoursesForExcel(c.Request.Context())
+	if err != nil {
+		h.logger.Error("error MentorsExcelDownload User.GetAllUsersForExcel")
+		c.JSON(http.StatusInternalServerError, "Serve Error!")
+		return
+	}
+	for count, val := range resp.Courses {
+		datas = append(datas, []interface{}{count + 1, val.Name, val.ForWho, val.Type, val.WeeklyNumber, val.Duration, val.Price, val.BeginningDate, val.EndDate})
+	}
+	excel := helper.Excel{
+		Headers: headers,
+		Datas:   datas,
+	}
+
+	fmt.Println(resp)
+
+	file, err := helper.GenerateExcelFile(&excel)
+	if err != nil {
+		c.String(http.StatusInternalServerError, "Error generating Excel file")
+		return
+	}
+
+	fileName := "courses.xlsx"
+
+	c.Header("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	c.Header("Content-Disposition", "attachment; filename="+fileName)
+
+	err = file.Write(c.Writer)
+	if err != nil {
+		fmt.Println("Error writing to response:", err)
+		c.String(http.StatusInternalServerError, "Error writing Excel file to response")
+	}
+}

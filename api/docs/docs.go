@@ -1012,6 +1012,75 @@ const docTemplate = `{
                 }
             }
         },
+        "/lms/api/v1/excel/courses": {
+            "get": {
+                "description": "Get List Courses Excel Format",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Excel"
+                ],
+                "summary": "Get List Courses",
+                "operationId": "get_list_courses_excel",
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/lms/api/v1/excel/mentors": {
             "get": {
                 "description": "Get List Mentors Excel Format",
