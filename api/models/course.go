@@ -13,7 +13,7 @@ type Course struct {
 	EndDate        string   `json:"end_date"`
 	NamesOfLessons []string `json:"lesson_names"`
 	VideoOfLessons []string `json:"video_lessons"`
-	Groups         []*Group  `json:"group"`
+	Groups         []*Group  `json:"groups"`
 	CreatedAt      string   `json:"created_at"`
 	UpdatedAt      string   `json:"updated_at"`
 }

@@ -129,19 +129,19 @@ JOIN "users" AS u ON ug.user_id = u.id;
 
 INSERT INTO "group"("id", "course_id", "name","status")
 VALUES
-('39ddcf6c-d0e7-467c-91c7-c20e67e9b065','6a109912-1e30-4120-b24c-d163c183a0c5','Group 1', true),
-('07ea2fbc-476b-41ed-91c7-90a703f75d0f','6a109912-1e30-4120-b24c-d163c183a0c5','Group 2', true),
-('ed599851-dede-4312-9495-9c7c0368105b','6a109912-1e30-4120-b24c-d163c183a0c5','Group 3', true);
+('39ddcf6c-d0e7-467c-91c7-c20e67e9b065','c1f881fb-1a8b-4fd2-9c21-a8a1e3828c1a','Group 1', true),
+('07ea2fbc-476b-41ed-91c7-90a703f75d0f','c1f881fb-1a8b-4fd2-9c21-a8a1e3828c1a','Group 2', true),
+('ed599851-dede-4312-9495-9c7c0368105b','c1f881fb-1a8b-4fd2-9c21-a8a1e3828c1a','Group 3', true);
 
 
 
 INSERT INTO "user_of_group"("id", "group_id", "user_id")
 VALUES
-('cb2620b7-cc8b-4a9d-a8ed-b82befe94f58','39ddcf6c-d0e7-467c-91c7-c20e67e9b065','9a7c321e-9251-4253-9879-351ae610b0a5'),
-('81ea6c01-6b14-4188-97a5-2bd945303eb8','39ddcf6c-d0e7-467c-91c7-c20e67e9b065','cef4638a-dd50-410d-914c-ef10b59b7126'),
-('c4b57f0d-f264-4840-84fe-acc27f52b14c','39ddcf6c-d0e7-467c-91c7-c20e67e9b065','e0467360-0505-4430-9238-e411a8067149'),
-('bf0b06e0-2570-4b2d-afca-b3b33065e8e8','39ddcf6c-d0e7-467c-91c7-c20e67e9b065','0fa0c5f7-7a55-408b-bcd7-125afaaf5a04'),
-('aa279cf3-cd62-4c1e-a280-75bae96075a5','39ddcf6c-d0e7-467c-91c7-c20e67e9b065','cb032e0c-7c6c-4ef6-a6e2-b7b53f8cbae5');
+('cb2620b7-cc8b-4a9d-a8ed-b82befe94f58','39ddcf6c-d0e7-467c-91c7-c20e67e9b065','f1ee3478-9031-427f-aafa-24d8ee5187f9'),
+('81ea6c01-6b14-4188-97a5-2bd945303eb8','39ddcf6c-d0e7-467c-91c7-c20e67e9b065','97693642-b842-4efa-8fc3-cc0b59a9636e'),
+('c4b57f0d-f264-4840-84fe-acc27f52b14c','39ddcf6c-d0e7-467c-91c7-c20e67e9b065','9ac8bc0d-3bb1-4c8a-8b03-3be1060188b8'),
+('bf0b06e0-2570-4b2d-afca-b3b33065e8e8','39ddcf6c-d0e7-467c-91c7-c20e67e9b065','fe5a761d-4940-4864-bfda-c460b332d8e1'),
+('aa279cf3-cd62-4c1e-a280-75bae96075a5','39ddcf6c-d0e7-467c-91c7-c20e67e9b065','b05ca38a-560e-4b84-b255-8f7daff55e02');
 
 
 SELECT 
@@ -169,12 +169,12 @@ SELECT
 
 INSERT INTO "lessons"(id, course_id, name, video_lesson, status)
 VALUES
-('39c04433-9315-4b4f-a7ca-764803bbbf93','bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e','Introduction To Golang', 'adsdadsadadsad', false),
-('aacbee89-d585-4777-93c4-273574508ec8','bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e', 'Go syntax(if, for, switch)', 'adsgregyhyt', false),
-('e8a0711c-780f-430d-91a6-e2b5a01945ee','bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e', 'Concurrency', 'hjgfbjhrbvre', false),
-('2b59d832-fe30-46ec-8a9e-66fbf4c08060','bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e', 'Functions in Go', 'rtbrwevdfvd', false),
-('813b86dc-51f6-46f3-a840-b99454529f89','bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e', 'Channels', 'onnkpjnjnk', false),
-('d3f75e19-3359-4283-b078-07f8f0b51633','bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e', 'Review', 'irnvfwosn', false);
+('39c04433-9315-4b4f-a7ca-764803bbbf93','c1f881fb-1a8b-4fd2-9c21-a8a1e3828c1a','Introduction To Golang', 'adsdadsadadsad', false),
+('aacbee89-d585-4777-93c4-273574508ec8','c1f881fb-1a8b-4fd2-9c21-a8a1e3828c1a', 'Go syntax(if, for, switch)', 'adsgregyhyt', false),
+('e8a0711c-780f-430d-91a6-e2b5a01945ee','c1f881fb-1a8b-4fd2-9c21-a8a1e3828c1a', 'Concurrency', 'hjgfbjhrbvre', false),
+('2b59d832-fe30-46ec-8a9e-66fbf4c08060','c1f881fb-1a8b-4fd2-9c21-a8a1e3828c1a', 'Functions in Go', 'rtbrwevdfvd', false),
+('813b86dc-51f6-46f3-a840-b99454529f89','c1f881fb-1a8b-4fd2-9c21-a8a1e3828c1a', 'Channels', 'onnkpjnjnk', false),
+('d3f75e19-3359-4283-b078-07f8f0b51633','c1f881fb-1a8b-4fd2-9c21-a8a1e3828c1a', 'Review', 'irnvfwosn', false);
 
 
 
