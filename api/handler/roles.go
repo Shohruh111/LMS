@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Security ApiKeyAuth
+
 // Create Roles godoc
 // @ID create_Roles
 // @Router /lms/api/v1/role [POST]
@@ -49,7 +49,7 @@ func (h *handler) CreateRole(c *gin.Context) {
 	c.JSON(http.StatusCreated, resp)
 }
 
-// @Security ApiKeyAuth
+
 // GetByID Roles godoc
 // @ID get_by_id_Roles
 // @Router /lms/api/v1/role/{id} [GET]
@@ -139,7 +139,7 @@ func (h *handler) GetListRole(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-// @Security ApiKeyAuth
+
 // Update Roles godoc
 // @ID update_Roles
 // @Router /lms/api/v1/role/{id} [PUT]
@@ -198,7 +198,7 @@ func (h *handler) UpdateRole(c *gin.Context) {
 	c.JSON(http.StatusAccepted, resp)
 }
 
-// @Security ApiKeyAuth
+
 // Delete Roles godoc
 // @ID delete_Roles
 // @Router /lms/api/v1/role/{id} [DELETE]

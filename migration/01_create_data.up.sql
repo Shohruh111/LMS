@@ -40,11 +40,25 @@ CREATE TABLE "courses"(
     "updated_at" TIMESTAMP
 ); 
 
+CREATE TABLE "group"(
+    "id" UUID PRIMARY KEY,
+    "name" VARCHAR(50) NOT NULL,
+    "course_id" UUID REFERENCES "courses"("id"),
+    "status" BOOLEAN,
+    "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP
+);
+
+CREATE TABLE "user_of_group"(
+    "id" UUID PRIMARY KEY,
+    "group_id" UUID REFERENCES "group"("id"),
+    "user_id" UUID REFERENCES "users"("id")
+);
+
 CREATE TABLE "course_of_users"(
     "id" UUID PRIMARY KEY,
     "user_id" UUID REFERENCES "users"("id"),
     "course_id" UUID REFERENCES "courses"("id"),
-    "group_number" INT NOT NULL,
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -58,10 +72,13 @@ CREATE TABLE "lessons"(
     "id" UUID PRIMARY KEY,
     "course_id" UUID REFERENCES "courses"("id"),
     "name" VARCHAR(40) NOT NULL,
-    "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    "video_lesson" VARCHAR(200) NOT NULL,
+    "status" BOOLEAN DEFAULT false,
+    "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP
 );
 
-CREATE TABLE "lesson_of_users"(
+CREATE TABLE "lesson_of_user"(
     "id" UUID PRIMARY KEY,
     "user_id" UUID REFERENCES "users"("id"),
     "lesson_id" UUID REFERENCES "lessons"("id"),
@@ -75,14 +92,89 @@ CREATE TABLE "photos"(
 );
 
 
+        SELECT 
+			g.id,
+			g.name,
+			g.course_id,
+			g.status,
+
+			c.beginning_date_course,
+			c.end_date
+		FROM "group" AS g
+		JOIN "courses" AS c ON g.course_id = c.id
+		WHERE g.course_id = '6a109912-1e30-4120-b24c-d163c183a0c5';
+
 SELECT 
-    c.beginning_date_course,
-    c.end_date,
-    COUNT(cs.user_id) as students,
+
+    c.id,
+    l.name,
+    l.video_lesson
 
 FROM "courses" AS c
-JOIN "course_of_users" AS cs ON c.id = cs.course_id,
-JOIN "lesson_of_users" AS lu ON cs.user_id = lu.user_id
+JOIN "lessons" AS l ON c.id = l.course_id
+
+
+SELECT 
+
+    u.first_name,
+    u.last_name,
+    u.email,
+    u.phone_number
+
+FROM "courses" AS c 
+JOIN "group" AS g ON c.id = g.course_id
+JOIN "user_of_group" AS ug ON g.id = ug.group_id
+JOIN "users" AS u ON ug.user_id = u.id;
+
+
+INSERT INTO "group"("id", "course_id", "name","status")
+VALUES
+('39ddcf6c-d0e7-467c-91c7-c20e67e9b065','6a109912-1e30-4120-b24c-d163c183a0c5','Group 1', true),
+('07ea2fbc-476b-41ed-91c7-90a703f75d0f','6a109912-1e30-4120-b24c-d163c183a0c5','Group 2', true),
+('ed599851-dede-4312-9495-9c7c0368105b','6a109912-1e30-4120-b24c-d163c183a0c5','Group 3', true);
+
+
+
+INSERT INTO "user_of_group"("id", "group_id", "user_id")
+VALUES
+('cb2620b7-cc8b-4a9d-a8ed-b82befe94f58','39ddcf6c-d0e7-467c-91c7-c20e67e9b065','9a7c321e-9251-4253-9879-351ae610b0a5'),
+('81ea6c01-6b14-4188-97a5-2bd945303eb8','39ddcf6c-d0e7-467c-91c7-c20e67e9b065','cef4638a-dd50-410d-914c-ef10b59b7126'),
+('c4b57f0d-f264-4840-84fe-acc27f52b14c','39ddcf6c-d0e7-467c-91c7-c20e67e9b065','e0467360-0505-4430-9238-e411a8067149'),
+('bf0b06e0-2570-4b2d-afca-b3b33065e8e8','39ddcf6c-d0e7-467c-91c7-c20e67e9b065','0fa0c5f7-7a55-408b-bcd7-125afaaf5a04'),
+('aa279cf3-cd62-4c1e-a280-75bae96075a5','39ddcf6c-d0e7-467c-91c7-c20e67e9b065','cb032e0c-7c6c-4ef6-a6e2-b7b53f8cbae5');
+
+
+SELECT 
+			c.id,
+			c.name,
+			c.photo,
+			c.for_who,
+			c.type,
+			c.weekly_number,
+			c.duration,
+			c.price,
+			c.beginning_date_course,
+			c.end_date,
+			c.created_at,
+			c.updated_at,
+
+            l.name,
+            l.video_lesson 
+
+		FROM "courses"  AS C
+		JOIN "lessons" AS l ON c.id = l.course_id
+        WHERE c.id = 'bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e';
+
+
+
+INSERT INTO "lessons"(id, course_id, name, video_lesson, status)
+VALUES
+('39c04433-9315-4b4f-a7ca-764803bbbf93','bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e','Introduction To Golang', 'adsdadsadadsad', false),
+('aacbee89-d585-4777-93c4-273574508ec8','bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e', 'Go syntax(if, for, switch)', 'adsgregyhyt', false),
+('e8a0711c-780f-430d-91a6-e2b5a01945ee','bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e', 'Concurrency', 'hjgfbjhrbvre', false),
+('2b59d832-fe30-46ec-8a9e-66fbf4c08060','bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e', 'Functions in Go', 'rtbrwevdfvd', false),
+('813b86dc-51f6-46f3-a840-b99454529f89','bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e', 'Channels', 'onnkpjnjnk', false),
+('d3f75e19-3359-4283-b078-07f8f0b51633','bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e', 'Review', 'irnvfwosn', false);
 
 
 

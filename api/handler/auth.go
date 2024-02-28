@@ -33,8 +33,6 @@ func (h *handler) Login(c *gin.Context) {
 		return
 	}
 
-	h.logger.Info(loginUser.Email + "  :  " + loginUser.Password)
-
 	resp, err := h.strg.User().GetByID(context.Background(), &models.UserPrimaryKey{Email: loginUser.Email})
 	if err != nil {
 		if err.Error() == "no rows in result set" {
@@ -62,6 +60,7 @@ func (h *handler) Login(c *gin.Context) {
 
 	var credentails = map[string]interface{}{
 		"user_id": resp.Id,
+		"role_id": resp.RoleId,
 	}
 	accessToken, err := helper.GenerateJWT(credentails, time.Hour*360, h.cfg.SecretKey)
 	if err != nil {
@@ -79,7 +78,6 @@ func (h *handler) Login(c *gin.Context) {
 
 }
 
-// @Security ApiKeyAuth
 // Register godoc
 // @ID /auth/register
 // @Router /lms/api/v1/auth/register [POST]
@@ -154,7 +152,6 @@ func (h *handler) Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, resp)
 }
 
-// @Security ApiKeyAuth
 // CheckEmail godoc
 // @ID /auth/check_email
 // @Router /lms/api/v1/auth/checkEmail [POST]
@@ -208,7 +205,6 @@ func (h *handler) CheckEmail(c *gin.Context) {
 	c.JSON(http.StatusCreated, checkEmail)
 }
 
-// @Security ApiKeyAuth
 // CheckCode godoc
 // @ID /auth/check_code
 // @Router /lms/api/v1/auth/checkCode [POST]
@@ -242,7 +238,6 @@ func (h *handler) CheckCode(c *gin.Context) {
 	c.JSON(http.StatusOK, ConfirmCode)
 }
 
-// @Security ApiKeyAuth
 // RestorePassword godoc
 // @ID /auth/restore_password
 // @Router /lms/api/v1/auth/restorePassword [POST]

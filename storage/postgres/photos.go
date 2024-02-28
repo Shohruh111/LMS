@@ -17,7 +17,7 @@ func (u *courseRepo) UploadPhotos(ctx context.Context, req *models.VideoLessons)
 	insertQuery := `
             INSERT INTO "photos" (id, name, data) VALUES ($1, $2, $3)
         `
-	_, err := u.db.Exec(ctx, insertQuery, id, req.FileName, req.VideoData)
+	_, err := u.db.Exec(ctx, insertQuery, id, req.FileName, req.PhotoData)
 	if err != nil {
 		return "", err
 	}
@@ -53,6 +53,7 @@ func (u *courseRepo) GetPhotos(ctx context.Context, req *models.VideoLessons) (*
 	return &models.VideoLessons{
 		Id:        id.String,
 		FileName:  name.String,
-		VideoData: data,
+		PhotoData: data,
 	}, nil
 }
+

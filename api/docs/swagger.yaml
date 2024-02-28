@@ -70,7 +70,7 @@ definitions:
     type: object
   models.LoginUser:
     properties:
-      login:
+      email:
         type: string
       password:
         type: string
@@ -170,8 +170,6 @@ paths:
                 data:
                   type: string
               type: object
-      security:
-      - ApiKeyAuth: []
       summary: CheckCode
       tags:
       - Auth
@@ -216,8 +214,6 @@ paths:
                 data:
                   type: string
               type: object
-      security:
-      - ApiKeyAuth: []
       summary: CheckEmail
       tags:
       - Auth
@@ -306,8 +302,6 @@ paths:
                 data:
                   type: string
               type: object
-      security:
-      - ApiKeyAuth: []
       summary: Register
       tags:
       - Auth
@@ -352,8 +346,6 @@ paths:
                 data:
                   type: string
               type: object
-      security:
-      - ApiKeyAuth: []
       summary: SendEmail
       tags:
       - Auth
@@ -491,8 +483,6 @@ paths:
                 data:
                   type: string
               type: object
-      security:
-      - ApiKeyAuth: []
       summary: Create Courses
       tags:
       - Course
@@ -536,8 +526,6 @@ paths:
                 data:
                   type: string
               type: object
-      security:
-      - ApiKeyAuth: []
       summary: Delete Courses
       tags:
       - Course
@@ -579,8 +567,6 @@ paths:
                 data:
                   type: string
               type: object
-      security:
-      - ApiKeyAuth: []
       summary: Get By ID Courses
       tags:
       - Course
@@ -629,8 +615,6 @@ paths:
                 data:
                   type: string
               type: object
-      security:
-      - ApiKeyAuth: []
       summary: Update Courses
       tags:
       - Course
@@ -1008,8 +992,6 @@ paths:
                 data:
                   type: string
               type: object
-      security:
-      - ApiKeyAuth: []
       summary: Create Roles
       tags:
       - Role
@@ -1053,8 +1035,6 @@ paths:
                 data:
                   type: string
               type: object
-      security:
-      - ApiKeyAuth: []
       summary: Delete Roles
       tags:
       - Role
@@ -1096,8 +1076,6 @@ paths:
                 data:
                   type: string
               type: object
-      security:
-      - ApiKeyAuth: []
       summary: Get By ID Roles
       tags:
       - Role
@@ -1146,8 +1124,6 @@ paths:
                 data:
                   type: string
               type: object
-      security:
-      - ApiKeyAuth: []
       summary: Update Roles
       tags:
       - Role
@@ -1291,8 +1267,6 @@ paths:
                 data:
                   type: string
               type: object
-      security:
-      - ApiKeyAuth: []
       summary: Create Users
       tags:
       - User
@@ -1336,8 +1310,6 @@ paths:
                 data:
                   type: string
               type: object
-      security:
-      - ApiKeyAuth: []
       summary: Delete Users
       tags:
       - User
@@ -1379,8 +1351,6 @@ paths:
                 data:
                   type: string
               type: object
-      security:
-      - ApiKeyAuth: []
       summary: Get By ID Users
       tags:
       - User
@@ -1429,8 +1399,6 @@ paths:
                 data:
                   type: string
               type: object
-      security:
-      - ApiKeyAuth: []
       summary: Update Users
       tags:
       - User

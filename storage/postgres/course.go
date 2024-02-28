@@ -58,36 +58,55 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 	var (
 		query string
 
-		id            sql.NullString
-		name          sql.NullString
-		photo         sql.NullString
-		forWho        sql.NullString
-		tipe          sql.NullString
-		weeklyNumber  int
-		duration      sql.NullString
-		price         int
-		beginningDate sql.NullString
-		endDate       sql.NullString
-		createdAt     sql.NullString
-		updatedAt     sql.NullString
+		id              sql.NullString
+		name            sql.NullString
+		photo           sql.NullString
+		forWho          sql.NullString
+		tipe            sql.NullString
+		weeklyNumber    int
+		duration        sql.NullString
+		price           int
+		beginningDate   sql.NullString
+		endDate         sql.NullString
+		createdAt       sql.NullString
+		updatedAt       sql.NullString
+		namesOfLessons  []string
+		videosOfLessons []string
 	)
 
 	query = `
 		SELECT 
-			id,
-			name,
-			photo,
-			for_who,
-			type,
-			weekly_number,
-			duration,
-			price,
-			beginning_date_course,
-			end_date,
-			created_at,
-			updated_at
-		FROM "courses" 
-		WHERE id = $1
+			c.id,
+			c.name,
+			c.photo,
+			c.for_who,
+			c.type,
+			c.weekly_number,
+			c.duration,
+			c.price,
+			c.beginning_date_course,
+			c.end_date,
+			c.created_at,
+			c.updated_at,
+			ARRAY_AGG(l.name) AS lesson_names,
+			ARRAY_AGG(l.video_lesson) AS video_lessons
+
+		FROM "courses" AS c
+		JOIN "lessons" AS l ON c.id = l.course_id
+		WHERE c.id = $1
+		GROUP BY 
+			c.id,
+			c.name,
+			c.photo,
+			c.for_who,
+			c.type,
+			c.weekly_number,
+			c.duration,
+			c.price,
+			c.beginning_date_course,
+			c.end_date,
+			c.created_at,
+			c.updated_at
 	`
 
 	err := u.db.QueryRow(ctx, query, req.Id).Scan(
@@ -103,6 +122,8 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 		&endDate,
 		&createdAt,
 		&updatedAt,
+		&namesOfLessons,
+		&videosOfLessons,
 	)
 
 	if err != nil {
@@ -110,17 +131,19 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 	}
 
 	return &models.Course{
-		Id:            id.String,
-		Name:          name.String,
-		Photo:         photo.String,
-		ForWho:        forWho.String,
-		Type:          tipe.String,
-		WeeklyNumber:  weeklyNumber,
-		Duration:      duration.String,
-		Price:         price,
-		BeginningDate: beginningDate.String,
-		CreatedAt:     createdAt.String,
-		UpdatedAt:     updatedAt.String,
+		Id:             id.String,
+		Name:           name.String,
+		Photo:          photo.String,
+		ForWho:         forWho.String,
+		Type:           tipe.String,
+		WeeklyNumber:   weeklyNumber,
+		Duration:       duration.String,
+		Price:          price,
+		BeginningDate:  beginningDate.String,
+		NamesOfLessons: namesOfLessons,
+		VideoOfLessons: videosOfLessons,
+		CreatedAt:      createdAt.String,
+		UpdatedAt:      updatedAt.String,
 	}, nil
 }
 
@@ -159,7 +182,7 @@ func (u *courseRepo) GetList(ctx context.Context, req *models.CourseGetListReque
 		limit = fmt.Sprintf(" LIMIT %d", req.Limit)
 	}
 	if len(req.Search) > 0 {
-		where = " WHERE name ILIKE " + "'" + req.Search + "%'" + " OR for_who ILIKE " + "'" + req.Search + "%'" + "OR type ILIKE "+ "'" + req.Search + "%'" 
+		where = " WHERE name ILIKE " + "'" + req.Search + "%'" + " OR for_who ILIKE " + "'" + req.Search + "%'" + "OR type ILIKE " + "'" + req.Search + "%'"
 	}
 
 	query += where + offset + limit
@@ -332,6 +355,68 @@ func (u *courseRepo) GetListCourseOfUsers(ctx context.Context, req *models.Cours
 			CreatedAt:   createdAt.String,
 		})
 
+	}
+
+	return resp, nil
+}
+
+func (u *courseRepo) GetGroupOfCourseById(ctx context.Context, req *models.CoursePrimaryKey) ([]*models.Group, error) {
+
+	var (
+		resp  []*models.Group
+		query string
+	)
+
+	query = `
+		SELECT 
+			g.id,
+			g.name,
+			g.course_id,
+			g.status,
+
+			c.beginning_date_course,
+			c.end_date
+		FROM "group" AS g
+		JOIN "courses" AS c ON g.course_id = c.id
+		WHERE g.course_id = $1
+	`
+
+	rows, err := u.db.Query(ctx, query, req.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		var (
+			id            sql.NullString
+			name          sql.NullString
+			courseId      sql.NullString
+			status        sql.NullBool
+			beginningDate sql.NullString
+			endDate       sql.NullString
+		)
+
+		err := rows.Scan(
+			&id,
+			&name,
+			&courseId,
+			&status,
+			&beginningDate,
+			&endDate,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		resp = append(resp, &models.Group{
+			ID:            id.String,
+			Name:          name.String,
+			CourseId:      courseId.String,
+			Status:        status.Bool,
+			BeginningDate: beginningDate.String,
+			EndDate:       endDate.String,
+		})
 	}
 
 	return resp, nil

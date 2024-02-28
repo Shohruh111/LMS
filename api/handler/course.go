@@ -10,7 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Security ApiKeyAuth
 // Create Courses godoc
 // @ID create_Courses
 // @Router /lms/api/v1/course [POST]
@@ -52,7 +51,6 @@ func (h *handler) CreateCourse(c *gin.Context) {
 	c.JSON(http.StatusCreated, resp)
 }
 
-// @Security ApiKeyAuth
 // GetByID Courses godoc
 // @ID get_by_id_Courses
 // @Router /lms/api/v1/course/{id} [GET]
@@ -93,6 +91,15 @@ func (h *handler) GetByIdCourse(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, "storage.Course.GetById")
 		return
 	}
+
+	group, err := h.strg.Course().GetGroupOfCourseById(c.Request.Context(), &models.CoursePrimaryKey{Id: id})
+	if err != nil {
+		h.logger.Error("storage.Course.GetGroupOfCourseById!" + err.Error())
+		c.JSON(http.StatusInternalServerError, "storage.Course.GetGroupOfCourseById")
+		return
+	}
+	
+	resp.Groups = group
 
 	h.logger.Info("GetById Course Response!")
 	c.JSON(http.StatusOK, resp)
@@ -148,7 +155,6 @@ func (h *handler) GetListCourse(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-// @Security ApiKeyAuth
 // Update Courses godoc
 // @ID update_Courses
 // @Router /lms/api/v1/course/{id} [PUT]
@@ -207,7 +213,6 @@ func (h *handler) UpdateCourse(c *gin.Context) {
 	c.JSON(http.StatusAccepted, resp)
 }
 
-// @Security ApiKeyAuth
 // Delete Courses godoc
 // @ID delete_Courses
 // @Router /lms/api/v1/course/{id} [DELETE]
@@ -261,21 +266,21 @@ func (h *handler) PhotoUpload(c *gin.Context) {
 		return
 	}
 
-	videoFile, err := file.Open()
+	photoFile, err := file.Open()
 	if err != nil {
 		h.logger.Error("error VideoLessons!")
 		c.JSON(http.StatusInternalServerError, "error VideoLessons!")
 		return
 	}
-	defer videoFile.Close()
+	defer photoFile.Close()
 
-	videoData, err := ioutil.ReadAll(videoFile)
+	photoData, err := ioutil.ReadAll(photoFile)
 	if err != nil {
 		h.logger.Error("error ioutil.ReadAll.VideoLessons!")
 		c.JSON(http.StatusInternalServerError, "error ioutil.ReadALl.VideoLessons!")
 		return
 	}
-	result, err := h.strg.Course().UploadPhotos(c.Request.Context(), &models.VideoLessons{FileName: file.Filename, VideoData: videoData})
+	result, err := h.strg.Course().UploadPhotos(c.Request.Context(), &models.VideoLessons{FileName: file.Filename, PhotoData: photoData})
 	if err != nil {
 		h.logger.Error("error Course.UploadVideos!")
 		c.JSON(http.StatusInternalServerError, "error Course.UploadVideos!")
@@ -310,7 +315,7 @@ func (h *handler) PhotoDownload(c *gin.Context) {
 	}
 
 	c.Header("Content-Type", "image/jpeg")
-	c.Data(http.StatusOK, "photo", result.VideoData)
+	c.Data(http.StatusOK, "photo", result.PhotoData)
 }
 
 // GetList Course Of Users godoc

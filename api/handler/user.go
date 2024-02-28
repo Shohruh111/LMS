@@ -15,7 +15,6 @@ const (
 	mentors  = "Mentor"
 )
 
-// @Security ApiKeyAuth
 // Create Users godoc
 // @ID create_users
 // @Router /lms/api/v1/user [POST]
@@ -63,7 +62,6 @@ func (h *handler) CreateUser(c *gin.Context) {
 	c.JSON(http.StatusCreated, resp)
 }
 
-// @Security ApiKeyAuth
 // GetByID Users godoc
 // @ID get_by_id_users
 // @Router /lms/api/v1/user/{id} [GET]
@@ -79,18 +77,25 @@ func (h *handler) CreateUser(c *gin.Context) {
 func (h *handler) GetByIdUser(c *gin.Context) {
 	var id string
 
-	// val, exist := c.Get("Auth")
-	// if !exist {
-	// 	h.handlerResponse(c, "Here", http.StatusInternalServerError, nil)
+	// val := c.GetHeader("Authorization")
+
+	// res1, err := helper.ExtractToken(val)
+	// if err != nil {
+	// 	h.logger.Error("helper ExtractToken" + err.Error())
 	// 	return
 	// }
 
-	// userData := val.(helper.TokenInfo)
-	// if len(userData.UserID) > 0 {
-	// 	id = userData.UserID
-	// } else {
-	id = c.Param("id")
+	// res, err := helper.ParseClaims(res1, h.cfg.SecretKey)
+	// if err != nil {
+	// 	h.logger.Error("token error: \n" + err.Error())
+	// 	return
 	// }
+	// if res["role_id"] != "214fd852-b158-4e9a-9004-1cdc94c72835" {
+	// 	h.logger.Error("Unauthorized!")
+	// 	c.JSON(401, "UnAuthorized!")
+	// 	return
+	// }
+	id = c.Param("id")
 
 	if !helper.IsValidUUID(id) {
 		h.logger.Error("is valid uuid!")
@@ -158,7 +163,6 @@ func (h *handler) GetListUser(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-// @Security ApiKeyAuth
 // Update Users godoc
 // @ID update_users
 // @Router /lms/api/v1/user/{id} [PUT]
@@ -217,7 +221,6 @@ func (h *handler) UpdateUser(c *gin.Context) {
 	c.JSON(http.StatusAccepted, resp)
 }
 
-// @Security ApiKeyAuth
 // Delete Users godoc
 // @ID delete_users
 // @Router /lms/api/v1/user/{id} [DELETE]

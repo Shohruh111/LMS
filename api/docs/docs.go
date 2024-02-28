@@ -18,11 +18,6 @@ const docTemplate = `{
     "paths": {
         "/lms/api/v1/auth/checkCode": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "CheckCode",
                 "consumes": [
                     "application/json"
@@ -103,11 +98,6 @@ const docTemplate = `{
         },
         "/lms/api/v1/auth/checkEmail": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "CheckEmail",
                 "consumes": [
                     "application/json"
@@ -268,11 +258,6 @@ const docTemplate = `{
         },
         "/lms/api/v1/auth/register": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Register",
                 "consumes": [
                     "application/json"
@@ -353,11 +338,6 @@ const docTemplate = `{
         },
         "/lms/api/v1/auth/restorePassword": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "SendEmail",
                 "consumes": [
                     "application/json"
@@ -605,11 +585,6 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Create Courses",
                 "consumes": [
                     "application/json"
@@ -767,11 +742,6 @@ const docTemplate = `{
         },
         "/lms/api/v1/course/{id}": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Get By ID Courses",
                 "consumes": [
                     "application/json"
@@ -847,11 +817,6 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Update Courses",
                 "consumes": [
                     "application/json"
@@ -937,11 +902,6 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Delete Courses",
                 "consumes": [
                     "application/json"
@@ -1552,11 +1512,6 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Create Roles",
                 "consumes": [
                     "application/json"
@@ -1637,11 +1592,6 @@ const docTemplate = `{
         },
         "/lms/api/v1/role/{id}": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Get By ID Roles",
                 "consumes": [
                     "application/json"
@@ -1717,11 +1667,6 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Update Roles",
                 "consumes": [
                     "application/json"
@@ -1807,11 +1752,6 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Delete Roles",
                 "consumes": [
                     "application/json"
@@ -2066,11 +2006,6 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Create Users",
                 "consumes": [
                     "application/json"
@@ -2151,11 +2086,6 @@ const docTemplate = `{
         },
         "/lms/api/v1/user/{id}": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Get By ID Users",
                 "consumes": [
                     "application/json"
@@ -2231,11 +2161,6 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Update Users",
                 "consumes": [
                     "application/json"
@@ -2321,11 +2246,6 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Delete Users",
                 "consumes": [
                     "application/json"
@@ -2512,7 +2432,7 @@ const docTemplate = `{
         "models.LoginUser": {
             "type": "object",
             "properties": {
-                "login": {
+                "email": {
                     "type": "string"
                 },
                 "password": {
