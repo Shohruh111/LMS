@@ -122,12 +122,13 @@ func (u *groupRepo) GetList(ctx context.Context, req *models.GroupGetListRequest
 	}
 
 	if len(req.CourseId) > 0 {
-		where += " AND course_id = $1"
+		where += " AND course_id = " +"'"+req.CourseId+"'"
+
 	}
 
 	query += where + offset + limit
 
-	rows, err := u.db.Query(ctx, query, req.CourseId)
+	rows, err := u.db.Query(ctx, query)
 	if err != nil {
 		return nil, err
 	}

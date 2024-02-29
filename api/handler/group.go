@@ -131,7 +131,7 @@ func (h *handler) GetListGroup(c *gin.Context) {
 		CourseId: courseId,
 	})
 	if err != nil {
-		h.logger.Error("storage.Group.GetList!")
+		h.logger.Error("storage.Group.GetList!" + err.Error())
 		c.JSON(http.StatusInternalServerError, "storage.Group.GetList")
 		return
 	}
