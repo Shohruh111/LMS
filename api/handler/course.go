@@ -93,12 +93,12 @@ func (h *handler) GetByIdCourse(c *gin.Context) {
 	}
 
 	group, err := h.strg.Course().GetGroupOfCourseById(c.Request.Context(), &models.CoursePrimaryKey{Id: id})
-	if err != nil {
+	if err != nil && err.Error() != " no rows in result set " {
 		h.logger.Error("storage.Course.GetGroupOfCourseById!" + err.Error())
 		c.JSON(http.StatusInternalServerError, "storage.Course.GetGroupOfCourseById")
 		return
 	}
-	
+
 	resp.Groups = group
 
 	h.logger.Info("GetById Course Response!")
