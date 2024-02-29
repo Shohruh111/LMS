@@ -1208,6 +1208,12 @@ const docTemplate = `{
                         "description": "limit",
                         "name": "limit",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "course_id",
+                        "name": "course_id",
+                        "in": "query"
                     }
                 ],
                 "responses": {

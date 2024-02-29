@@ -808,6 +808,10 @@ paths:
         in: query
         name: limit
         type: string
+      - description: course_id
+        in: query
+        name: course_id
+        type: string
       responses:
         "200":
           description: Success Request

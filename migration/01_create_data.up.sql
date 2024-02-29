@@ -220,6 +220,9 @@ SELECT
 FROM "product";
 
 
+ALTER TABLE "group"
+ADD COLUMN "end_date" TIMESTAMP;
+
 
 
 INSERT INTO "courses" (

@@ -104,6 +104,7 @@ func (h *handler) GetByIdGroup(c *gin.Context) {
 // @Procedure json
 // @Param offset query string false "offset"
 // @Param limit query string false "limit"
+// @Param course_id query string false "course_id"
 // @Success 200 {object} Response{data=string} "Success Request"
 // @Response 400 {object} Response{data=string} "Bad Request"
 // @Failure 500 {object} Response{data=string} "Server error"
@@ -122,10 +123,12 @@ func (h *handler) GetListGroup(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, "Invalid Limit")
 		return
 	}
+	courseId := c.Query("course_id")
 
 	resp, err := h.strg.Group().GetList(c.Request.Context(), &models.GroupGetListRequest{
-		Offset: offset,
-		Limit:  limit,
+		Offset:   offset,
+		Limit:    limit,
+		CourseId: courseId,
 	})
 	if err != nil {
 		h.logger.Error("storage.Group.GetList!")
