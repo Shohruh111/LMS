@@ -46,7 +46,6 @@ func (h *handler) StudentsExcelDownload(c *gin.Context) {
 		Datas:   datas,
 	}
 
-	fmt.Println(resp)
 
 	file, err := helper.GenerateExcelFile(&excel)
 	if err != nil {
@@ -98,7 +97,6 @@ func (h *handler) MentorsExcelDownload(c *gin.Context) {
 		Datas:   datas,
 	}
 
-	fmt.Println(resp)
 
 	file, err := helper.GenerateExcelFile(&excel)
 	if err != nil {
@@ -150,7 +148,6 @@ func (h *handler) CoursesExcelDownload(c *gin.Context) {
 		Datas:   datas,
 	}
 
-	fmt.Println(resp)
 
 	file, err := helper.GenerateExcelFile(&excel)
 	if err != nil {

@@ -76,37 +76,18 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 
 	query = `
 		SELECT 
-			c.id,
-			c.name,
-			c.photo,
-			c.for_who,
-			c.type,
-			c.weekly_number,
-			c.duration,
-			c.price,
-			c.beginning_date_course,
-			c.end_date,
-			c.created_at,
-			c.updated_at,
-			ARRAY_AGG(l.name) AS lesson_names,
-			ARRAY_AGG(l.video_lesson) AS video_lessons
-
-		FROM "courses" AS c
-		JOIN "lessons" AS l ON c.id = l.course_id
-		WHERE c.id = $1
-		GROUP BY 
-			c.id,
-			c.name,
-			c.photo,
-			c.for_who,
-			c.type,
-			c.weekly_number,
-			c.duration,
-			c.price,
-			c.beginning_date_course,
-			c.end_date,
-			c.created_at,
-			c.updated_at
+			id,
+			name,
+			photo,
+			for_who,
+			type,
+			weekly_number,
+			duration,
+			price,
+			beginning_date_course,
+			end_date
+		FROM "courses"
+		WHERE id = $1
 	`
 
 	err := u.db.QueryRow(ctx, query, req.Id).Scan(
@@ -120,13 +101,27 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 		&price,
 		&beginningDate,
 		&endDate,
-		&createdAt,
-		&updatedAt,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	query = `
+		SELECT 
+			ARRAY_AGG(l.name) AS lesson_names,
+			ARRAY_AGG(l.video_lesson) AS video_lessons
+
+		FROM "courses" AS c
+		JOIN "lessons" AS l ON c.id = l.course_id
+		WHERE c.id = $1
+	`
+
+	err = u.db.QueryRow(ctx, query, req.Id).Scan(
 		&namesOfLessons,
 		&videosOfLessons,
 	)
 
-	if err != nil {
+	if err != nil && err.Error() != " no rows in result set " {
 		return nil, err
 	}
 

@@ -166,6 +166,15 @@ SELECT
         WHERE c.id = 'bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e';
 
 
+SELECT 
+			ARRAY_AGG(l.name) AS lesson_names,
+			ARRAY_AGG(l.video_lesson) AS video_lessons
+
+		FROM "courses" AS c
+		JOIN "lessons" AS l ON c.id = l.course_id
+		WHERE c.id = 'bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e';
+
+
 
 INSERT INTO "lessons"(id, course_id, name, video_lesson, status)
 VALUES
