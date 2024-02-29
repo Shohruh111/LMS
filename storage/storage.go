@@ -10,6 +10,8 @@ type StorageI interface {
 	User() UserRepoI
 	Role() RoleRepoI
 	Course() CourseRepoI
+	Group() GroupRepoI
+	Lesson() LessonRepoI
 }
 type UserRepoI interface {
 	Create(context.Context, *models.UserCreate) (string, error)
@@ -32,6 +34,23 @@ type RoleRepoI interface {
 	Delete(context.Context, *models.RolePrimaryKey) error
 }
 
+type GroupRepoI interface {
+	Create(context.Context, *models.GroupCreate) (string, error)
+	GetByID(context.Context, *models.GroupPrimaryKey) (*models.Group, error)
+	GetList(context.Context, *models.GroupGetListRequest) (*models.GroupGetListResponse, error)
+	Update(context.Context, *models.GroupUpdate) (int64, error)
+	Delete(context.Context, *models.GroupPrimaryKey) error
+}
+
+type LessonRepoI interface {
+	Create(context.Context, *models.LessonCreate) (string, error)
+	GetByID(context.Context, *models.LessonPrimaryKey) (*models.Lessons, error)
+	GetList(context.Context, *models.LessonGetListRequest) (*models.LessonGetListResponse, error)
+	Update(context.Context, *models.LessonUpdate) (int64, error)
+	Delete(context.Context, *models.LessonPrimaryKey) error
+}
+
+
 type CourseRepoI interface {
 	Create(context.Context, *models.CourseCreate) (string, error)
 	GetByID(context.Context, *models.CoursePrimaryKey) (*models.Course, error)
@@ -41,5 +60,4 @@ type CourseRepoI interface {
 	UploadPhotos(context.Context, *models.VideoLessons) (string, error)
 	GetPhotos(context.Context, *models.VideoLessons) (*models.VideoLessons, error)
 	GetListCourseOfUsers(context.Context, *models.CoursePrimaryKey) (*models.CourseOfUsersGetListResponse, error)
-	GetGroupOfCourseById(context.Context, *models.CoursePrimaryKey) ([]*models.Group, error)
 }

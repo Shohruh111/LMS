@@ -15,6 +15,8 @@ type store struct {
 	user   *userRepo
 	role   *roleRepo
 	course *courseRepo
+	group  *groupRepo
+	lesson *lessonRepo
 }
 
 func NewConnectionPostgres(cfg *config.Config) (storage.StorageI, error) {
@@ -68,4 +70,19 @@ func (s *store) Course() storage.CourseRepoI {
 	}
 
 	return s.course
+}
+
+func (s *store) Group() storage.GroupRepoI {
+	if s.group == nil {
+		s.group = NewGroupRepo(s.db)
+	}
+
+	return s.group
+}
+func (s *store) Lesson() storage.LessonRepoI {
+	if s.lesson == nil {
+		s.lesson = NewLessonRepo(s.db)
+	}
+
+	return s.lesson
 }

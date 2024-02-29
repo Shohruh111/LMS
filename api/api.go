@@ -55,6 +55,12 @@ func NewApi(r *gin.Engine, cfg *config.Config, storage storage.StorageI, logger 
 	v1.PUT("/role/:id", handler.UpdateRole)
 	v1.DELETE("/role/:id", handler.DeleteRole)
 
+	v1.POST("/group", handler.CreateGroup)
+	v1.GET("/group/:id", handler.GetByIdGroup)
+	v1.GET("/group", handler.GetListGroup)
+	v1.PUT("/group/:id", handler.UpdateGroup)
+	v1.DELETE("/group/:id", handler.DeleteGroup)
+
 	v1.POST("/course", handler.CreateCourse)
 	v1.GET("/course/:id", handler.GetByIdCourse)
 	v1.GET("/course", handler.GetListCourse)

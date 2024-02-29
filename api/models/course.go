@@ -1,21 +1,20 @@
 package models
 
 type Course struct {
-	Id             string   `json:"id"`
-	Name           string   `json:"name"`
-	Photo          string   `json:"photo"`
-	ForWho         string   `json:"for_who"`
-	Type           string   `json:"type"`
-	WeeklyNumber   int      `json:"weekly_number"`
-	Duration       string   `json:"duration"`
-	Price          int      `json:"price"`
-	BeginningDate  string   `json:"beginning_date_course"`
-	EndDate        string   `json:"end_date"`
-	NamesOfLessons []string `json:"lesson_names"`
-	VideoOfLessons []string `json:"video_lessons"`
-	Groups         []*Group  `json:"groups"`
-	CreatedAt      string   `json:"created_at"`
-	UpdatedAt      string   `json:"updated_at"`
+	Id            string     `json:"id"`
+	Name          string     `json:"name"`
+	Photo         string     `json:"photo"`
+	ForWho        string     `json:"for_who"`
+	Type          string     `json:"type"`
+	WeeklyNumber  int        `json:"weekly_number"`
+	Duration      string     `json:"duration"`
+	Price         int        `json:"price"`
+	BeginningDate string     `json:"beginning_date_course"`
+	EndDate       string     `json:"end_date"`
+	Lessons       []*Lessons `json:"lesson_names"`
+	Groups        []*Group   `json:"groups"`
+	CreatedAt     string     `json:"created_at"`
+	UpdatedAt     string     `json:"updated_at"`
 }
 
 type CourseCreate struct {

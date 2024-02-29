@@ -92,14 +92,22 @@ func (h *handler) GetByIdCourse(c *gin.Context) {
 		return
 	}
 
-	group, err := h.strg.Course().GetGroupOfCourseById(c.Request.Context(), &models.CoursePrimaryKey{Id: id})
+	group, err := h.strg.Group().GetList(c.Request.Context(), &models.GroupGetListRequest{CourseId: resp.Id})
 	if err != nil && err.Error() != " no rows in result set " {
-		h.logger.Error("storage.Course.GetGroupOfCourseById!" + err.Error())
-		c.JSON(http.StatusInternalServerError, "storage.Course.GetGroupOfCourseById")
+		h.logger.Error("storage.Course.Group.GetList!" + err.Error())
+		c.JSON(http.StatusInternalServerError, "storage.Course.Group.GetList")
 		return
 	}
 
-	resp.Groups = group
+	lessons, err := h.strg.Lesson().GetList(c.Request.Context(), &models.LessonGetListRequest{CourseId: resp.Id})
+	if err != nil && err.Error() != " no rows in result set " {
+		h.logger.Error("storage.Course.Lesson.GetList!" + err.Error())
+		c.JSON(http.StatusInternalServerError, "storage.Course.Lesson.GetList")
+		return
+	}
+
+	resp.Groups = group.Groups
+	resp.Lessons = lessons.Lessons
 
 	h.logger.Info("GetById Course Response!")
 	c.JSON(http.StatusOK, resp)

@@ -45,6 +45,7 @@ CREATE TABLE "group"(
     "name" VARCHAR(50) NOT NULL,
     "course_id" UUID REFERENCES "courses"("id"),
     "status" BOOLEAN,
+    "end_date" TIMESTAMP,
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP
 );
@@ -250,3 +251,23 @@ INSERT INTO "courses" (
     ('a5a3a696-4d5c-4aa1-9067-314b7a15883e', 'Управление проектами', 'project_management.jpg', 'Обучение методам управления проектами.', 'Студенты управления', 'Очно', 5, '10 недель', 5999, '2024-02-15', 18, '2024-04-25', 89),
     ('c1ec854b-d4e2-42c7-9f99-07470776c6e2', 'Графический дизайн в рекламе', 'graphic_design_advertising.jpg', 'Применение графического дизайна в рекламной сфере.', 'Студенты маркетинга', 'Онлайн', 4, '8 недель', 4499, '2024-03-10', 12, '2024-05-20', 87),
     ('4f1c2a49-78f2-48a1-b0fd-ebfa4eac5bc4', 'Основы экономики', 'economics_basics.jpg', 'Введение в основы экономики.', 'Студенты экономики', 'Онлайн', 6, '12 недель', 6999, '2024-06-01', 20, '2024-08-15', 92);
+
+
+
+
+
+
+   id  ed599851-dede-4312-9495-9c7c0368105b
+name       | Group 3
+course_id  | bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e
+
+
+id         | 07ea2fbc-476b-41ed-91c7-90a703f75d0f
+name       | Group 2
+course_id  | bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e
+
+
+id         | 39ddcf6c-d0e7-467c-91c7-c20e67e9b065
+name       | Group 1
+course_id  | bd4ae2c8-bbfc-4c9e-8249-5e3cb939f65e
+status     | t

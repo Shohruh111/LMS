@@ -58,20 +58,18 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 	var (
 		query string
 
-		id              sql.NullString
-		name            sql.NullString
-		photo           sql.NullString
-		forWho          sql.NullString
-		tipe            sql.NullString
-		weeklyNumber    int
-		duration        sql.NullString
-		price           int
-		beginningDate   sql.NullString
-		endDate         sql.NullString
-		createdAt       sql.NullString
-		updatedAt       sql.NullString
-		namesOfLessons  []string
-		videosOfLessons []string
+		id            sql.NullString
+		name          sql.NullString
+		photo         sql.NullString
+		forWho        sql.NullString
+		tipe          sql.NullString
+		weeklyNumber  int
+		duration      sql.NullString
+		price         int
+		beginningDate sql.NullString
+		endDate       sql.NullString
+		createdAt     sql.NullString
+		updatedAt     sql.NullString
 	)
 
 	query = `
@@ -106,39 +104,18 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 		return nil, err
 	}
 
-	query = `
-		SELECT 
-			ARRAY_AGG(l.name) AS lesson_names,
-			ARRAY_AGG(l.video_lesson) AS video_lessons
-
-		FROM "courses" AS c
-		JOIN "lessons" AS l ON c.id = l.course_id
-		WHERE c.id = $1
-	`
-
-	err = u.db.QueryRow(ctx, query, req.Id).Scan(
-		&namesOfLessons,
-		&videosOfLessons,
-	)
-
-	if err != nil && err.Error() != " no rows in result set " {
-		return nil, err
-	}
-
 	return &models.Course{
-		Id:             id.String,
-		Name:           name.String,
-		Photo:          photo.String,
-		ForWho:         forWho.String,
-		Type:           tipe.String,
-		WeeklyNumber:   weeklyNumber,
-		Duration:       duration.String,
-		Price:          price,
-		BeginningDate:  beginningDate.String,
-		NamesOfLessons: namesOfLessons,
-		VideoOfLessons: videosOfLessons,
-		CreatedAt:      createdAt.String,
-		UpdatedAt:      updatedAt.String,
+		Id:            id.String,
+		Name:          name.String,
+		Photo:         photo.String,
+		ForWho:        forWho.String,
+		Type:          tipe.String,
+		WeeklyNumber:  weeklyNumber,
+		Duration:      duration.String,
+		Price:         price,
+		BeginningDate: beginningDate.String,
+		CreatedAt:     createdAt.String,
+		UpdatedAt:     updatedAt.String,
 	}, nil
 }
 
@@ -350,68 +327,6 @@ func (u *courseRepo) GetListCourseOfUsers(ctx context.Context, req *models.Cours
 			CreatedAt:   createdAt.String,
 		})
 
-	}
-
-	return resp, nil
-}
-
-func (u *courseRepo) GetGroupOfCourseById(ctx context.Context, req *models.CoursePrimaryKey) ([]*models.Group, error) {
-
-	var (
-		resp  []*models.Group
-		query string
-	)
-
-	query = `
-		SELECT 
-			g.id,
-			g.name,
-			g.course_id,
-			g.status,
-
-			c.beginning_date_course,
-			c.end_date
-		FROM "group" AS g
-		JOIN "courses" AS c ON g.course_id = c.id
-		WHERE g.course_id = $1
-	`
-
-	rows, err := u.db.Query(ctx, query, req.Id)
-	if err != nil {
-		return nil, err
-	}
-
-	for rows.Next() {
-		var (
-			id            sql.NullString
-			name          sql.NullString
-			courseId      sql.NullString
-			status        sql.NullBool
-			beginningDate sql.NullString
-			endDate       sql.NullString
-		)
-
-		err := rows.Scan(
-			&id,
-			&name,
-			&courseId,
-			&status,
-			&beginningDate,
-			&endDate,
-		)
-
-		if err != nil {
-			return nil, err
-		}
-
-		resp = append(resp, &models.Group{
-			ID:            id.String,
-			Name:          name.String,
-			CourseId:      courseId.String,
-			Status:        status.Bool,
-			BeginningDate: beginningDate.String,
-			EndDate:       endDate.String,
-		})
 	}
 
 	return resp, nil

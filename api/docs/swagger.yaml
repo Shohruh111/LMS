@@ -68,6 +68,28 @@ definitions:
       weekly_number:
         type: integer
     type: object
+  models.GroupCreate:
+    properties:
+      course_id:
+        type: string
+      end_date:
+        type: string
+      name:
+        type: string
+      status:
+        type: boolean
+    type: object
+  models.GroupUpdate:
+    properties:
+      end_date:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      status:
+        type: boolean
+    type: object
   models.LoginUser:
     properties:
       email:
@@ -771,6 +793,227 @@ paths:
       summary: Get List Students
       tags:
       - Excel
+  /lms/api/v1/group:
+    get:
+      consumes:
+      - application/json
+      description: Get List Groups
+      operationId: get_list_groups
+      parameters:
+      - description: offset
+        in: query
+        name: offset
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Get List Groups
+      tags:
+      - Group
+    post:
+      consumes:
+      - application/json
+      description: Create Groups
+      operationId: create_groups
+      parameters:
+      - description: CreateGroupRequest
+        in: body
+        name: Group
+        required: true
+        schema:
+          $ref: '#/definitions/models.GroupCreate'
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Create Groups
+      tags:
+      - Group
+  /lms/api/v1/group/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Groups
+      operationId: delete_groups
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Delete Groups
+      tags:
+      - Group
+    get:
+      consumes:
+      - application/json
+      description: Get By ID Groups
+      operationId: get_by_id_groups
+      parameters:
+      - description: id
+        in: path
+        name: id
+        type: string
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Get By ID Groups
+      tags:
+      - Group
+    put:
+      consumes:
+      - application/json
+      description: Update Groups
+      operationId: update_groups
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: UpdateGroupRequest
+        in: body
+        name: Group
+        required: true
+        schema:
+          $ref: '#/definitions/models.GroupUpdate'
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Update Groups
+      tags:
+      - Group
   /lms/api/v1/mentors:
     get:
       consumes:
