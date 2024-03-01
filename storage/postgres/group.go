@@ -105,12 +105,15 @@ func (u *groupRepo) GetList(ctx context.Context, req *models.GroupGetListRequest
 	query = `
 		SELECT
 			COUNT(*) OVER(),
-			id,
-			name,
-			course_id,
-			status,
-			end_date
-		FROM "group" 
+			g.id,
+			g.name,
+			g.course_id,
+			g.status,
+			g.end_date
+
+			COUNT(ug.user_id)
+		FROM "group" AS g
+		JOIN "user_of_group" AS ug ON g.id = ug.user_id
 	`
 
 	if req.Offset > 0 {
@@ -122,7 +125,7 @@ func (u *groupRepo) GetList(ctx context.Context, req *models.GroupGetListRequest
 	}
 
 	if len(req.CourseId) > 0 {
-		where += " AND course_id = " +"'"+req.CourseId+"'"
+		where += " AND course_id = " + "'" + req.CourseId + "'"
 
 	}
 
@@ -140,6 +143,7 @@ func (u *groupRepo) GetList(ctx context.Context, req *models.GroupGetListRequest
 			courseId sql.NullString
 			status   sql.NullBool
 			endDate  sql.NullString
+			students int
 		)
 
 		err := rows.Scan(
@@ -149,6 +153,7 @@ func (u *groupRepo) GetList(ctx context.Context, req *models.GroupGetListRequest
 			&courseId,
 			&status,
 			&endDate,
+			&students,
 		)
 
 		if err != nil {
@@ -161,6 +166,10 @@ func (u *groupRepo) GetList(ctx context.Context, req *models.GroupGetListRequest
 			CourseId: courseId.String,
 			Status:   status.Bool,
 			EndDate:  endDate.String,
+			NumberOfStudents: students,
+			NotAll: 0,
+			DoneAll: 0,
+			Progress: 0,
 		})
 	}
 	return resp, nil

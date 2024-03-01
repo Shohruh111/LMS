@@ -1,11 +1,15 @@
 package models
 
 type Group struct {
-	ID       string `json:"id"`
-	CourseId string `json:"course_id"`
-	Name     string `json:"name"`
-	Status   bool   `json:"status"`
-	EndDate  string `json:"end_date"`
+	ID               string `json:"id"`
+	CourseId         string `json:"course_id"`
+	Name             string `json:"name"`
+	NumberOfStudents int    `json:"number_of_students"`
+	NotAll           int    `json:"not_all"`
+	DoneAll          int    `json:"done_all"`
+	Progress         int    `json:"progress"`
+	Status           bool   `json:"status"`
+	EndDate          string `json:"end_date"`
 }
 type GroupCreate struct {
 	Name     string `json:"name"`
