@@ -70,6 +70,8 @@ definitions:
     type: object
   models.GroupCreate:
     properties:
+      beginning_date:
+        type: string
       course_id:
         type: string
       end_date:
@@ -81,6 +83,8 @@ definitions:
     type: object
   models.GroupUpdate:
     properties:
+      beginning_date:
+        type: string
       end_date:
         type: string
       id:

@@ -2837,6 +2837,9 @@ const docTemplate = `{
         "models.GroupCreate": {
             "type": "object",
             "properties": {
+                "beginning_date": {
+                    "type": "string"
+                },
                 "course_id": {
                     "type": "string"
                 },
@@ -2854,6 +2857,9 @@ const docTemplate = `{
         "models.GroupUpdate": {
             "type": "object",
             "properties": {
+                "beginning_date": {
+                    "type": "string"
+                },
                 "end_date": {
                     "type": "string"
                 },

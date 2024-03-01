@@ -174,8 +174,8 @@ func (u *userRepo) GetList(ctx context.Context, req *models.UserGetListRequest) 
 	if len(req.Filter) > 0 {
 		where = " WHERE r.type = '" + req.Filter + "'"
 	}
-	if len(req.Search) >0{
-		where += " AND first_name ILIKE " + "'" + req.Search + "%'" + " OR last_name ILIKE " + "'" + req.Search + "%'" + "OR phone_number ILIKE "+ "'" + req.Search + "%'"  + "OR email ILIKE "+ "'" + req.Search+"%' "
+	if len(req.Search) > 0 {
+		where += " AND first_name ILIKE " + "'" + req.Search + "%'" + " OR last_name ILIKE " + "'" + req.Search + "%'" + "OR phone_number ILIKE " + "'" + req.Search + "%'" + "OR email ILIKE " + "'" + req.Search + "%' "
 	}
 
 	query += where + offset + limit
@@ -240,6 +240,11 @@ func (u *userRepo) Update(ctx context.Context, req *models.UserUpdate) (int64, e
 		params map[string]interface{}
 	)
 
+	hashPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return 0, err
+	}
+
 	query = `
 		UPDATE
 			"users"
@@ -258,7 +263,7 @@ func (u *userRepo) Update(ctx context.Context, req *models.UserUpdate) (int64, e
 		"last_name":    req.LastName,
 		"email":        req.Email,
 		"phone_number": req.PhoneNumber,
-		"password":     req.Password,
+		"password":     hashPassword,
 	}
 
 	query, args := helper.ReplaceQueryParams(query, params)

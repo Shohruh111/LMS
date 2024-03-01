@@ -46,6 +46,7 @@ CREATE TABLE "group"(
     "course_id" UUID REFERENCES "courses"("id"),
     "status" BOOLEAN,
     "end_date" TIMESTAMP,
+    "beginning_date" TIMESTAMP,
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP
 );
