@@ -109,7 +109,7 @@ func (u *groupRepo) GetList(ctx context.Context, req *models.GroupGetListRequest
 			g.name,
 			g.course_id,
 			g.status,
-			g.end_date
+			g.end_date,
 
 			COUNT(ug.user_id)
 		FROM "group" AS g
