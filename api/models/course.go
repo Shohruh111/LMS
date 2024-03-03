@@ -9,7 +9,6 @@ type Course struct {
 	WeeklyNumber  int        `json:"weekly_number"`
 	Duration      string     `json:"duration"`
 	Price         int        `json:"price"`
-	BeginningDate string     `json:"beginning_date_course"`
 	EndDate       string     `json:"end_date"`
 	Lessons       []*Lessons `json:"lesson_names"`
 	Groups        []*Group   `json:"groups"`
@@ -25,7 +24,6 @@ type CourseCreate struct {
 	WeeklyNumber  int    `json:"weekly_number"`
 	Duration      string `json:"duration"`
 	Price         int    `json:"price"`
-	BeginningDate string `json:"beginning_date_course"`
 	EndDate       string `json:"end_date"`
 }
 
@@ -38,7 +36,6 @@ type CourseUpdate struct {
 	WeeklyNumber  int    `json:"weekly_number"`
 	Duration      string `json:"duration"`
 	Price         int    `json:"price"`
-	BeginningDate string `json:"beginning_date_course"`
 }
 
 type CoursePrimaryKey struct {

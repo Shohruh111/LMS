@@ -116,6 +116,37 @@ FROM "courses" AS c
 JOIN "lessons" AS l ON c.id = l.course_id
 
 
+
+SELECT
+			
+			g.id,
+			g.name,
+			g.course_id,
+			g.status,
+			g.end_date,
+
+            COUNT(ug.user_id) as students,
+            COUNT(CASE WHEN lu.status = true THEN 1 ELSE NULL END) as count_true,
+            COUNT(CASE WHEN lu.status = false THEN 1 ELSE NULL END) as count_false
+		FROM "group"  AS g
+        LEFT JOIN "user_of_group" AS ug ON g.id = ug.group_id
+        LEFT JOIN "lessons" AS l ON g.course_id = l.course_id
+        LEFT JOIN "lesson_of_user" AS lu ON l.id = lu.lesson_id
+        WHERE g.id = '39ddcf6c-d0e7-467c-91c7-c20e67e9b065'
+        GROUP BY 
+            g.id,
+			g.name,
+			g.course_id,
+			g.status,
+			g.end_date;
+
+
+SELECT 
+        COUNT(*) FILTER (WHERE lu.status = true) AS count_true,
+        COUNT(*) FILTER (WHERE lu.status = false) AS count_false
+FROM "lessons" AS l
+JOIN "lesson_of_user" AS lu ON l.id = lu.lesson_id;
+
 SELECT 
 
     u.first_name,
@@ -188,6 +219,14 @@ VALUES
 ('d3f75e19-3359-4283-b078-07f8f0b51633','c1f881fb-1a8b-4fd2-9c21-a8a1e3828c1a', 'Review', 'irnvfwosn', false);
 
 
+INSERT INTO "lesson_of_user"(id, user_id, lesson_id, status)
+VALUES
+('cedc7335-9e80-452b-81df-b13ca4762d11','b05ca38a-560e-4b84-b255-8f7daff55e02','39c04433-9315-4b4f-a7ca-764803bbbf93',false),
+('6c767bc6-c66b-4315-ba48-62b63f3f3c9e','b05ca38a-560e-4b84-b255-8f7daff55e02','aacbee89-d585-4777-93c4-273574508ec8',true),
+('083e7cc2-26f0-432f-87bf-8b249e39168a','b05ca38a-560e-4b84-b255-8f7daff55e02','e8a0711c-780f-430d-91a6-e2b5a01945ee',false),
+('ef763866-0abf-43fa-bb16-68ee05294174','b05ca38a-560e-4b84-b255-8f7daff55e02','2b59d832-fe30-46ec-8a9e-66fbf4c08060',true),
+('af18a9ba-2615-4609-875b-061928c7bf03','b05ca38a-560e-4b84-b255-8f7daff55e02','813b86dc-51f6-46f3-a840-b99454529f89',true),
+('b5100dc0-6eae-4859-a84f-e08a477357a6','b05ca38a-560e-4b84-b255-8f7daff55e02','d3f75e19-3359-4283-b078-07f8f0b51633',false);
 
 INSERT INTO "roles"(id, type)
 VALUES('214fd852-b158-4e9a-9004-1cdc94c72835', 'Teacher');

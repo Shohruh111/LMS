@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -33,28 +32,28 @@ func (h *handler) CreateUser(c *gin.Context) {
 	err := c.ShouldBindJSON(&createUser)
 	if err != nil {
 		h.logger.Error("error User Should Bind Json!")
-		c.JSON(http.StatusBadRequest, "error User Should Bind Json")
+		c.JSON(http.StatusBadRequest, "Enter valid datas!")
 		return
 	}
 
 	role, err := h.strg.Role().GetByID(c.Request.Context(), &models.RolePrimaryKey{Type: createUser.UserType})
 	if err != nil {
 		h.logger.Error("error Role.GetByID.CreateUser")
-		c.JSON(http.StatusInternalServerError, "Serve Error!")
+		c.JSON(http.StatusInternalServerError, "Internal Serve Error!")
 	}
 	createUser.RoleId = role.Id
 
 	id, err := h.strg.User().Create(c.Request.Context(), &createUser)
 	if err != nil {
 		h.logger.Error("storage.User.Create!")
-		c.JSON(http.StatusInternalServerError, "storage.User.Create")
+		c.JSON(http.StatusInternalServerError, "Internal Server Error!")
 		return
 	}
 
 	resp, err := h.strg.User().GetByID(c.Request.Context(), &models.UserPrimaryKey{Id: id})
 	if err != nil {
 		h.logger.Error("storage.User.GetByID!")
-		c.JSON(http.StatusInternalServerError, "storage.User.GetByID")
+		c.JSON(http.StatusInternalServerError, "Internal Server Error!")
 		return
 	}
 
@@ -106,7 +105,7 @@ func (h *handler) GetByIdUser(c *gin.Context) {
 	resp, err := h.strg.User().GetByID(c.Request.Context(), &models.UserPrimaryKey{Id: id})
 	if err != nil {
 		h.logger.Error("storage.User.GetByID!")
-		c.JSON(http.StatusInternalServerError, "storage.User.GetByID")
+		c.JSON(http.StatusInternalServerError, "Internal Server Error!")
 		return
 	}
 	resp.Password = ""
@@ -130,9 +129,6 @@ func (h *handler) GetByIdUser(c *gin.Context) {
 // @Failure 500 {object} Response{data=string} "Server error"
 func (h *handler) GetListUser(c *gin.Context) {
 
-	path := c.FullPath()
-	fmt.Println("\t\n: " + path)
-
 	offset, err := h.getOffsetQuery(c.Query("offset"))
 	if err != nil {
 		h.logger.Error("GetListUser INVALID OFFSET!")
@@ -155,7 +151,7 @@ func (h *handler) GetListUser(c *gin.Context) {
 	})
 	if err != nil {
 		h.logger.Error("storage.User.GetList!")
-		c.JSON(http.StatusInternalServerError, "storage.User.GetList!")
+		c.JSON(http.StatusInternalServerError, "Internal Server Error!")
 		return
 	}
 
@@ -192,28 +188,39 @@ func (h *handler) UpdateUser(c *gin.Context) {
 	err := c.ShouldBindJSON(&updateUser)
 	if err != nil {
 		h.logger.Error("error User Should Bind Json")
-		c.JSON(http.StatusBadRequest, "error User Should Bind Json")
+		c.JSON(http.StatusBadRequest, "Enter, valid datas!")
 		return
 	}
 
 	updateUser.Id = id
+
+	if len(updateUser.RoleId) == 0 {
+		val, err := h.strg.User().GetByID(c.Request.Context(), &models.UserPrimaryKey{Id: updateUser.Id})
+		if err != nil {
+			h.logger.Error("error UpdateUser.GetById")
+			c.JSON(http.StatusBadRequest, "Don't found!")
+			return
+		}
+		updateUser.RoleId = val.RoleId
+	}
+
 	rowsAffected, err := h.strg.User().Update(c.Request.Context(), &updateUser)
 	if err != nil {
 		h.logger.Error("storage.User.Update!")
-		c.JSON(http.StatusInternalServerError, "storage.User.Update")
+		c.JSON(http.StatusInternalServerError, "Internal Server Error!")
 		return
 	}
 
 	if rowsAffected <= 0 {
 		h.logger.Error("storage.User.Update!")
-		c.JSON(http.StatusBadRequest, "no rows affected!")
+		c.JSON(http.StatusBadRequest, "Data isn't updated!!")
 		return
 	}
 
 	resp, err := h.strg.User().GetByID(c.Request.Context(), &models.UserPrimaryKey{Id: updateUser.Id})
 	if err != nil {
 		h.logger.Error("storage.User.GetByID!")
-		c.JSON(http.StatusInternalServerError, "storage.User.GetByID")
+		c.JSON(http.StatusInternalServerError, "Internal Server Error!")
 		return
 	}
 
@@ -246,7 +253,7 @@ func (h *handler) DeleteUser(c *gin.Context) {
 	err := h.strg.User().Delete(c.Request.Context(), &models.UserPrimaryKey{Id: id})
 	if err != nil {
 		h.logger.Error("storage.User.Delete!")
-		c.JSON(http.StatusInternalServerError, "storage.User.Delete")
+		c.JSON(http.StatusInternalServerError, "Internal Server Error!")
 		return
 	}
 
@@ -299,7 +306,7 @@ func (h *handler) GetListStudents(c *gin.Context) {
 
 	if err != nil {
 		h.logger.Error("storage.User.GetListStudents!" + err.Error())
-		c.JSON(http.StatusInternalServerError, "storage.User.GetLustStudents")
+		c.JSON(http.StatusInternalServerError, "Internal Server Error!")
 		return
 	}
 
@@ -352,7 +359,7 @@ func (h *handler) GetListMentors(c *gin.Context) {
 
 	if err != nil {
 		h.logger.Error("storage.User.GetListMentors!")
-		c.JSON(http.StatusInternalServerError, "storage.User.GetListMentors!")
+		c.JSON(http.StatusInternalServerError, "Internal Server Error!")
 		return
 	}
 

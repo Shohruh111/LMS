@@ -110,7 +110,6 @@ func (u *userRepo) GetAllCoursesForExcel(ctx context.Context) (*models.CourseGet
 			weekly_number,
 			duration,
 			price,
-			beginning_date_course,
 			created_at,
 			updated_at
 		FROM "courses" 
@@ -125,17 +124,16 @@ func (u *userRepo) GetAllCoursesForExcel(ctx context.Context) (*models.CourseGet
 
 	for rows.Next() {
 		var (
-			id            sql.NullString
-			name          sql.NullString
-			photo         sql.NullString
-			forWho        sql.NullString
-			tipe          sql.NullString
-			weeklyNumber  int
-			duration      sql.NullString
-			price         int
-			beginningDate sql.NullString
-			createdAt     sql.NullString
-			updatedAt     sql.NullString
+			id           sql.NullString
+			name         sql.NullString
+			photo        sql.NullString
+			forWho       sql.NullString
+			tipe         sql.NullString
+			weeklyNumber int
+			duration     sql.NullString
+			price        int
+			createdAt    sql.NullString
+			updatedAt    sql.NullString
 		)
 
 		err := rows.Scan(
@@ -148,7 +146,6 @@ func (u *userRepo) GetAllCoursesForExcel(ctx context.Context) (*models.CourseGet
 			&weeklyNumber,
 			&duration,
 			&price,
-			&beginningDate,
 			&createdAt,
 			&updatedAt,
 		)
@@ -158,17 +155,16 @@ func (u *userRepo) GetAllCoursesForExcel(ctx context.Context) (*models.CourseGet
 		}
 
 		resp.Courses = append(resp.Courses, &models.Course{
-			Id:            id.String,
-			Name:          name.String,
-			Photo:         photo.String,
-			ForWho:        forWho.String,
-			Type:          tipe.String,
-			WeeklyNumber:  weeklyNumber,
-			Duration:      duration.String,
-			Price:         price,
-			BeginningDate: beginningDate.String,
-			CreatedAt:     createdAt.String,
-			UpdatedAt:     updatedAt.String,
+			Id:           id.String,
+			Name:         name.String,
+			Photo:        photo.String,
+			ForWho:       forWho.String,
+			Type:         tipe.String,
+			WeeklyNumber: weeklyNumber,
+			Duration:     duration.String,
+			Price:        price,
+			CreatedAt:    createdAt.String,
+			UpdatedAt:    updatedAt.String,
 		})
 	}
 	return resp, nil

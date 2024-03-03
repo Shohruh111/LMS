@@ -29,7 +29,7 @@ func (u *courseRepo) Create(ctx context.Context, req *models.CourseCreate) (stri
 	)
 
 	query = `
-		INSERT INTO "courses"(id, name, photo, for_who, type, weekly_number, duration, price, beginning_date_course, end_date)
+		INSERT INTO "courses"(id, name, photo, for_who, type, weekly_number, duration, price, end_date)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 	`
 
@@ -42,7 +42,6 @@ func (u *courseRepo) Create(ctx context.Context, req *models.CourseCreate) (stri
 		req.WeeklyNumber,
 		req.Duration,
 		req.Price,
-		req.BeginningDate,
 		req.EndDate,
 	)
 
@@ -66,7 +65,6 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 		weeklyNumber  int
 		duration      sql.NullString
 		price         int
-		beginningDate sql.NullString
 		endDate       sql.NullString
 		createdAt     sql.NullString
 		updatedAt     sql.NullString
@@ -82,7 +80,6 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 			weekly_number,
 			duration,
 			price,
-			beginning_date_course,
 			end_date
 		FROM "courses"
 		WHERE id = $1
@@ -97,7 +94,6 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 		&weeklyNumber,
 		&duration,
 		&price,
-		&beginningDate,
 		&endDate,
 	)
 	if err != nil {
@@ -113,7 +109,6 @@ func (u *courseRepo) GetByID(ctx context.Context, req *models.CoursePrimaryKey) 
 		WeeklyNumber:  weeklyNumber,
 		Duration:      duration.String,
 		Price:         price,
-		BeginningDate: beginningDate.String,
 		CreatedAt:     createdAt.String,
 		UpdatedAt:     updatedAt.String,
 	}, nil
@@ -140,7 +135,6 @@ func (u *courseRepo) GetList(ctx context.Context, req *models.CourseGetListReque
 			weekly_number,
 			duration,
 			price,
-			beginning_date_course,
 			created_at,
 			updated_at
 		FROM "courses" 
@@ -174,7 +168,6 @@ func (u *courseRepo) GetList(ctx context.Context, req *models.CourseGetListReque
 			weeklyNumber  int
 			duration      sql.NullString
 			price         int
-			beginningDate sql.NullString
 			createdAt     sql.NullString
 			updatedAt     sql.NullString
 		)
@@ -189,7 +182,6 @@ func (u *courseRepo) GetList(ctx context.Context, req *models.CourseGetListReque
 			&weeklyNumber,
 			&duration,
 			&price,
-			&beginningDate,
 			&createdAt,
 			&updatedAt,
 		)
@@ -207,7 +199,6 @@ func (u *courseRepo) GetList(ctx context.Context, req *models.CourseGetListReque
 			WeeklyNumber:  weeklyNumber,
 			Duration:      duration.String,
 			Price:         price,
-			BeginningDate: beginningDate.String,
 			CreatedAt:     createdAt.String,
 			UpdatedAt:     updatedAt.String,
 		})
@@ -233,7 +224,6 @@ func (u *courseRepo) Update(ctx context.Context, req *models.CourseUpdate) (int6
 			weekly_number = :weekly_number,
 			duration = :duration,
 			price = :price,
-			beginning_date_course = :beginning_date_course,
 			updated_at = NOW()
 		WHERE id = :id
 	`
@@ -246,7 +236,6 @@ func (u *courseRepo) Update(ctx context.Context, req *models.CourseUpdate) (int6
 		"weekly_number":         req.WeeklyNumber,
 		"duration":              req.Duration,
 		"price":                 req.Price,
-		"beginning_date_course": req.BeginningDate,
 	}
 
 	query, args := helper.ReplaceQueryParams(query, params)

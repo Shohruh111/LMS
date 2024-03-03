@@ -37,6 +37,8 @@ func NewApi(r *gin.Engine, cfg *config.Config, storage storage.StorageI, logger 
 	v1.POST("/auth/restorePassword", handler.RestorePassword)
 	v1.POST("/auth/updatePassword", handler.UpdatePassword)
 
+	v1.GET("/device", handler.DeviceInfo)
+
 	v1.POST("/user", handler.CreateUser)
 	v1.GET("/user/:id", handler.GetByIdUser)
 	v1.GET("/user", handler.GetListUser)
@@ -60,6 +62,12 @@ func NewApi(r *gin.Engine, cfg *config.Config, storage storage.StorageI, logger 
 	v1.GET("/group", handler.GetListGroup)
 	v1.PUT("/group/:id", handler.UpdateGroup)
 	v1.DELETE("/group/:id", handler.DeleteGroup)
+
+	v1.POST("/lesson", handler.CreateLesson)
+	v1.GET("/lesson/:id", handler.GetByIdLesson)
+	v1.GET("/lesson", handler.GetListLesson)
+	v1.PUT("/lesson/:id", handler.UpdateLesson)
+	v1.DELETE("/lesson/:id", handler.DeleteLesson)
 
 	v1.POST("/course", handler.CreateCourse)
 	v1.GET("/course/:id", handler.GetByIdCourse)

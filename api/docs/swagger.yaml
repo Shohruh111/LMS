@@ -28,8 +28,6 @@ definitions:
     type: object
   models.CourseCreate:
     properties:
-      beginning_date_course:
-        type: string
       duration:
         type: string
       end_date:
@@ -49,8 +47,6 @@ definitions:
     type: object
   models.CourseUpdate:
     properties:
-      beginning_date_course:
-        type: string
       duration:
         type: string
       for_who:
@@ -93,6 +89,28 @@ definitions:
         type: string
       status:
         type: boolean
+    type: object
+  models.LessonCreate:
+    properties:
+      course_id:
+        type: string
+      name:
+        type: string
+      status:
+        type: boolean
+      video_lesson:
+        type: string
+    type: object
+  models.LessonUpdate:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      status:
+        type: boolean
+      video_lesson:
+        type: string
     type: object
   models.LoginUser:
     properties:
@@ -150,6 +168,8 @@ definitions:
       password:
         type: string
       phone_number:
+        type: string
+      role_id:
         type: string
     type: object
 info:
@@ -686,6 +706,43 @@ paths:
       summary: Get List Course Of Users
       tags:
       - Course
+  /lms/api/v1/device:
+    get:
+      consumes:
+      - application/json
+      description: Devices
+      operationId: device
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Devices
+      tags:
+      - Device
   /lms/api/v1/excel/courses:
     get:
       consumes:
@@ -1022,6 +1079,231 @@ paths:
       summary: Update Groups
       tags:
       - Group
+  /lms/api/v1/lesson:
+    get:
+      consumes:
+      - application/json
+      description: Get List Lessons
+      operationId: get_list_lessons
+      parameters:
+      - description: offset
+        in: query
+        name: offset
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      - description: course_id
+        in: query
+        name: course_id
+        type: string
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Get List Lessons
+      tags:
+      - Lesson
+    post:
+      consumes:
+      - application/json
+      description: Create Lessons
+      operationId: create_lessons
+      parameters:
+      - description: CreateLessonRequest
+        in: body
+        name: Lesson
+        required: true
+        schema:
+          $ref: '#/definitions/models.LessonCreate'
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Create Lessons
+      tags:
+      - Lesson
+  /lms/api/v1/lesson/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Lessons
+      operationId: delete_lessons
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Delete Lessons
+      tags:
+      - Lesson
+    get:
+      consumes:
+      - application/json
+      description: Get By ID Lessons
+      operationId: get_by_id_lessons
+      parameters:
+      - description: id
+        in: path
+        name: id
+        type: string
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Get By ID Lessons
+      tags:
+      - Lesson
+    put:
+      consumes:
+      - application/json
+      description: Update Lessons
+      operationId: update_lessons
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: UpdateLessonRequest
+        in: body
+        name: Lesson
+        required: true
+        schema:
+          $ref: '#/definitions/models.LessonUpdate'
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Update Lessons
+      tags:
+      - Lesson
   /lms/api/v1/mentors:
     get:
       consumes:

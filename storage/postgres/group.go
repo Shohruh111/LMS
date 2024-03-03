@@ -102,18 +102,6 @@ func (u *groupRepo) GetList(ctx context.Context, req *models.GroupGetListRequest
 		limit  = " LIMIT 10"
 	)
 
-	query = `
-		SELECT
-			COUNT(*) OVER(),
-			id,
-			name,
-			course_id,
-			status,
-			end_date
-		FROM "group" 
-
-	`
-
 	if req.Offset > 0 {
 		offset = fmt.Sprintf(" OFFSET %d", req.Offset)
 	}
@@ -123,11 +111,33 @@ func (u *groupRepo) GetList(ctx context.Context, req *models.GroupGetListRequest
 	}
 
 	if len(req.CourseId) > 0 {
-		where += " AND course_id = " + "'" + req.CourseId + "'"
+		where += " AND g.course_id = " + "'" + req.CourseId + "'"
 
 	}
 
-	query += where + offset + limit
+	query = `
+		SELECT
+			
+			COUNT(*) OVER(),
+			g.id,
+			g.name,
+			g.course_id,
+			g.status,
+			g.end_date,
+
+			COUNT(ug.user_id) as students
+		FROM "group"  AS g
+		JOIN "user_of_group" AS ug ON g.id = ug.group_id` + where + `
+		GROUP BY 
+			g.id,
+			g.name,
+			g.course_id,
+			g.status,
+			g.end_date
+
+	`
+
+	query += offset + limit
 
 	rows, err := u.db.Query(ctx, query)
 	if err != nil {
@@ -141,6 +151,7 @@ func (u *groupRepo) GetList(ctx context.Context, req *models.GroupGetListRequest
 			courseId sql.NullString
 			status   sql.NullBool
 			endDate  sql.NullString
+			students int
 		)
 
 		err := rows.Scan(
@@ -150,6 +161,7 @@ func (u *groupRepo) GetList(ctx context.Context, req *models.GroupGetListRequest
 			&courseId,
 			&status,
 			&endDate,
+			&students,
 		)
 
 		if err != nil {
@@ -162,7 +174,7 @@ func (u *groupRepo) GetList(ctx context.Context, req *models.GroupGetListRequest
 			CourseId:         courseId.String,
 			Status:           status.Bool,
 			EndDate:          endDate.String,
-			NumberOfStudents: 0,
+			NumberOfStudents: students,
 			NotAll:           0,
 			DoneAll:          0,
 			Progress:         0,

@@ -249,6 +249,7 @@ func (u *userRepo) Update(ctx context.Context, req *models.UserUpdate) (int64, e
 		UPDATE
 			"users"
 		SET
+			role_id = :role_id,
 			first_name = :first_name,
 			last_name = :last_name,
 			email = :email,
@@ -259,6 +260,7 @@ func (u *userRepo) Update(ctx context.Context, req *models.UserUpdate) (int64, e
 	`
 	params = map[string]interface{}{
 		"id":           req.Id,
+		"role_id":      req.RoleId,
 		"first_name":   req.FirstName,
 		"last_name":    req.LastName,
 		"email":        req.Email,

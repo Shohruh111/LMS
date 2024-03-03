@@ -130,7 +130,7 @@ func (h *handler) MentorsExcelDownload(c *gin.Context) {
 func (h *handler) CoursesExcelDownload(c *gin.Context) {
 
 	var (
-		headers = []string{"ID", "Name", "Description", "Type", "Weekly Number", "Duration", "Price", "Beginning Date Of Course", "End Date"}
+		headers = []string{"ID", "Name", "Description", "Type", "Weekly Number", "Duration", "Price", "End Date"}
 		datas   [][]interface{}
 	)
 
@@ -141,7 +141,7 @@ func (h *handler) CoursesExcelDownload(c *gin.Context) {
 		return
 	}
 	for count, val := range resp.Courses {
-		datas = append(datas, []interface{}{count + 1, val.Name, val.ForWho, val.Type, val.WeeklyNumber, val.Duration, val.Price, val.BeginningDate, val.EndDate})
+		datas = append(datas, []interface{}{count + 1, val.Name, val.ForWho, val.Type, val.WeeklyNumber, val.Duration, val.Price, val.EndDate})
 	}
 	excel := helper.Excel{
 		Headers: headers,

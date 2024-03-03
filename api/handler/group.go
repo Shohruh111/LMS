@@ -63,20 +63,6 @@ func (h *handler) CreateGroup(c *gin.Context) {
 func (h *handler) GetByIdGroup(c *gin.Context) {
 	var id string
 
-	// _, exist := c.Get("Auth")
-	// if !exist {
-	// 	h.logger.Error("error in AUTH!")
-	// 	c.JSON(http.StatusInternalServerError, "error in AUTH!")
-	// 	return
-	// }
-
-	// GroupData := val.(helper.TokenInfo)
-	// if len(GroupData.GroupID) > 0 {
-	// 	id = GroupData.GroupID
-	// } else {
-	// 	id = c.Param("id")
-	// }
-
 	if !helper.IsValidUUID(id) {
 		h.logger.Error("is not valid uuid!")
 		c.JSON(http.StatusBadRequest, "invalid id")
@@ -135,6 +121,7 @@ func (h *handler) GetListGroup(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, "storage.Group.GetList")
 		return
 	}
+	
 
 	h.logger.Info("GetListGroup Response!")
 	c.JSON(http.StatusOK, resp)
