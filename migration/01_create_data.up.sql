@@ -93,6 +93,16 @@ CREATE TABLE "photos"(
     "data" BYTEA
 );
 
+CREATE TABLE "devices"(
+    "id" UUID PRIMARY KEY,
+    "user_id" UUID REFERENCES "users"("id"),
+    "device_name" VARCHAR(30) NOT NULL UNIQUE,
+    "browser" VARCHAR(20) NOT NULL,
+    "browser_version" VARCHAR(30) NOT NULL,
+    "ip" VARCHAR(10) NOT NULL,
+    "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP WITHOUT TIMEZONE,
+);
+
 
         SELECT 
 			g.id,

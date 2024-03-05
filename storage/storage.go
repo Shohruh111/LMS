@@ -12,6 +12,7 @@ type StorageI interface {
 	Course() CourseRepoI
 	Group() GroupRepoI
 	Lesson() LessonRepoI
+	Device() DeviceRepoI
 }
 type UserRepoI interface {
 	Create(context.Context, *models.UserCreate) (string, error)
@@ -50,7 +51,6 @@ type LessonRepoI interface {
 	Delete(context.Context, *models.LessonPrimaryKey) error
 }
 
-
 type CourseRepoI interface {
 	Create(context.Context, *models.CourseCreate) (string, error)
 	GetByID(context.Context, *models.CoursePrimaryKey) (*models.Course, error)
@@ -60,4 +60,10 @@ type CourseRepoI interface {
 	UploadPhotos(context.Context, *models.VideoLessons) (string, error)
 	GetPhotos(context.Context, *models.VideoLessons) (*models.VideoLessons, error)
 	GetListCourseOfUsers(context.Context, *models.CoursePrimaryKey) (*models.CourseOfUsersGetListResponse, error)
+}
+
+type DeviceRepoI interface {
+	Create(context.Context, *models.DeviceCreate) (string, error)
+	GetList(context.Context, *models.DeviceGetListRequest) (*models.DeviceGetListResponse, error)
+	Delete(context.Context, *models.DevicePrimaryKey) error
 }

@@ -37,7 +37,9 @@ func NewApi(r *gin.Engine, cfg *config.Config, storage storage.StorageI, logger 
 	v1.POST("/auth/restorePassword", handler.RestorePassword)
 	v1.POST("/auth/updatePassword", handler.UpdatePassword)
 
-	v1.GET("/device", handler.DeviceInfo)
+	// v1.GET("/device", handler.DeviceInfo)
+
+	v1.GET("/ping", handler.PingPong)
 
 	v1.POST("/user", handler.CreateUser)
 	v1.GET("/user/:id", handler.GetByIdUser)

@@ -17,6 +17,7 @@ type store struct {
 	course *courseRepo
 	group  *groupRepo
 	lesson *lessonRepo
+	device *deviceRepo
 }
 
 func NewConnectionPostgres(cfg *config.Config) (storage.StorageI, error) {
@@ -85,4 +86,12 @@ func (s *store) Lesson() storage.LessonRepoI {
 	}
 
 	return s.lesson
+}
+
+func (s *store) Device() storage.DeviceRepoI {
+	if s.device == nil {
+		s.device = NewDeviceRepo(s.db)
+	}
+
+	return s.device
 }

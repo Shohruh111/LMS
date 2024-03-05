@@ -96,6 +96,8 @@ func (h *handler) GetByIdGroup(c *gin.Context) {
 // @Failure 500 {object} Response{data=string} "Server error"
 func (h *handler) GetListGroup(c *gin.Context) {
 
+	var courseId string
+
 	offset, err := h.getOffsetQuery(c.Query("offset"))
 	if err != nil {
 		h.logger.Error("GetListGroup INVALID Offset!")
@@ -109,7 +111,10 @@ func (h *handler) GetListGroup(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, "Invalid Limit")
 		return
 	}
-	courseId := c.Query("course_id")
+
+	if len(c.Query("course_id")) > 0 {
+		courseId = c.Query("course_id")
+	}
 
 	resp, err := h.strg.Group().GetList(c.Request.Context(), &models.GroupGetListRequest{
 		Offset:   offset,
@@ -121,7 +126,6 @@ func (h *handler) GetListGroup(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, "storage.Group.GetList")
 		return
 	}
-	
 
 	h.logger.Info("GetListGroup Response!")
 	c.JSON(http.StatusOK, resp)

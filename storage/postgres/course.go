@@ -30,7 +30,7 @@ func (u *courseRepo) Create(ctx context.Context, req *models.CourseCreate) (stri
 
 	query = `
 		INSERT INTO "courses"(id, name, photo, for_who, type, weekly_number, duration, price, end_date)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 	`
 
 	_, err := u.db.Exec(ctx, query,

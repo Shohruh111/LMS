@@ -46,7 +46,6 @@ func (h *handler) StudentsExcelDownload(c *gin.Context) {
 		Datas:   datas,
 	}
 
-
 	file, err := helper.GenerateExcelFile(&excel)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Error generating Excel file")
@@ -97,7 +96,6 @@ func (h *handler) MentorsExcelDownload(c *gin.Context) {
 		Datas:   datas,
 	}
 
-
 	file, err := helper.GenerateExcelFile(&excel)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Error generating Excel file")
@@ -114,6 +112,7 @@ func (h *handler) MentorsExcelDownload(c *gin.Context) {
 		fmt.Println("Error writing to response:", err)
 		c.String(http.StatusInternalServerError, "Error writing Excel file to response")
 	}
+
 }
 
 // Courses Excel godoc
@@ -147,7 +146,6 @@ func (h *handler) CoursesExcelDownload(c *gin.Context) {
 		Headers: headers,
 		Datas:   datas,
 	}
-
 
 	file, err := helper.GenerateExcelFile(&excel)
 	if err != nil {

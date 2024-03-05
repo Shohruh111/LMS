@@ -159,6 +159,24 @@ func (h *handler) GetListCourse(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, "storage.Course.GetList!")
 		return
 	}
+
+	for row, val := range resp.Courses {
+		groups, err := h.strg.Group().GetList(c.Request.Context(), &models.GroupGetListRequest{CourseId: val.Id})
+		if err != nil {
+			h.logger.Error("storage.Course.Group.GetList!" + err.Error())
+			c.JSON(http.StatusInternalServerError, "storage.Course.Group.GetList!")
+		}
+
+		lessons, err := h.strg.Lesson().GetList(c.Request.Context(), &models.LessonGetListRequest{CourseId: val.Id})
+		if err != nil {
+			h.logger.Error("storage.Course.Lesson.GetList!" + err.Error())
+			c.JSON(http.StatusInternalServerError, "storage.Course.Lesson.GetList!")
+		}
+
+		resp.Courses[row].Groups = groups.Groups
+		resp.Courses[row].Lessons = lessons.Lessons
+	}
+
 	h.logger.Info("GetListCourse Response!!")
 	c.JSON(http.StatusOK, resp)
 }
