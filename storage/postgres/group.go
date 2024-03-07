@@ -127,7 +127,7 @@ func (u *groupRepo) GetList(ctx context.Context, req *models.GroupGetListRequest
 
 			COUNT(ug.user_id) as students
 		FROM "group"  AS g
-		JOIN "user_of_group" AS ug ON g.id = ug.group_id` + where + `
+		LEFT JOIN "user_of_group" AS ug ON g.id = ug.group_id` + where + `
 		GROUP BY 
 			g.id,
 			g.name,
